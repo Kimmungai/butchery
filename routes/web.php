@@ -33,3 +33,7 @@ Route::get('/thank-you','CheckOutController@thank_you')->name('Thank you');
 
 Route::post('/mpesa-payment','MpesaPaymentsController@mpesa')->name('Mpesa Processor');
 Route::post('/mpesa-callback','MpesaPaymentsController@mpesa_callback')->name('Mpesa Callback');
+
+/*Backend routes*/
+Route::get('/admin','admin\RegisterUserController@index')->name('Admin');
+Route::get('/register-user','admin\RegisterUserController@register_user')->name('Register User');

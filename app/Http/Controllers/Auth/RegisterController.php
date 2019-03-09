@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\User;
+use App\UserSupermarkets;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -76,6 +77,15 @@ class RegisterController extends Controller
         $user->customer()->create([
           'user_id' => $user->id,
         ]);
+        $userSupermarket = UserSupermarkets::where('user_id',$user->id)->where('supermarket_id',$data['supermarket_id'])->get();
+        //check if user supermarket exists
+        if( !count($userSupermarket) )
+        {
+          UserSupermarkets::create([
+            'user_id'           => $user->id,
+            'supermarket_id'    => $data['supermarket_id']
+          ]);
+        }
         return $user;
     }
 }

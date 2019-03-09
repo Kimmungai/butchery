@@ -56,7 +56,7 @@ class MpesaPaymentsController extends Controller
       $this->access_token_url = env('ACCESS_TOKEN_URL');
       $this->initiate_url = env('INTIATE_URL');
       //$this->CallBackURL = url('/mpesa-callback');
-      $this->CallBackURL ='https://tasty-rattlesnake-76.localtunnel.me/mpesa-callback';
+      $this->CallBackURL ='https://stale-panda-87.localtunnel.me';
       $this->consumerSecret = env('CONSUMER_SECRET');
       $this->consumerKey = env('CONSUMER_KEY');
 
@@ -64,9 +64,6 @@ class MpesaPaymentsController extends Controller
       $transactionData = json_decode($this->request_daraja_API());
       $MerchantRequestID = $transactionData->MerchantRequestID;
       $CheckoutRequestID = $transactionData->CheckoutRequestID;
-
-      //change in live server
-      return 1;
 
       if($MerchantRequestID != '')
       {
@@ -100,12 +97,35 @@ class MpesaPaymentsController extends Controller
       /*
       *check if payment has succeeded
       */
+      /*if($result[0]->resultcode == "0"){
+  			echo json_encode(array("rescode" => "0", "resmsg" => "Order completed successfully"));
+  		}
+      else if($result[0]->resultcode == "1032"){
+		    echo json_encode(array("rescode" => "1032", "resmsg" => "You have cancelled the payment request."));
+  		}
+  		else if($result[0]->resultcode == "1001"){
+  			echo json_encode(array("rescode" => "1001", "resmsg" => "A similar transaction is in progress, please wait as we process the transaction."));
+  		}
+  		else if($result[0]->resultcode == "2001"){
+  		  echo json_encode(array("rescode" => "2001", "resmsg" => "Wrong M-PESA pin entered, please click on pay and enter pin again."));
+  		}
+  		else if($result[0]->resultcode == "1"){
+  			echo json_encode(array("rescode" => "1", "resmsg" => "The balance is insufficient for the transaction."));
+  		}
+  		else if($result[0]->resultcode == "9990"){
+  			echo json_encode(array("rescode" => "9990", "resmsg" => "Error encountered during payment processing"));
+  		}
+      else{
+      	echo json_encode(array("rescode" => "9999", "resmsg" => "Payment results not received, please pay first."));
+      }*/
+
       $updatepayment = PaymentHandler::mpesaPaymentReceive($MerchantRequestID);
       //return payment status from mpesa
       $data = [
         'status' => 1,
         'response' => $updatepayment
       ];
+
       event(new MpesaResponseEvent($data));
       return;
     }

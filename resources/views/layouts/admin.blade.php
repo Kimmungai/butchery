@@ -11,7 +11,7 @@
 
     <!-- Scripts -->
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="{{ asset('js/main.js') }}" defer></script>
+    <script src="{{ asset('js/admin.js') }}" defer></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -74,29 +74,24 @@
         </nav>
 
         <main class="py-4">
-          <!--cart start-->
-          <table>
-            <thead>
-              <th>Number</th><td>item</td><td>ID</td><td>Quantity</td><td>Price</td><td>Total</td><td>Image</td><td>Remove</td>
-            </thead>
-            <tbody id="cart-contents">
-              <?php $count = 1; ?>
-              @foreach ( session('shoppingCart') as $item )
-                <th>{{$count}}</th><td>{{$item['item']}}</td><td>{{$item['product_id']}}</td><td>{{$item['quantity']}}</td><td>{{$item['price']}}</td><td>{{$item['total']}}</td><td>{{$item['image']}}</td><td><td><span class="badge badge-sm badge-danger" onclick="remove_from_cart({{$item['product_id']}})">x</span></td></td>
-              <?php $count++; ?>
-              @endforeach
-            </tbody>
-          </table>
-          <div class="text-danger" id="cart-total">
-            {{ session('shoppingCartTotal') }}
-          </div>
-          <!--cart end-->
+
           @if (session('message'))
               <div class="alert alert-success" role="alert">
                   {{ session('message') }}
               </div>
           @endif
-            @yield('content')
+          <div class="container">
+            <div class="row">
+              <div class="col-sm-4">
+                <h1>Admin buttons</h1>
+
+              </div>
+              <div class="col-sm-8">
+                @yield('content')
+              </div>
+            </div>
+          </div>
+
         </main>
     </div>
     <script src="https://js.pusher.com/4.4/pusher.min.js"></script>

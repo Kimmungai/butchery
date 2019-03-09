@@ -15,6 +15,7 @@ class CreateSupermarketsTable extends Migration
     {
         Schema::create('supermarkets', function (Blueprint $table) {
             $table->increments('id');
+            //$table->integer('user_id')->unsigned();
             $table->string('name')->nullable();
             $table->mediumText('tagline')->nullable();
             $table->string('website')->nullable();

@@ -128,8 +128,6 @@ channel.bind('mpesa', function(data) {
   complete_transaction(data);
 
 });
-
-
  /*
  *Function to complete transaction
  */

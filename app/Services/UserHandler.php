@@ -2,6 +2,7 @@
 
 namespace App\Services;
 use App\User;
+use App\UserSupermarkets;
 use Illuminate\Support\Facades\Auth;
 
 class UserHandler
@@ -102,6 +103,36 @@ class UserHandler
     return $user;
   }
 
+  /*
+  *Function to create new user supermarket
+  */
+  public static function createUserSupermarket($user_id,$supermarket_id)
+  {
+    $userSupermarket = UserSupermarkets::where('user_id',$user_id)->where('supermarket_id',$supermarket_id)->get();
+
+    //check if user supermarket exists
+    if( count($userSupermarket) ){ return $supermarket; }
+
+    //create new record
+    $newUserSupermarket = UserSupermarkets::create([
+      'user_id'           => $user_id,
+      'supermarket_id'    => $supermarket_id
+    ]);
+
+    return $newUserSupermarket;
+  }
+  /*
+  *Function to get user supermarkets
+  */
+  public static function UserSupermarkets($user_id)
+  {
+    $userSupermarkets = UserSupermarkets::where('user_id',$user_id)->get();
+    return $userSupermarkets;
+  }
+
+  /*
+  *Function to cleanup phone number format
+  */
   public static function cleanupPhone($number)
   {
     //cleanup the phone number and remove unecessary symbols
