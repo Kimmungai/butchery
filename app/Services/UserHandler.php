@@ -67,7 +67,7 @@ class UserHandler
   /*
   *Function to create new user
   */
-  public static function createUser($userData,$userType='customer')
+  public static function createUser($userData,$userType='customer',$records=[])
   {
     $user = User::create($userData);
     switch ($userType) {
@@ -75,18 +75,21 @@ class UserHandler
           $user->customer()->create([
             'user_id' => $user->id,
           ]);
+          $user->customer()->update($records);
         break;
 
       case 'staff':
           $user->staff()->create([
             'user_id' => $user->id,
           ]);
+          $user->staff()->update($records);
         break;
 
       case 'admin':
           $user->admin()->create([
             'user_id' => $user->id,
           ]);
+          $user->admin()->update($records);
         break;
 
       default:

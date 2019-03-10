@@ -2,7 +2,8 @@
 
 namespace App\Http\Controllers\admin;
 use Illuminate\Support\Facades\Auth;
-
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Supermarket;
@@ -15,13 +16,7 @@ class RegisterUserController extends Controller
     */
     public function index()
     {
-      //get user supermarkets
-      $user_supemarkets = UserHandler::UserSupermarkets(Auth::id());
-
-      foreach ($user_supemarkets as $user_supemarket)
-      {
-          $userSupermarkets[]=Supermarket::where('id',$user_supemarket['supermarket_id'])->get();
-      }
+      $userSupermarkets  = $this->get_user_supermarkets(Auth::id());
 
       return view('admin.index',compact('userSupermarkets'));
     }
@@ -31,6 +26,125 @@ class RegisterUserController extends Controller
     */
     public function register_user()
     {
-      return view('admin.register-user');
+      $userSupermarkets  = $this->get_user_supermarkets(Auth::id());
+
+      return view('admin.register-user',compact('userSupermarkets'));
+    }
+
+    /*
+    *Function to create user in database
+    */
+    public function create_user(Request $request)
+    {
+      $userType = $request->input('user_type');
+      session(['userBeingRegistered' => $userType ]);
+
+      //data validation
+      $validatedData = $request->validate([
+        'user_type' => 'required|max:255',
+        'type' => 'numeric',
+        'name' => 'max:255|unique:users',
+        'email' => 'required|email|unique:users',
+        'firstName' => 'required|max:255',
+        'middleName' => 'max:255',
+        'lastName' => 'required|max:255',
+        'DOB' => 'required|date|max:255',
+        'phoneNumber' => 'required|numeric|digits_between:9,12',
+        'gender' => 'required|numeric',
+        'supermarket_id' => 'required|numeric',
+        'idNo' => 'required|numeric|digits_between:5,10',
+        'passport' => 'max:255',
+        'avatar' => 'max:10000|mimes:jpeg,bmp,png',
+        'idImage' => 'max:10000|mimes:jpeg,bmp,png',
+        'passportImage' => 'max:10000|mimes:jpeg,bmp,png',
+        'password' => 'required|min:8',
+      ]);
+
+      if( $userType === 'customer' ){
+        $validatedCustomer = $request->validate([
+
+          'type' => 'required|numeric',
+
+        ]);
+
+        $customerData = [
+          'type' => $request->input('type'),
+        ];//colect data for customer table
+
+        $userTypeData = $customerData;
+
+      }elseif ( $userType === 'staff' ) {
+
+        $validatedstaff = $request->validate([
+
+          'type'  => 'required|numeric',
+          'staffJobId' => 'max:255',
+          'staffDepartmentId' => 'required|numeric',
+          'availability' => 'required|numeric'
+
+        ]);
+
+        $staffData = [
+          'type' => $request->input('type'),
+          'jobId' => $request->input('staffJobId'),
+          'departmentId' => $request->input('staffDepartmentId'),
+          'availability' => $request->input('availability'),
+        ];//colect data for staff table
+
+        $userTypeData =  $staffData;
+
+      }elseif ( $userType === 'admin' ) {
+
+        $validatedAdmin = $request->validate([
+
+          'adminJobId' => 'max:255',
+          'adminDepartmentId' => 'required|numeric',
+
+        ]);
+
+        $adminData = [
+          'jobId' => $request->input('adminJobId'),
+          'departmentId' => $request->input('adminDepartmentId'),
+        ];//colect data for admin table
+        $userTypeData = $adminData;
+      }
+
+      $userData = $request->except(['type','user_type']);//colect data for user table
+
+      $savedUserData = $this->handleUser($userData,$userType,$userTypeData);
+
+      Session::flash('message', "Details saved succesfully!");
+
+      return redirect('/admin');
+    }
+
+    /*
+    *Function to get user supermarkets
+    */
+    private function get_user_supermarkets($user_id)
+    {
+      //get user supermarkets
+      $user_supemarkets = UserHandler::UserSupermarkets($user_id);
+
+      foreach ($user_supemarkets as $user_supemarket)
+      {
+          $userSupermarkets[] = Supermarket::where('id',$user_supemarket['supermarket_id'])->get();
+      }
+      $userSupermarkets  = isset($userSupermarkets) ? $userSupermarkets : [];
+
+      return $userSupermarkets;
+
+    }
+
+    /*
+    *Function to clean up user data before saving to database
+    */
+    private function handleUser($userData,$userType,$userTypeData)
+    {
+      $userData['password'] = Hash::make($userData['password']);
+
+      $savedUserData = UserHandler::createUser($userData,$userType,$userTypeData);
+
+      return $savedUserData;
     }
 }

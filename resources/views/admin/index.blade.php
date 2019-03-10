@@ -28,7 +28,7 @@ Supermarkets:{{Auth::id()}}
     <h3>Customers</h3>
     @foreach($userSupermarkets as $supermarkets)
       @foreach($supermarkets as $supermarket)
-        <!--{{$supermarket->product[0]}}-->
+        <!--{{$supermarket->product}}-->
         <!--{{$supermarket->department}}-->
         @foreach ($supermarket->department as $department)
           Department {{$department->category}}
@@ -50,7 +50,7 @@ Supermarkets:{{Auth::id()}}
     <h3>Staff</h3>
     @foreach($userSupermarkets as $supermarkets)
       @foreach($supermarkets as $supermarket)
-        <!--{{$supermarket->product[0]}}-->
+        <!--{{$supermarket->product}}-->
         <!--{{$supermarket->department}}-->
         <!--@foreach ($supermarket->department as $department)
           Department {{$department->category}}
@@ -70,7 +70,7 @@ Supermarkets:{{Auth::id()}}
     <h3>Admin</h3>
     @foreach($userSupermarkets as $supermarkets)
       @foreach($supermarkets as $supermarket)
-        <!--{{$supermarket->product[0]}}-->
+        <!--{{$supermarket->product}}-->
         <!--{{$supermarket->department}}-->
         <!--@foreach ($supermarket->department as $department)
           Department {{$department->category}}

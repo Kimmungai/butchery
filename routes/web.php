@@ -37,3 +37,8 @@ Route::post('/mpesa-callback','MpesaPaymentsController@mpesa_callback')->name('M
 /*Backend routes*/
 Route::get('/admin','admin\RegisterUserController@index')->name('Admin');
 Route::get('/register-user','admin\RegisterUserController@register_user')->name('Register User');
+
+Route::post('register-user','admin\RegisterUserController@create_user')->name('Create user');
+
+
+Route::get('supermarket-departments/{id}','SupermarketsController@get_departments')->name('Get departments');
