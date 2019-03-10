@@ -10,6 +10,9 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('test', function() {
+    Storage::disk('google')->put('/1X-SCjnpX7QMaVaRup0JC5S-FUPuWPo7h/test.txt', 'Hello World');
+});
 
 Route::get('/', function () {
     return view('welcome');

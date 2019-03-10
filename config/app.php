@@ -111,7 +111,7 @@ return [
     /*
     |--------------------------------------------------------------------------
     | Encryption Key
-    |--------------------------------------------------------------------------
+    |-----------------------------App\Providers\GoogleDriveServiceProvider::class,---------------------------------------------
     |
     | This key is used by the Illuminate encrypter service and should be set
     | to a random, 32 character string, otherwise these encrypted strings
@@ -174,6 +174,7 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
+        App\Providers\GoogleDriveServiceProvider::class,
 
     ],
 
