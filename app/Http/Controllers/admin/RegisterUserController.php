@@ -21,6 +21,7 @@ class RegisterUserController extends Controller
       return view('admin.index',compact('userSupermarkets'));
     }
 
+
     /*
     *Function to display registration form for admin to register users
     */
@@ -31,83 +32,18 @@ class RegisterUserController extends Controller
       return view('admin.register-user',compact('userSupermarkets'));
     }
 
+
+
     /*
     *Function to create user in database
     */
     public function create_user(Request $request)
     {
+
       $userType = $request->input('user_type');
       session(['userBeingRegistered' => $userType ]);
 
-      //data validation
-      $validatedData = $request->validate([
-        'user_type' => 'required|max:255',
-        'type' => 'numeric',
-        'name' => 'max:255|unique:users',
-        'email' => 'required|email|unique:users',
-        'firstName' => 'required|max:255',
-        'middleName' => 'max:255',
-        'lastName' => 'required|max:255',
-        'DOB' => 'required|date|max:255',
-        'phoneNumber' => 'required|numeric|digits_between:9,12',
-        'gender' => 'required|numeric',
-        'supermarket_id' => 'required|numeric',
-        'idNo' => 'required|numeric|digits_between:5,10',
-        'passport' => 'max:255',
-        'avatar' => 'max:10000|mimes:jpeg,bmp,png',
-        'idImage' => 'max:10000|mimes:jpeg,bmp,png',
-        'passportImage' => 'max:10000|mimes:jpeg,bmp,png',
-        'password' => 'required|min:8',
-      ]);
-
-      if( $userType === 'customer' ){
-        $validatedCustomer = $request->validate([
-
-          'type' => 'required|numeric',
-
-        ]);
-
-        $customerData = [
-          'type' => $request->input('type'),
-        ];//colect data for customer table
-
-        $userTypeData = $customerData;
-
-      }elseif ( $userType === 'staff' ) {
-
-        $validatedstaff = $request->validate([
-
-          'type'  => 'required|numeric',
-          'staffJobId' => 'max:255',
-          'staffDepartmentId' => 'required|numeric',
-          'availability' => 'required|numeric'
-
-        ]);
-
-        $staffData = [
-          'type' => $request->input('type'),
-          'jobId' => $request->input('staffJobId'),
-          'departmentId' => $request->input('staffDepartmentId'),
-          'availability' => $request->input('availability'),
-        ];//colect data for staff table
-
-        $userTypeData =  $staffData;
-
-      }elseif ( $userType === 'admin' ) {
-
-        $validatedAdmin = $request->validate([
-
-          'adminJobId' => 'max:255',
-          'adminDepartmentId' => 'required|numeric',
-
-        ]);
-
-        $adminData = [
-          'jobId' => $request->input('adminJobId'),
-          'departmentId' => $request->input('adminDepartmentId'),
-        ];//colect data for admin table
-        $userTypeData = $adminData;
-      }
+      $userTypeData = $this->preProcessUserTypeData($userType,$request);
 
       $userData = $request->except(['type','user_type']);//colect data for user table
 
@@ -116,7 +52,10 @@ class RegisterUserController extends Controller
       Session::flash('message', "Details saved succesfully!");
 
       return redirect('/admin');
+
     }
+
+
 
     /*
     *Function to get user supermarkets
@@ -136,6 +75,8 @@ class RegisterUserController extends Controller
 
     }
 
+
+
     /*
     *Function to clean up user data before saving to database
     */
@@ -146,5 +87,96 @@ class RegisterUserController extends Controller
       $savedUserData = UserHandler::createUser($userData,$userType,$userTypeData);
 
       return $savedUserData;
+    }
+
+
+
+    /*
+    *Function to validate user data
+    */
+    private function validateUser($request,$userType=[])
+    {
+      $user=[
+        'user_type' => 'required|max:255',
+        'type' => 'numeric',
+        'name' => 'max:255|unique:users',
+        'email' => 'required|email|unique:users',
+        'firstName' => 'required|max:255',
+        'middleName' => 'max:255',
+        'lastName' => 'required|max:255',
+        'DOB' => 'required|date|max:255',
+        'phoneNumber' => 'required|numeric|digits_between:9,12',
+        'gender' => 'required|numeric',
+        'supermarket_id' => 'required|numeric',
+        'idNo' => 'required|numeric|digits_between:5,10',
+        'passport' => 'max:255',
+        'avatar' => 'max:10000|mimes:jpeg,bmp,png',
+        'idImage' => 'max:10000|mimes:jpeg,bmp,png',
+        'passportImage' => 'max:10000|mimes:jpeg,bmp,png',
+        'password' => 'required|min:8',
+      ];
+
+      $allDataToBeValidated = array_merge($user,$userType);
+      //data validation
+      $validatedData = $request->validate($allDataToBeValidated);
+
+      return $validatedData;
+    }
+
+    /*
+    *Function to prepare user type data
+    */
+    protected function preProcessUserTypeData($userType,$request)
+    {
+      if( $userType === 'customer' ){
+        $validatedCustomer =[
+          'type' => 'required|numeric',
+        ];
+
+        $this->validateUser($request,$validatedCustomer);
+
+        $customerData = [
+          'type' => $request->input('type'),
+        ];//colect data for customer table
+
+        $userTypeData = $customerData;
+
+      }elseif ( $userType === 'staff' ) {
+
+        $validatedstaff =[
+          'type'  => 'required|numeric',
+          'staffJobId' => 'required|max:255',
+          'staffDepartmentId' => 'required|numeric',
+          'availability' => 'required|numeric'
+        ];
+
+        $this->validateUser($request,$validatedstaff);
+
+        $staffData = [
+          'type' => $request->input('type'),
+          'jobId' => $request->input('staffJobId'),
+          'departmentId' => $request->input('staffDepartmentId'),
+          'availability' => $request->input('availability'),
+        ];//colect data for staff table
+
+        $userTypeData =  $staffData;
+
+      }elseif ( $userType === 'admin' ) {
+
+        $validatedAdmin = [
+          'adminJobId' => 'max:255',
+          'adminDepartmentId' => 'required|numeric',
+        ];
+
+        $this->validateUser($request,$validatedAdmin);
+
+        $adminData = [
+          'jobId' => $request->input('adminJobId'),
+          'departmentId' => $request->input('adminDepartmentId'),
+        ];//colect data for admin table
+        $userTypeData = $adminData;
+      }
+
+      return $userTypeData;
     }
 }

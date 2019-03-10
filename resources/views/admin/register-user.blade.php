@@ -122,9 +122,9 @@
             @endforeach
           @endforeach
         </select>
-        @if ($errors->has('type'))
+        @if ($errors->has('adminDepartmentId'))
             <span  role="alert">
-                <strong>{{ $errors->first('type') }}</strong>
+                <strong>{{ $errors->first('adminDepartmentId') }}</strong>
             </span>
         @endif
       </div>
