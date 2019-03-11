@@ -4,6 +4,7 @@ namespace App\Http\Controllers\admin;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Supermarket;
@@ -37,22 +38,43 @@ class RegisterUserController extends Controller
     /*
     *Function to create user in database
     */
-    public function create_user(Request $request)
+    public function create_user( Request $request )
     {
 
       $userType = $request->input('user_type');
-      session(['userBeingRegistered' => $userType ]);
+      Session::flash('userBeingRegistered', $userType);
 
       $userTypeData = $this->preProcessUserTypeData($userType,$request);
 
       $userData = $request->except(['type','user_type']);//colect data for user table
 
+      if( $request->hasFile('avatar') )
+      {
+        $storageLoc = env('AVATAR_STORAGE_LOC','/public/users/customers/avatars');
+        $userData['avatar'] = $this->handleFileUpload($storageLoc,$request);
+      }
+
       $savedUserData = $this->handleUser($userData,$userType,$userTypeData);
+
+      //assign new user a supermarket
+      $savedUserDataSupermarket = UserHandler::createUserSupermarket($savedUserData['id'],$request->input('supermarket_id'));
 
       Session::flash('message', "Details saved succesfully!");
 
       return redirect('/admin');
 
+    }
+
+    /*
+    *Function to update user in database
+    */
+    public function update_user( Request $request )
+    {
+      $userType = $request->input('user_type');
+
+      $userTypeData = $this->preProcessUserTypeData($userType,$request);
+
+      return $request->all();
     }
 
 
@@ -178,5 +200,17 @@ class RegisterUserController extends Controller
       }
 
       return $userTypeData;
+    }
+
+    private function handleFileUpload($storageLoc,$request)
+    {
+      if(!Storage::exists($storageLoc)) {
+
+        Storage::makeDirectory($storageLoc, 0775, true); //creates directory
+
+      }
+      $path = Storage::url($request->file('avatar')->store($storageLoc));
+
+      return asset($path);
     }
 }

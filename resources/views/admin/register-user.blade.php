@@ -5,7 +5,7 @@
 <button type="button" class="btn btn-success btn-lg" onclick="show_sec(['register-sec','customer-data-form'],['staff-data-form','admin-data-form'],'customer')">Customer</button>
 <button type="button" class="btn btn-primary btn-lg" onclick="show_sec(['register-sec','staff-data-form'],['customer-data-form','admin-data-form'],'staff')">Staff</button>
 <button type="button" class="btn btn-secondary btn-lg" onclick="show_sec(['register-sec','admin-data-form'],['staff-data-form','customer-data-form'],'admin')">Admin</button>
-
+<img src="http://localhost:8000/public/users/customers/avatars/uf0M2wPRcDQ010dSxGrUnASfBgiRNjVVIl8ltvNO.jpeg" alt="">
 <section @if( session('userBeingRegistered') === null ) class="d-none" @endif id="register-sec">
   @if(count($errors))
   <h3 class="text-danger">Please correct errors in the form</h3>

@@ -10,10 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('test', function() {
-    Storage::disk('google')->put('/1X-SCjnpX7QMaVaRup0JC5S-FUPuWPo7h/test.txt', 'Hello World');
-});
-
 Route::get('/', function () {
     return view('welcome');
 });
@@ -42,6 +38,8 @@ Route::get('/admin','admin\RegisterUserController@index')->name('Admin');
 Route::get('/register-user','admin\RegisterUserController@register_user')->name('Register User');
 
 Route::post('register-user','admin\RegisterUserController@create_user')->name('Create user');
+Route::post('update-user','admin\RegisterUserController@update_user')->name('Update user');
 
 
 Route::get('supermarket-departments/{id}','SupermarketsController@get_departments')->name('Get departments');
+Route::get('customer/{id}','admin\UsersController@get_user')->name('Get user');
