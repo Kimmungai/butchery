@@ -84,7 +84,7 @@
       <div class="form-group">
         <label for="availability">Available?</label>
         Yes: <input name="availability" type="radio" value="1" @if( old('availability') == 1 ) checked @endif>
-        No: <input name="availability" type="radio" value="0" @if( old('availability') == 0 ) checked @endif>
+        No: <input name="availability" type="radio" value="-1" @if( old('availability') == -1 ) checked @endif>
         @if ($errors->has('availability'))
             <span  role="alert">
                 <strong>{{ $errors->first('availability') }}</strong>

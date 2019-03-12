@@ -114,7 +114,7 @@ class UserHandler
     $userSupermarket = UserSupermarkets::where('user_id',$user_id)->where('supermarket_id',$supermarket_id)->get();
 
     //check if user supermarket exists
-    if( count($userSupermarket) ){ return $supermarket; }
+    if( count($userSupermarket) ){ return $userSupermarket; }
 
     //create new record
     $newUserSupermarket = UserSupermarkets::create([

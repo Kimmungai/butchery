@@ -34,7 +34,7 @@ class RegisterUserController extends Controller
     }
 
 
-
+da
     /*
     *Function to create user in database
     */
@@ -46,14 +46,25 @@ class RegisterUserController extends Controller
 
       $userTypeData = $this->preProcessUserTypeData($userType,$request);
 
-      $userData = $request->except(['type','user_type']);//colect data for user table
+      $userData = $request->only(['name','firstName','middleName','lastName','DOB','email','password','phoneNumber','gender','supermarket_id','address','idNo','idImage','passport','passportImage']);//colect data for user table
 
       if( $request->hasFile('avatar') )
       {
-        $storageLoc = env('AVATAR_STORAGE_LOC','/public/users/customers/avatars');
+        $storageLoc = env('AVATAR_STORAGE_LOC','/public/users/'.$userType.'/avatars');
         $userData['avatar'] = $this->handleFileUpload($storageLoc,$request);
       }
+      if( $request->hasFile('idImage') )
+      {
+        $storageLoc = env('ID_STORAGE_LOC','/public/users/'.$userType.'/avatars');
+        $userData['idImage'] = $this->handleFileUpload($storageLoc,$request,'idImage');
+      }
+      if( $request->hasFile('passportImage') )
+      {
+        $storageLoc = env('PASSPORT_STORAGE_LOC','/public/users/'.$userType.'/avatars');
+        $userData['passportImage'] = $this->handleFileUpload($storageLoc,$request,'passportImage');
+      }
 
+      //add otehr file uploads
       $savedUserData = $this->handleUser($userData,$userType,$userTypeData);
 
       //assign new user a supermarket
@@ -72,9 +83,37 @@ class RegisterUserController extends Controller
     {
       $userType = $request->input('user_type');
 
-      $userTypeData = $this->preProcessUserTypeData($userType,$request);
+      $user_id = $request->input('user_id');
 
-      return $request->all();
+
+      $userTypeData = $this->preProcessUserTypeData($userType,$request,$user_id);
+
+      $userData = $request->only(['name','firstName','middleName','lastName','DOB','email','password','phoneNumber','gender','supermarket_id','address','idNo','idImage','passport','passportImage']);//colect data for user table
+
+      if( $request->hasFile('avatar') )
+      {
+        $storageLoc = env('AVATAR_STORAGE_LOC','/public/users/'.$userType.'/avatars');
+        $userData['avatar'] = $this->handleFileUpload($storageLoc,$request);
+      }
+      if( $request->hasFile('idImage') )
+      {
+        $storageLoc = env('ID_STORAGE_LOC','/public/users/'.$userType.'/avatars');
+        $userData['idImage'] = $this->handleFileUpload($storageLoc,$request,'idImage');
+      }
+      if( $request->hasFile('passportImage') )
+      {
+        $storageLoc = env('PASSPORT_STORAGE_LOC','/public/users/'.$userType.'/avatars');
+        $userData['passportImage'] = $this->handleFileUpload($storageLoc,$request,'passportImage');
+      }
+      //add otehr file uploads
+      $savedUserData = $this->updateUser($user_id,$userData,$userType,$userTypeData);
+      //assign new user a supermarket
+      $savedUserDataSupermarket = UserHandler::createUserSupermarket($savedUserData['id'],$request->input('supermarket_id'));
+
+
+      Session::flash('message', "Details saved succesfully!");
+
+      return back();
     }
 
 
@@ -111,18 +150,37 @@ class RegisterUserController extends Controller
       return $savedUserData;
     }
 
+    /*
+    *Function to update user
+    */
+    private function updateUser($user_id,$userData,$userType,$userTypeData)
+    {
+      if( $userData['password'] == '' )
+      {
+        unset($userData['password']);
+      }
+      else
+      {
+        $userData['password'] = Hash::make($userData['password']);
+      }
+
+      $savedUserData = UserHandler::updateUser($user_id,$userData,$userType,$userTypeData);
+
+      return $savedUserData;
+    }
+
 
 
     /*
     *Function to validate user data
     */
-    private function validateUser($request,$userType=[])
+    private function validateUser($request,$userType=[],$user_id='')
     {
       $user=[
         'user_type' => 'required|max:255',
         'type' => 'numeric',
-        'name' => 'max:255|unique:users',
-        'email' => 'required|email|unique:users',
+        'name' => 'max:255|unique:users,name,'.$user_id.'',
+        'email' => 'required|email|unique:users,email,'.$user_id.'',
         'firstName' => 'required|max:255',
         'middleName' => 'max:255',
         'lastName' => 'required|max:255',
@@ -132,11 +190,16 @@ class RegisterUserController extends Controller
         'supermarket_id' => 'required|numeric',
         'idNo' => 'required|numeric|digits_between:5,10',
         'passport' => 'max:255',
-        'avatar' => 'max:10000|mimes:jpeg,bmp,png',
-        'idImage' => 'max:10000|mimes:jpeg,bmp,png',
-        'passportImage' => 'max:10000|mimes:jpeg,bmp,png',
+        'avatar' => 'nullable|max:10000|mimes:jpeg,bmp,png',
+        'idImage' => 'nullable|max:10000|mimes:jpeg,bmp,png',
+        'passportImage' => 'nullable|max:10000|mimes:jpeg,bmp,png',
         'password' => 'required|min:8',
       ];
+
+      //skip password during update if not filled
+      if( $user_id != '' && $request->input('password')=='' ){
+        unset($user['password']);
+      }
 
       $allDataToBeValidated = array_merge($user,$userType);
       //data validation
@@ -148,14 +211,14 @@ class RegisterUserController extends Controller
     /*
     *Function to prepare user type data
     */
-    protected function preProcessUserTypeData($userType,$request)
+    protected function preProcessUserTypeData($userType,$request,$user_id='')
     {
       if( $userType === 'customer' ){
         $validatedCustomer =[
           'type' => 'required|numeric',
         ];
 
-        $this->validateUser($request,$validatedCustomer);
+        $this->validateUser($request,$validatedCustomer,$user_id);
 
         $customerData = [
           'type' => $request->input('type'),
@@ -165,14 +228,14 @@ class RegisterUserController extends Controller
 
       }elseif ( $userType === 'staff' ) {
 
-        $validatedstaff =[
+        $validatedstdaaff =[
           'type'  => 'required|numeric',
           'staffJobId' => 'required|max:255',
           'staffDepartmentId' => 'required|numeric',
           'availability' => 'required|numeric'
         ];
 
-        $this->validateUser($request,$validatedstaff);
+        $this->validateUser($request,$validatedstaff,$user_id);
 
         $staffData = [
           'type' => $request->input('type'),
@@ -190,7 +253,7 @@ class RegisterUserController extends Controller
           'adminDepartmentId' => 'required|numeric',
         ];
 
-        $this->validateUser($request,$validatedAdmin);
+        $this->validateUser($request,$validatedAdmin,$user_id);
 
         $adminData = [
           'jobId' => $request->input('adminJobId'),
@@ -202,14 +265,17 @@ class RegisterUserController extends Controller
       return $userTypeData;
     }
 
-    private function handleFileUpload($storageLoc,$request)
+    /*
+    *Function to upload files
+    */
+    private function handleFileUpload($storageLoc,$request,$value='avatar')
     {
       if(!Storage::exists($storageLoc)) {
 
         Storage::makeDirectory($storageLoc, 0775, true); //creates directory
 
       }
-      $path = Storage::url($request->file('avatar')->store($storageLoc));
+      $path = Storage::url($request->file($value)->store($storageLoc));
 
       return asset($path);
     }

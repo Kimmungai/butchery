@@ -42,4 +42,6 @@ Route::post('update-user','admin\RegisterUserController@update_user')->name('Upd
 
 
 Route::get('supermarket-departments/{id}','SupermarketsController@get_departments')->name('Get departments');
-Route::get('customer/{id}','admin\UsersController@get_user')->name('Get user');
+Route::get('customer/{id}','admin\UsersController@get_customer')->name('Get customer');
+Route::get('admin/{id}','admin\UsersController@get_admin')->name('Get admin');
+Route::get('staff/{id}','admin\UsersController@get_staff')->name('Get staff');
