@@ -6,6 +6,12 @@ use Illuminate\Support\Facades\Session;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+use App\Customer;
+use App\Staff;
+use App\Admin;
+use App\Order;
+use App\OrderProducts;
+use App\Payment;
 use App\UserSupermarkets;
 use App\Supermarket;
 
@@ -15,10 +21,10 @@ class UsersController extends Controller
   /*
   *Function to return a user object
   */
-  public function get_user($id)
+  public function get_trashed_user($id)
   {
-    $user = User::find($id);
-    return view('admin.user',compact('user'));
+    $user = User::where('id',$id)->withTrashed()->first();
+    return view('admin.trashed-users',compact('user'));
   }
 
   /*
@@ -116,10 +122,34 @@ class UsersController extends Controller
   */
   public function remove_user($id)
   {
-    return "mada desu";
+    if($user = User::withTrashed()->where('id',$id)->first())
+    {
+      $this->excuteDelition($user,'permanently');
+      Session::flash('message', "User deleted!");
+    }
+    else
+    {
+      Session::flash('error', "invalid!");
+    }
+    return redirect('/trashed-users');
   }
 
+  /*
+  *Function to get trashed users
+  */
+  public function get_trashed_users()
+  {
+    $trashedUsers = User::onlyTrashed()->get();
+    return view('admin.users-trash',compact('trashedUsers'));
+  }
 
+  public function restore_user($id)
+  {
+    $user = User::where('id',$id)->withTrashed()->first();
+    $this->excuteRestoration($user);
+    Session::flash('message', "User Restored!");
+    return redirect('/trashed-users');
+  }
 
   /*
   *Function to excute deletion
@@ -150,19 +180,33 @@ class UsersController extends Controller
 
       if($user->staff){ $user->staff->delete(); }
       if($user->admin){ $user->admin->delete(); }
+
+      $userSupermarkets = UserSupermarkets::where('user_id',$user->id)->get();
+
+      foreach ($userSupermarkets as $userSupermarket) {
+        $userSupermarket->delete();
+      }
+
       $user->delete();
     }else{
+      $customer = Customer::where('user_id',$user->id)->withTrashed()->first();
+      $staff = Staff::where('user_id',$user->id)->withTrashed()->first();
+      $admin = Admin::where('user_id',$user->id)->withTrashed()->first();
+      if($customer){
+        $orders = Order::where('customer_id',$customer->id)->withTrashed()->get();
+         if($orders){
 
-      if($user->customer){
+             foreach ($orders as $order) {
 
-         if($user->customer->order){
+               $payment = Payment::where('order_id',$order->id)->withTrashed()->first();
 
-             foreach ($user->customer->order as $order) {
-               if($order->payment){
-                 $order->payment->forceDelete();
+               $orderProducts = OrderProducts::where('order_id',$order->id)->withTrashed()->get();
+
+               if($payment){
+                 $payment->forceDelete();
                }
-               if($order->OrderProducts){
-                 foreach ($order->OrderProducts as $orderProduct) {
+               if($orderProducts){
+                 foreach ($orderProducts as $orderProduct) {
                    $orderProduct->forceDelete();
                  }
                }
@@ -170,14 +214,63 @@ class UsersController extends Controller
              }
 
          }
-         $user->customer->forceDelete();
+         $customer->forceDelete();
        }
 
-      if($user->staff){ $user->staff->forceDelete(); }
-      if($user->admin){ $user->admin->forceDelete(); }
-      $user->forceDelete();
+      if($staff){ $staff->forceDelete(); }
+      if($admin){ $admin->forceDelete(); }
 
+      $userSupermarkets = UserSupermarkets::where('user_id',$user->id)->withTrashed()->get();
+
+      foreach ($userSupermarkets as $userSupermarket) {
+        $userSupermarket->forceDelete();
+      }
+      $user->forceDelete();
     }
+  }
+
+  /*
+  *Function to excute user restoration
+  */
+  protected function excuteRestoration($user)
+  {
+    $customer = Customer::where('user_id',$user->id)->withTrashed()->first();
+    $staff = Staff::where('user_id',$user->id)->withTrashed()->first();
+    $admin = Admin::where('user_id',$user->id)->withTrashed()->first();
+    if($customer){
+      $orders = Order::where('customer_id',$customer->id)->withTrashed()->get();
+       if($orders){
+
+           foreach ($orders as $order) {
+
+             $payment = Payment::where('order_id',$order->id)->withTrashed()->first();
+
+             $orderProducts = OrderProducts::where('order_id',$order->id)->withTrashed()->get();
+
+             if($payment){
+               $payment->restore();
+             }
+             if($orderProducts){
+               foreach ($orderProducts as $orderProduct) {
+                 $orderProduct->restore();
+               }
+             }
+             $order->restore();
+           }
+
+       }
+       $customer->restore();
+     }
+
+    if($staff){ $staff->restore(); }
+    if($admin){ $admin->restore(); }
+
+    $userSupermarkets = UserSupermarkets::where('user_id',$user->id)->withTrashed()->get();
+
+    foreach ($userSupermarkets as $userSupermarket) {
+      $userSupermarket->restore();
+    }
+    $user->restore();
   }
 
 }

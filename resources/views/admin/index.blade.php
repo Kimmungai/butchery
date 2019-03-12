@@ -31,15 +31,15 @@ Supermarkets:{{Auth::id()}}
         <!--{{$supermarket->product}}-->
         <!--{{$supermarket->department}}-->
         @foreach ($supermarket->department as $department)
-          Department {{$department->category}}
+          <!--Department {{$department->category}}-->
         @endforeach
         <!--{{$supermarket->user}}-->
         @foreach ($supermarket->user as $user)
-          {{$user->customer}}
+          <!--{{$user->customer}}
           {{$user->feedback}}
           @if($user->customer)
             <br>Customer Order: {{$user->customer->order}}<br>
-          @endif
+          @endif-->
         @endforeach
         <?php break;?>
       @endforeach

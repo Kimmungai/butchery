@@ -47,3 +47,6 @@ Route::get('admin/{id}','admin\UsersController@get_admin')->name('Get admin');
 Route::get('staff/{id}','admin\UsersController@get_staff')->name('Get staff');
 Route::get('delete-user/{id}','admin\UsersController@soft_delete_user')->name('Delete user');
 Route::get('remove-user/{id}','admin\UsersController@remove_user')->name('Remove user');
+Route::get('trashed-users','admin\UsersController@get_trashed_users')->name('Get trashed users');
+Route::get('trashed-user/{id}','admin\UsersController@get_trashed_user')->name('Get trashed users');
+Route::get('restore-user/{id}','admin\UsersController@restore_user')->name('Restore user');

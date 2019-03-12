@@ -26,7 +26,7 @@ $factory->define(App\User::class, function (Faker $faker) {
         'idImage' => $faker->url(),
         'passport' => $faker->randomNumber(),
         'passportImage' => $faker->url(),
-        'gender' => $faker->numberBetween(0,1),
+        'gender' => $faker->numberBetween(1,2),
         'DOB' => $faker->dateTime(),
         'supermarket_id'=>$faker->numberBetween(1,10),
         'email_verified_at' => now(),
