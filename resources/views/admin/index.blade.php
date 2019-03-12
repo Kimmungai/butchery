@@ -57,21 +57,24 @@ Supermarkets:{{Auth::id()}}
     </tr>
   </thead>
   <tbody>
-    <?php $count=0;?>
-    @foreach ($supermarket->user as $user)
-      @if($user->customer)
-      <tr>
-        <th scope="row">{{$count}}</th>
-        <td>{{$user->firstName}}</td>
-        <td>{{$user->lastName}}</td>
-        <td>{{count($user->customer->order)}} times</td>
-        <td>{{$user->email}}</td>
-        <td><a href="{{url('/customer/'.$user->id)}}" class="btn btn-outline-dark">open</a></td>
-      </tr>
-      @endif
-      <?php $count++;?>
-    @endforeach
-
+    <?php $count=1;?>
+    @foreach($userSupermarkets as $supermarkets)
+      @foreach($supermarkets as $supermarket)
+        @foreach ($supermarket->user as $user)
+          @if($user->customer)
+          <tr>
+            <th scope="row">{{$count}}</th>
+            <td>{{$user->firstName}}</td>
+            <td>{{$user->lastName}}</td>
+            <td>{{count($user->customer->order)}} times</td>
+            <td>{{$user->email}}</td>
+            <td><a href="{{url('/customer/'.$user->id)}}" class="btn btn-outline-dark">open</a></td>
+          </tr>
+          <?php $count++;?>
+          @endif
+         @endforeach
+      @endforeach
+   @endforeach
 
   </tbody>
 </table>
@@ -108,20 +111,25 @@ Supermarkets:{{Auth::id()}}
     </tr>
   </thead>
   <tbody>
-    <?php $count=0;?>
-    @foreach ($supermarket->user as $user)
-      @if($user->staff)
-      <tr>
-        <th scope="row">{{$count}}</th>
-        <td>{{$user->firstName}}</td>
-        <td>{{$user->lastName}}</td>
-        <td>{{$user->phoneNumber}} </td>
-        <td>{{$user->email}}</td>
-        <td><a href="{{url('/staff/'.$user->id)}}" class="btn btn-outline-dark">open</a></td>
-      </tr>
-      @endif
-      <?php $count++;?>
-    @endforeach
+    <?php $count=1;?>
+    @foreach($userSupermarkets as $supermarkets)
+      @foreach($supermarkets as $supermarket)
+          @foreach ($supermarket->user as $user)
+            @if($user->staff)
+            <tr>
+              <th scope="row">{{$count}}</th>
+              <td>{{$user->firstName}}</td>
+              <td>{{$user->lastName}}</td>
+              <td>{{$user->phoneNumber}} </td>
+              <td>{{$user->email}}</td>
+              <td><a href="{{url('/staff/'.$user->id)}}" class="btn btn-outline-dark">open</a></td>
+            </tr>
+            <?php $count++;?>
+            @endif
+
+          @endforeach
+        @endforeach
+      @endforeach
 
 
   </tbody>
@@ -158,20 +166,25 @@ Supermarkets:{{Auth::id()}}
     </tr>
   </thead>
   <tbody>
-    <?php $count=0;?>
-    @foreach ($supermarket->user as $user)
-      @if($user->admin)
-      <tr>
-        <th scope="row">{{$count}}</th>
-        <td>{{$user->firstName}}</td>
-        <td>{{$user->lastName}}</td>
-        <td>{{$user->phoneNumber}} </td>
-        <td>{{$user->email}}</td>
-        <td><a href="{{url('/admin/'.$user->id)}}" class="btn btn-outline-dark">open</a></td>
-      </tr>
-      @endif
-      <?php $count++;?>
-    @endforeach
+    <?php $count=1;?>
+    @foreach($userSupermarkets as $supermarkets)
+      @foreach($supermarkets as $supermarket)
+          @foreach ($supermarket->user as $user)
+            @if($user->admin)
+            <tr>
+              <th scope="row">{{$count}}</th>
+              <td>{{$user->firstName}}</td>
+              <td>{{$user->lastName}}</td>
+              <td>{{$user->phoneNumber}} </td>
+              <td>{{$user->email}}</td>
+              <td><a href="{{url('/admin/'.$user->id)}}" class="btn btn-outline-dark">open</a></td>
+            </tr>
+            <?php $count++;?>
+            @endif
+
+          @endforeach
+        @endforeach
+      @endforeach
 
 
   </tbody>

@@ -27,6 +27,7 @@ class CreateSupermarketsTable extends Migration
             $table->string('branchCode')->nullable();
             $table->text('description')->nullable();
             $table->text('shopNotice')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

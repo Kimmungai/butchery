@@ -31,11 +31,12 @@ class CreateProductsTable extends Migration
             $table->text('description')->nullable();
             $table->text('purchaseNote')->nullable();
             $table->mediumText('excerpt')->nullable();
-            $table->integer('supermarket_id')->unsigned();
+            $table->integer('supermarket_id')->unsigned()->onDelete('cascade');
             $table->integer('category_id')->unsigned();
             $table->integer('inventory_id')->unsigned();
             $table->integer('variation_id')->unsigned();
             $table->integer('rating')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

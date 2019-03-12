@@ -15,7 +15,7 @@ class CreateOrdersTable extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('customer_id')->unsigned();
+            $table->integer('customer_id')->unsigned()->onDelete('cascade');
             $table->tinyInteger('state')->nullable();
             $table->mediumText('description')->nullable();
             $table->tinyInteger('type')->nullable();
@@ -24,6 +24,7 @@ class CreateOrdersTable extends Migration
             $table->dateTime('collectOn')->nullable();
             $table->string('collectTime')->nullable();
             $table->integer('releasedBy')->unsigned()->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

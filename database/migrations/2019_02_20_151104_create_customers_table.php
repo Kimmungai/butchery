@@ -17,6 +17,7 @@ class CreateCustomersTable extends Migration
             $table->increments('id');
             $table->integer('user_id')->unsigned();
             $table->tinyInteger('type')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

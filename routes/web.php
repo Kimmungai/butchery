@@ -45,3 +45,5 @@ Route::get('supermarket-departments/{id}','SupermarketsController@get_department
 Route::get('customer/{id}','admin\UsersController@get_customer')->name('Get customer');
 Route::get('admin/{id}','admin\UsersController@get_admin')->name('Get admin');
 Route::get('staff/{id}','admin\UsersController@get_staff')->name('Get staff');
+Route::get('delete-user/{id}','admin\UsersController@soft_delete_user')->name('Delete user');
+Route::get('remove-user/{id}','admin\UsersController@remove_user')->name('Remove user');

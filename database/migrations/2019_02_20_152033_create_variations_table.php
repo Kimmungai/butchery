@@ -19,7 +19,8 @@ class CreateVariationsTable extends Migration
             $table->double('width')->nullable();
             $table->string('color')->nullable();
             $table->string('size')->nullable();
-            $table->integer('product_id')->unsigned();
+            $table->integer('product_id')->unsigned()->onDelete('cascade');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

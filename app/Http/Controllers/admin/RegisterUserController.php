@@ -34,7 +34,6 @@ class RegisterUserController extends Controller
     }
 
 
-da
     /*
     *Function to create user in database
     */
@@ -115,7 +114,6 @@ da
 
       return back();
     }
-
 
 
     /*
@@ -228,7 +226,7 @@ da
 
       }elseif ( $userType === 'staff' ) {
 
-        $validatedstdaaff =[
+        $validatedstaff =[
           'type'  => 'required|numeric',
           'staffJobId' => 'required|max:255',
           'staffDepartmentId' => 'required|numeric',

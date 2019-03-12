@@ -77,7 +77,7 @@
 
       <tr>
         <td>Email</td>
-        <td><input name="email" id="email" type="text" class="form-control" value="@if( old('email') ) {{old('email')}} @elseif( isset($user) ) {{$user->email}} @endif" placeholder="Phone Number..." /></td>
+        <td><input name="email" id="email" type="text" class="form-control" value="@if( old('email') ) {{old('email')}} @elseif( isset($user) ) {{$user->email}} @endif" placeholder="Email..." /></td>
         <td>@if ($errors->has('email'))
             <span  role="alert">
                 <strong>{{ $errors->first('email') }}</strong>
@@ -192,4 +192,3 @@
 
     </tbody>
   </table>
-  <button class="btn btn-primary" type="submit" name="button">Update</button>

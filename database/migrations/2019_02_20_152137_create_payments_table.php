@@ -15,7 +15,7 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('order_id')->unsigned();
+            $table->integer('order_id')->unsigned()->onDelete('cascade');
             $table->float('amountDue')->nullable();
             $table->float('amountReceived')->nullable();
             $table->integer('discountPercentage')->nullable();
@@ -26,6 +26,7 @@ class CreatePaymentsTable extends Migration
             $table->text('requestId')->nullable();
             $table->string('receiptNo')->nullable();
             $table->integer('status')->default(0);
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

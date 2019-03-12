@@ -31,6 +31,7 @@ class CreateUsersTable extends Migration
             $table->date('DOB')->nullable();
             $table->integer('supermarket_id')->unsigned();
             $table->timestamp('email_verified_at')->nullable();
+            $table->timestamp('deleted_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

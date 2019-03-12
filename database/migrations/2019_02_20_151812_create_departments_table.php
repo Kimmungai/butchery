@@ -17,7 +17,8 @@ class CreateDepartmentsTable extends Migration
             $table->increments('id');
             $table->string('name')->nullable();
             $table->tinyInteger('type')->nullable();
-            $table->integer('supermarket_id')->unsigned();
+            $table->integer('supermarket_id')->unsigned()->onDelete('cascade');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

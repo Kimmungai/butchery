@@ -18,7 +18,8 @@ class CreateCategoriesTable extends Migration
             $table->string('name')->nullable();
             $table->string('img')->nullable();
             $table->text('description')->nullable();
-            $table->integer('department_id')->unsigned();
+            $table->integer('department_id')->unsigned()->onDelete('cascade');
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

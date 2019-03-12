@@ -11,6 +11,7 @@ use App\Supermarket;
 
 class UsersController extends Controller
 {
+
   /*
   *Function to return a user object
   */
@@ -91,4 +92,92 @@ class UsersController extends Controller
     return $userSupermarkets;
 
   }
+
+  /*
+  *Function to soft delete user
+  */
+  public function soft_delete_user($id)
+  {
+    if($user = User::find($id))
+    {
+      $this->excuteDelition($user);
+      Session::flash('message', "User deleted!");
+    }
+    else
+    {
+      Session::flash('error', "invalid!");
+    }
+    return redirect('/admin');
+
+  }
+
+  /*
+  *Function to delete user permanently
+  */
+  public function remove_user($id)
+  {
+    return "mada desu";
+  }
+
+
+
+  /*
+  *Function to excute deletion
+  */
+  protected function excuteDelition($user,$delition='soft')
+  {
+    if( $delition==='soft' )
+    {
+      if($user->customer){
+
+         if($user->customer->order){
+
+             foreach ($user->customer->order as $order) {
+               if($order->payment){
+                 $order->payment->delete();
+               }
+               if($order->OrderProducts){
+                 foreach ($order->OrderProducts as $orderProduct) {
+                   $orderProduct->delete();
+                 }
+               }
+               $order->delete();
+             }
+
+         }
+         $user->customer->delete();
+       }
+
+      if($user->staff){ $user->staff->delete(); }
+      if($user->admin){ $user->admin->delete(); }
+      $user->delete();
+    }else{
+
+      if($user->customer){
+
+         if($user->customer->order){
+
+             foreach ($user->customer->order as $order) {
+               if($order->payment){
+                 $order->payment->forceDelete();
+               }
+               if($order->OrderProducts){
+                 foreach ($order->OrderProducts as $orderProduct) {
+                   $orderProduct->forceDelete();
+                 }
+               }
+               $order->forceDelete();
+             }
+
+         }
+         $user->customer->forceDelete();
+       }
+
+      if($user->staff){ $user->staff->forceDelete(); }
+      if($user->admin){ $user->admin->forceDelete(); }
+      $user->forceDelete();
+
+    }
+  }
+
 }

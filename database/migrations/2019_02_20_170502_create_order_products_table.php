@@ -15,9 +15,10 @@ class CreateOrderProductsTable extends Migration
     {
         Schema::create('order_products', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('order_id')->unsigned();
-            $table->integer('product_id')->unsigned();
+            $table->integer('order_id')->unsigned()->onDelete('cascade');
+            $table->integer('product_id')->unsigned()->onDelete('cascade');
             $table->integer('quantity')->default(1);
+            $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
     }

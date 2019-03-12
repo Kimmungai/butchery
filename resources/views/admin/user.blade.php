@@ -40,8 +40,10 @@
 
   @endcomponent
 
+<button class="btn btn-primary" type="submit" name="button">Update</button>
+<a class="btn btn-danger" href="/delete-user/{{$user->id}}" name="button">Delete</a>
+
 </form>
-<h1>shopping info</h1>
 
 
 @endsection

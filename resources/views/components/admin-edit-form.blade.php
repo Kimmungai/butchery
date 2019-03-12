@@ -3,7 +3,7 @@
 
   <div class="form-group col-md-12">
     <label for="adminJobId">Job Id</label>
-    <input name="adminJobId" type="text" class="form-control" id="adminJobId" value="@if( old('adminJobId') ) {{old('adminJobId')}} @else {{$user->admin->jobId}} @endif" placeholder="Job Id...">
+    <input name="adminJobId" type="text" class="form-control" id="adminJobId" value="@if( old('adminJobId') ) {{old('adminJobId')}} @elseif( isset($user) ) {{$user->admin->jobId}} @endif" placeholder="Job Id...">
     @if ($errors->has('adminJobId'))
         <span  role="alert">
             <strong>{{ $errors->first('adminJobId') }}</strong>
