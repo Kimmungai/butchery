@@ -13,7 +13,7 @@ $factory->define(App\Product::class, function (Faker $faker) {
       'img5'  => $faker->url(),
       'createdBy'  => $faker->numberBetween(1,30),
       'type'  => $faker->numberBetween(0,10),
-      'virtualProduct'  => $faker->numberBetween(0,1),
+      'virtualProduct'  => $faker->numberBetween(-1,1),
       'price'  => $faker->numberBetween(1.00,1000000.00),
       'salePrice'  => $faker->numberBetween(1.00,1000000.00),
       'regularPrice'  => $faker->numberBetween(1.00,1000000.00),

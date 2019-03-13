@@ -15,8 +15,8 @@ class CreateUserSupermarketsTable extends Migration
     {
         Schema::create('user_supermarkets', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('user_id')->unsigned()->onDelete('cascade');
-            $table->integer('supermarket_id')->unsigned()->onDelete('cascade');
+            $table->integer('user_id')->unsigned();
+            $table->integer('supermarket_id')->unsigned();
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });

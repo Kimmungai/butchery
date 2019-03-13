@@ -87,11 +87,13 @@
           @endif
           <div class="container">
             <div class="row">
-              <div class="col-sm-4">
+              <div class="col-sm-2">
                 <h1>Admin sidebar</h1>
+                <a href="{{url('/admin')}}" class="btn btn-secondary btn-dark-outline mb-3">Dashboard</a>
+                <a href="{{url('/trashed-users')}}" class="btn btn-secondary btn-dark-outline mb-3">Trashed Users</a>
 
               </div>
-              <div class="col-sm-8">
+              <div class="col-sm-10">
                 @yield('content')
               </div>
             </div>

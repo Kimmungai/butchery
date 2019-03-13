@@ -50,3 +50,7 @@ Route::get('remove-user/{id}','admin\UsersController@remove_user')->name('Remove
 Route::get('trashed-users','admin\UsersController@get_trashed_users')->name('Get trashed users');
 Route::get('trashed-user/{id}','admin\UsersController@get_trashed_user')->name('Get trashed users');
 Route::get('restore-user/{id}','admin\UsersController@restore_user')->name('Restore user');
+
+
+Route::get('/product/{id}','admin\ProductsController@get_product')->name('Get product');
+Route::post('/update-product','admin\ProductsController@update_product')->name('Update product');

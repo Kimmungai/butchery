@@ -15,10 +15,10 @@ class CreateCategoriesTable extends Migration
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('name')->nullable();
+            $table->string('name')->unique();
             $table->string('img')->nullable();
             $table->text('description')->nullable();
-            $table->integer('department_id')->unsigned()->onDelete('cascade');
+            $table->integer('department_id')->unsigned();
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });

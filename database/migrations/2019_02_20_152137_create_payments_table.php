@@ -15,7 +15,7 @@ class CreatePaymentsTable extends Migration
     {
         Schema::create('payments', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('order_id')->unsigned()->onDelete('cascade');
+            $table->integer('order_id')->unsigned();
             $table->float('amountDue')->nullable();
             $table->float('amountReceived')->nullable();
             $table->integer('discountPercentage')->nullable();

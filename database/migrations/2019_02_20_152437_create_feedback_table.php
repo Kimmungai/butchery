@@ -17,7 +17,7 @@ class CreateFeedbackTable extends Migration
             $table->increments('id');
             $table->mediumText('message')->nullable();
             $table->integer('rating')->nullable();
-            $table->integer('user_id')->unsigned()->onDelete('cascade');
+            $table->integer('user_id')->unsigned();
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });

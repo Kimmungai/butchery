@@ -15,11 +15,14 @@ class CreateVariationsTable extends Migration
     {
         Schema::create('variations', function (Blueprint $table) {
             $table->increments('id');
+            $table->tinyInteger('units_of_measure')->default(1);
+            $table->tinyInteger('measurement_system')->default(1);
             $table->double('height')->nullable();
             $table->double('width')->nullable();
             $table->string('color')->nullable();
             $table->string('size')->nullable();
-            $table->integer('product_id')->unsigned()->onDelete('cascade');
+            $table->double('weight')->nullable();
+            $table->integer('product_id')->unsigned();
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });

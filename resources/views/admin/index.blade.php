@@ -20,10 +20,45 @@ Supermarkets:{{Auth::id()}}
 <section>
   <h2>Products</h2>
 
+  <table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Image</th>
+      <th scope="col">Name</th>
+      <th scope="col">Stock</th>
+      <th scope="col">SKU</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php $count=1;?>
+    @foreach($userSupermarkets as $supermarkets)
+      @foreach($supermarkets as $supermarket)
+        @foreach ($supermarket->product as $product)
+          <tr>
+            <th scope="row">{{$count}}</th>
+            <td><img src="{{$product->image1}}" alt="{{$product->name}}"></td>
+            <td>{{$product->name}}</td>
+            <td>{{$product->inventory->quantity}}</td>
+            <td>{{$product->sku}}</td>
+            <td><a href="{{url('/product/'.$product->id)}}" class="btn btn-outline-dark">open</a></td>
+          </tr>
+          <?php $count++;?>
+         @endforeach
+      @endforeach
+   @endforeach
+
+  </tbody>
+</table>
+
+
 </section>
 
 <section>
   <h2>Users</h2>
+  <a href="{{url('/register-user')}}" class="btn btn-secondary btn-dark-outline mb-3">New user</a>
+
   <article>
     <h3>Customers</h3>
     @foreach($userSupermarkets as $supermarkets)
@@ -190,7 +225,7 @@ Supermarkets:{{Auth::id()}}
   </tbody>
 </table>
   </article>
-
+  <a href="{{url('/register-user')}}" class="btn btn-secondary btn-dark-outline mb-3">New user</a>
 </section>
 
 

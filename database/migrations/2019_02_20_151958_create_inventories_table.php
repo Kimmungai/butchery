@@ -17,7 +17,7 @@ class CreateInventoriesTable extends Migration
             $table->increments('id');
             $table->tinyInteger('state')->nullable();
             $table->integer('quantity')->default(0);
-            $table->integer('product_id')->unsigned()->onDelete('cascade');
+            $table->integer('product_id')->unsigned();
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
