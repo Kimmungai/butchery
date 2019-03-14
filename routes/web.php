@@ -30,7 +30,7 @@ Route::post('/new-order','CheckOutController@new_order')->name("New order");
 Route::get('/order-payment','CheckOutController@order_payment')->name('Order payment');
 Route::get('/thank-you','CheckOutController@thank_you')->name('Thank you');
 
-Route::post('/mpesa-payment','MpesaPaymentsController@mpesa')->name('Mpesa Processor');
+Route::post('register/mpesa-payment','MpesaPaymentsController@mpesa')->name('Mpesa Processor');
 Route::post('/mpesa-callback','MpesaPaymentsController@mpesa_callback')->name('Mpesa Callback');
 
 /*Backend routes*/
@@ -61,3 +61,14 @@ Route::get('/trashed-products','admin\ProductsController@get_trashed_products')-
 Route::get('/trashed-product/{id}','admin\ProductsController@get_trashed_product')->name('Get trashed product');
 Route::get('/restore-product/{id}','admin\ProductsController@restore_product')->name('Restore product');
 Route::get('/remove-product/{id}','admin\ProductsController@remove_product')->name('Remove product');
+
+
+Route::get('/register-department','admin\DepartmentsController@register_department')->name('Department register form');
+Route::post('/create-department','admin\DepartmentsController@create_department')->name('Create department');
+Route::get('/department/{id}','admin\DepartmentsController@get_department')->name('Get Department');
+Route::post('/update-department','admin\DepartmentsController@update_department')->name('Update Department');
+Route::get('/delete-department/{id}','admin\DepartmentsController@delete_department')->name('Delete Department');
+Route::get('/trashed-departments','admin\DepartmentsController@get_trashed_departments')->name('Get trashed departments');
+Route::get('/trashed-department/{id}','admin\DepartmentsController@get_trashed_department')->name('Get trashed department');
+Route::get('/restore-department/{id}','admin\DepartmentsController@restore_department')->name('Restore Department');
+Route::get('/remove-department/{id}','admin\DepartmentsController@remove_department')->name('Remove Department');

@@ -9,7 +9,10 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Department extends Model
 {
   use SoftDeletes;
-  
+  protected $fillable = [
+      'supermarket_id','type','name'
+  ];
+
   public function supermarket()
   {
     return $this->belongsTo('App\Supermarket');

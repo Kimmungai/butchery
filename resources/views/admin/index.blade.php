@@ -10,11 +10,48 @@ Supermarkets:{{Auth::id()}}
 </select>
 
 <section>
-  <h2>Orders</h2>
+  <h2>Categories</h2>
 
 
 </section>
 
+<section>
+  <h2>Orders</h2>
+
+
+</section>
+<section>
+  <h2>Departments</h2>
+  <a href="{{url('/register-department')}}" class="btn btn-secondary btn-dark-outline mb-3">New Department</a>
+
+  <table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Name</th>
+      <th scope="col">Type</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php $count=1;?>
+      @foreach($userSupermarkets as $supermarket)
+        @foreach ($supermarket->department as $department)
+          <tr>
+            <th scope="row">{{$count}}</th>
+            <td>{{$department->name}}</td>
+            <td>Type {{$department->type}}</td>
+            <td><a href="{{url('/department/'.$department->id)}}" class="btn btn-outline-dark">open</a></td>
+          </tr>
+          <?php $count++;?>
+         @endforeach
+      @endforeach
+
+  </tbody>
+  </table>
+
+
+</section>
 <section>
   <h2>Products</h2>
   <a href="{{url('/register-product')}}" class="btn btn-secondary btn-dark-outline mb-3">New Product</a>

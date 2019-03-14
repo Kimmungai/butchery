@@ -17,6 +17,11 @@ use App\Services\UserHandler;
 
 class ProductsController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('auth');
+  }
+  
   /*
   *Function to get product
   */

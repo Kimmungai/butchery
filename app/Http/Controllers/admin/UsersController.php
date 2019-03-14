@@ -17,6 +17,10 @@ use App\Supermarket;
 
 class UsersController extends Controller
 {
+  public function __construct()
+  {
+    $this->middleware('auth');
+  }
 
   /*
   *Function to return a user object

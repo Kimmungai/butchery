@@ -12,6 +12,10 @@ use App\Services\UserHandler;
 
 class RegisterUserController extends Controller
 {
+    public function __construct()
+    {
+      $this->middleware('auth');
+    }
     /*
     *Function to display all users
     */
