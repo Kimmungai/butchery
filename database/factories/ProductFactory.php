@@ -21,7 +21,5 @@ $factory->define(App\Product::class, function (Faker $faker) {
       'excerpt'  => $faker->text(),
       'supermarket_id' => $faker->numberBetween(1,10),
       'category_id' => $faker->numberBetween(1,10),
-      'variation_id' => $faker->numberBetween(1,10),
-      'inventory_id' => $faker->numberBetween(1,10),
     ];
 });

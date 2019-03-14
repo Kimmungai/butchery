@@ -3,6 +3,7 @@
 namespace App\Services;
 use App\User;
 use App\UserSupermarkets;
+use App\Supermarket;
 use Illuminate\Support\Facades\Auth;
 
 class UserHandler
@@ -124,13 +125,56 @@ class UserHandler
 
     return $newUserSupermarket;
   }
+
   /*
-  *Function to get user supermarkets
+  *Function to get user supermarkets IDs
   */
-  public static function UserSupermarkets($user_id)
+  public static function UserSupermarketsIds($user_id)
   {
     $userSupermarkets = UserSupermarkets::where('user_id',$user_id)->get();
     return $userSupermarkets;
+  }
+
+  /*
+  *Function to get user supermarkets
+  */
+  public static function UserSupermarket( $user_id )
+  {
+    //get user supermarkets ids
+    $user_supemarkets = self::UserSupermarketsIds($user_id);
+
+    foreach ($user_supemarkets as $user_supemarket)
+    {
+        $userSupermarkets[] = Supermarket::where('id',$user_supemarket['supermarket_id'])->first();
+    }
+    $userSupermarkets  = isset($userSupermarkets) ? $userSupermarkets : [];
+
+    return $userSupermarkets;
+
+  }
+
+  /*
+  *Function to get user supermarkets categories
+  */
+  public static function UserSupermarketCategories( $user_id )
+  {
+    //get user supermarkets
+    $supemarkets = self::UserSupermarket( $user_id );
+
+    $allCategories = [];
+
+    foreach ( $supemarkets as $supemarket )
+    {
+      foreach ($supemarket->department as $department)
+      {
+        foreach ($department->category as $category)
+        {
+          $allCategories [] = $category;
+        }
+      }
+    }
+
+    return $allCategories;
   }
 
   /*

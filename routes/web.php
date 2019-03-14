@@ -48,9 +48,16 @@ Route::get('staff/{id}','admin\UsersController@get_staff')->name('Get staff');
 Route::get('delete-user/{id}','admin\UsersController@soft_delete_user')->name('Delete user');
 Route::get('remove-user/{id}','admin\UsersController@remove_user')->name('Remove user');
 Route::get('trashed-users','admin\UsersController@get_trashed_users')->name('Get trashed users');
-Route::get('trashed-user/{id}','admin\UsersController@get_trashed_user')->name('Get trashed users');
+Route::get('trashed-user/{id}','admin\UsersController@get_trashed_user')->name('Get trashed user');
 Route::get('restore-user/{id}','admin\UsersController@restore_user')->name('Restore user');
 
 
+Route::get('/register-product','admin\ProductsController@register_product')->name('Product register form');
+Route::post('/create-product','admin\ProductsController@create_product')->name('Create product');
 Route::get('/product/{id}','admin\ProductsController@get_product')->name('Get product');
 Route::post('/update-product','admin\ProductsController@update_product')->name('Update product');
+Route::get('/delete-product/{id}','admin\ProductsController@delete_product')->name('Delete Product');
+Route::get('/trashed-products','admin\ProductsController@get_trashed_products')->name('Get trashed products');
+Route::get('/trashed-product/{id}','admin\ProductsController@get_trashed_product')->name('Get trashed product');
+Route::get('/restore-product/{id}','admin\ProductsController@restore_product')->name('Restore product');
+Route::get('/remove-product/{id}','admin\ProductsController@remove_product')->name('Remove product');

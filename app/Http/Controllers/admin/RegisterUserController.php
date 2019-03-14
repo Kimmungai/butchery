@@ -121,17 +121,8 @@ class RegisterUserController extends Controller
     */
     private function get_user_supermarkets($user_id)
     {
-      //get user supermarkets
-      $user_supemarkets = UserHandler::UserSupermarkets($user_id);
-
-      foreach ($user_supemarkets as $user_supemarket)
-      {
-          $userSupermarkets[] = Supermarket::where('id',$user_supemarket['supermarket_id'])->get();
-      }
-      $userSupermarkets  = isset($userSupermarkets) ? $userSupermarkets : [];
-
+      $userSupermarkets = UserHandler::UserSupermarket( $user_id );
       return $userSupermarkets;
-
     }
 
 

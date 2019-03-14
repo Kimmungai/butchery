@@ -9,6 +9,17 @@ use App\ProductCategories;
 class ProductHandler
 {
   /*
+  *Function to create product
+  */
+  public static function createProduct($productData=[],$inventoryData=[],$variationData=[])
+  {
+    $product = Product::create($productData);
+    $product->inventory()->create($inventoryData);
+    $product->variation()->create($variationData);
+    return $product;
+  }
+
+  /*
   *Function to update product
   */
   public static function updateProduct($product_id,$productData=[],$inventoryData=[],$variationData=[])
@@ -19,6 +30,7 @@ class ProductHandler
     $product->variation->update($variationData);
     return $product;
   }
+
 
   /*
   *Function to create new category

@@ -4,11 +4,9 @@
 
 Supermarkets:{{Auth::id()}}
 <select name="">
-  @foreach($userSupermarkets as $supermarkets)
-    @foreach($supermarkets as $supermarket)
+    @foreach($userSupermarkets as $supermarket)
       <option>{{$supermarket->name}}</option>
     @endforeach
-  @endforeach
 </select>
 
 <section>
@@ -19,6 +17,7 @@ Supermarkets:{{Auth::id()}}
 
 <section>
   <h2>Products</h2>
+  <a href="{{url('/register-product')}}" class="btn btn-secondary btn-dark-outline mb-3">New Product</a>
 
   <table class="table table-dark">
   <thead>
@@ -33,12 +32,11 @@ Supermarkets:{{Auth::id()}}
   </thead>
   <tbody>
     <?php $count=1;?>
-    @foreach($userSupermarkets as $supermarkets)
-      @foreach($supermarkets as $supermarket)
+      @foreach($userSupermarkets as $supermarket)
         @foreach ($supermarket->product as $product)
           <tr>
             <th scope="row">{{$count}}</th>
-            <td><img src="{{$product->image1}}" alt="{{$product->name}}"></td>
+            <td><img src="{{$product->img1}}" alt="{{$product->name}}" height="50" width="50"></td>
             <td>{{$product->name}}</td>
             <td>{{$product->inventory->quantity}}</td>
             <td>{{$product->sku}}</td>
@@ -47,7 +45,6 @@ Supermarkets:{{Auth::id()}}
           <?php $count++;?>
          @endforeach
       @endforeach
-   @endforeach
 
   </tbody>
 </table>
@@ -61,8 +58,7 @@ Supermarkets:{{Auth::id()}}
 
   <article>
     <h3>Customers</h3>
-    @foreach($userSupermarkets as $supermarkets)
-      @foreach($supermarkets as $supermarket)
+      @foreach($userSupermarkets as $supermarket)
         <!--{{$supermarket->product}}-->
         <!--{{$supermarket->department}}-->
         @foreach ($supermarket->department as $department)
@@ -78,7 +74,6 @@ Supermarkets:{{Auth::id()}}
         @endforeach
         <?php break;?>
       @endforeach
-  @endforeach
 
   <table class="table table-light">
   <thead>
@@ -93,8 +88,7 @@ Supermarkets:{{Auth::id()}}
   </thead>
   <tbody>
     <?php $count=1;?>
-    @foreach($userSupermarkets as $supermarkets)
-      @foreach($supermarkets as $supermarket)
+      @foreach($userSupermarkets as $supermarket)
         @foreach ($supermarket->user as $user)
           @if($user->customer)
           <tr>
@@ -109,7 +103,6 @@ Supermarkets:{{Auth::id()}}
           @endif
          @endforeach
       @endforeach
-   @endforeach
 
   </tbody>
 </table>
@@ -118,8 +111,7 @@ Supermarkets:{{Auth::id()}}
 
   <article>
     <h3>Staff</h3>
-    @foreach($userSupermarkets as $supermarkets)
-      @foreach($supermarkets as $supermarket)
+      @foreach($userSupermarkets as $supermarket)
         <!--{{$supermarket->product}}-->
         <!--{{$supermarket->department}}-->
         <!--@foreach ($supermarket->department as $department)
@@ -133,7 +125,6 @@ Supermarkets:{{Auth::id()}}
         @endforeach
         <?php break;?>
       @endforeach
-  @endforeach
   <table class="table table-light">
   <thead>
     <tr>
@@ -147,8 +138,7 @@ Supermarkets:{{Auth::id()}}
   </thead>
   <tbody>
     <?php $count=1;?>
-    @foreach($userSupermarkets as $supermarkets)
-      @foreach($supermarkets as $supermarket)
+      @foreach($userSupermarkets as $supermarket)
           @foreach ($supermarket->user as $user)
             @if($user->staff)
             <tr>
@@ -164,7 +154,6 @@ Supermarkets:{{Auth::id()}}
 
           @endforeach
         @endforeach
-      @endforeach
 
 
   </tbody>
@@ -173,8 +162,7 @@ Supermarkets:{{Auth::id()}}
 
   <article>
     <h3>Admin</h3>
-    @foreach($userSupermarkets as $supermarkets)
-      @foreach($supermarkets as $supermarket)
+      @foreach($userSupermarkets as $supermarket)
         <!--{{$supermarket->product}}-->
         <!--{{$supermarket->department}}-->
         <!--@foreach ($supermarket->department as $department)
@@ -188,7 +176,6 @@ Supermarkets:{{Auth::id()}}
         @endforeach
         <?php break;?>
       @endforeach
-  @endforeach
   <table class="table table-light">
   <thead>
     <tr>
@@ -202,8 +189,7 @@ Supermarkets:{{Auth::id()}}
   </thead>
   <tbody>
     <?php $count=1;?>
-    @foreach($userSupermarkets as $supermarkets)
-      @foreach($supermarkets as $supermarket)
+      @foreach($userSupermarkets as $supermarket)
           @foreach ($supermarket->user as $user)
             @if($user->admin)
             <tr>
@@ -219,7 +205,6 @@ Supermarkets:{{Auth::id()}}
 
           @endforeach
         @endforeach
-      @endforeach
 
 
   </tbody>
