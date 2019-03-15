@@ -178,6 +178,25 @@ class UserHandler
   }
 
   /*
+  *Function to get user Departments
+  */
+  public static function userSupermarketDepartments( $user_id )
+  {
+    $userSupermarkets = self::UserSupermarket( $user_id );
+    $allDepartments = [];
+
+    foreach ($userSupermarkets as $supermarket )
+    {
+      foreach ($supermarket->department as $department)
+      {
+        $allDepartments [] = $department;
+      }
+    }
+
+    return $allDepartments;
+  }
+
+  /*
   *Function to cleanup phone number format
   */
   public static function cleanupPhone($number)

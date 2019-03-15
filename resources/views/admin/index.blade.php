@@ -11,6 +11,35 @@ Supermarkets:{{Auth::id()}}
 
 <section>
   <h2>Categories</h2>
+  <a href="{{url('/register-category')}}" class="btn btn-secondary btn-dark-outline mb-3">New Category</a>
+
+  <table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Image</th>
+      <th scope="col">Name</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php $count=1;?>
+      @foreach($userSupermarkets as $supermarket)
+        @foreach ($supermarket->department as $department)
+          @foreach ($department->category as $category)
+            <tr>
+              <th scope="row">{{$count}}</th>
+              <td><img src="{{$category->img}}" alt="{{$category->name}}" height="50" width="50"> </td>
+              <td>{{$category->name}}</td>
+              <td><a href="{{url('/category/'.$category->id)}}" class="btn btn-outline-dark">open</a></td>
+            </tr>
+            <?php $count++;?>
+          @endforeach
+         @endforeach
+      @endforeach
+
+  </tbody>
+  </table>
 
 
 </section>

@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-
+<h2>trashed products</h2>
 <table class="table table-dark">
 <thead>
   <tr>

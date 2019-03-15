@@ -1,7 +1,7 @@
 @extends('layouts.admin')
 
 @section('content')
-
+<h2>trashed users</h2>
 <table class="table table-light">
 <thead>
   <tr>
