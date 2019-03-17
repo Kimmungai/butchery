@@ -14,6 +14,7 @@ use App\OrderProducts;
 use App\Payment;
 use App\UserSupermarkets;
 use App\Supermarket;
+use App\Services\UserHandler;
 
 class UsersController extends Controller
 {
@@ -91,14 +92,7 @@ class UsersController extends Controller
   */
   private function get_user_supermarkets($user_id)
   {
-    $userSupermarkets = [];
-    $supermarketIds = UserSupermarkets::where('user_id',$user_id)->get('supermarket_id');
-
-    foreach ($supermarketIds as $id)
-    {
-      $userSupermarkets [] = Supermarket::find($id);
-    }
-
+    $userSupermarkets = UserHandler::UserSupermarket( $user_id );
     return $userSupermarkets;
 
   }

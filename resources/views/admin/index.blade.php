@@ -46,6 +46,40 @@ Supermarkets:{{Auth::id()}}
 
 <section>
   <h2>Orders</h2>
+  <a href="{{url('/register-order')}}" class="btn btn-secondary btn-dark-outline mb-3">New Order</a>
+
+  <table class="table table-dark">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">State</th>
+      <th scope="col">Collect At</th>
+      <th scope="col">Collect Time</th>
+      <th scope="col">Action</th>
+    </tr>
+  </thead>
+  <tbody>
+    <?php $count=1;?>
+    @foreach($userSupermarkets as $supermarket)
+      @foreach ( $supermarket->user as $user )
+        @if($user->customer)
+          @foreach($user->customer->order as $order)
+          <tr>
+            <th scope="col">{{$count}}</th>
+            <td>{{$order->state}}</td>
+            <td>{{$order->collectAt}}</td>
+            <td>{{$order->collectTime}}</td>
+            <td><a href="{{url('/order/'.$order->id)}}" class="btn btn-outline-dark">open</a></td>
+          </tr>
+          <?php $count++;?>
+          @endforeach
+        @endif
+      @endforeach
+    @endforeach
+
+
+  </tbody>
+  </table>
 
 
 </section>

@@ -119,11 +119,9 @@
         <td>
           <select name="supermarket_id" id="supermarket_id" class="form-control" onchange="refresh_departments(this.value,['staffDepartmentId','adminDepartmentId'])">
             <option selected disabled>Choose one</option>
-            @foreach($userSupermarkets as $supermarkets)
-              @foreach($supermarkets as $supermarket)
+              @foreach($userSupermarkets as $supermarket)
                 <option value="{{$supermarket->id}}" @if ( old('supermarket_id') == $supermarket->id  ) selected @else selected @endif>{{$supermarket->name}}</option>
               @endforeach
-            @endforeach
           </select>
 
       </td>

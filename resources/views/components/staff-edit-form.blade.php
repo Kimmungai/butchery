@@ -29,13 +29,11 @@
     <label for="satffDepartmentId">Department</label>
     <select name="staffDepartmentId" id="staffDepartmentId" class="form-control">
       <option selected disabled>Choose one</option>
-      @foreach($userSupermarkets as $supermarkets)
-        @foreach($supermarkets as $supermarket)
+        @foreach($userSupermarkets as $supermarket)
           @foreach ($supermarket->department as $department)
             <option value="{{$department->id}}" @if ( old('staffDepartmentId') == $department->id || (isset($user) && $user->staff->departmentId == $department->id) ) selected @endif>{{$department->name}}</option>
           @endforeach
         @endforeach
-      @endforeach
     </select>
     @if ($errors->has('staffDepartmentId'))
         <span  role="alert">

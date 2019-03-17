@@ -25,14 +25,14 @@ class CreateProductsTable extends Migration
             $table->integer('createdBy')->nullable();
             $table->tinyInteger('type')->nullable();
             $table->tinyInteger('virtualProduct')->nullable();
-            $table->float('price')->nullable();
+            $table->float('price')->default(0.00);
             $table->float('salePrice')->nullable();
             $table->float('regularPrice')->nullable();
             $table->text('description')->nullable();
             $table->text('purchaseNote')->nullable();
             $table->mediumText('excerpt')->nullable();
             $table->integer('supermarket_id')->unsigned();
-            $table->integer('category_id')->unsigned();
+            $table->integer('category_id')->unsigned()->nullable();
             $table->integer('rating')->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();

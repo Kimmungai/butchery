@@ -30,8 +30,8 @@ Route::post('/new-order','CheckOutController@new_order')->name("New order");
 Route::get('/order-payment','CheckOutController@order_payment')->name('Order payment');
 Route::get('/thank-you','CheckOutController@thank_you')->name('Thank you');
 
-Route::post('register/mpesa-payment','MpesaPaymentsController@mpesa')->name('Mpesa Processor');
-Route::post('/mpesa-callback','MpesaPaymentsController@mpesa_callback')->name('Mpesa Callback');
+Route::post('mpesa-payment','MpesaPaymentsController@mpesa')->name('Mpesa Processor');
+Route::post('mpesa-callback','MpesaPaymentsController@mpesa_callback')->name('Mpesa Callback');
 
 /*Backend routes*/
 

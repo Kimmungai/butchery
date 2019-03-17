@@ -15,7 +15,7 @@ class SupermarketsTableSeeder extends Seeder
       factory(App\Supermarket::class, 10)->create();
       //factory(App\Customer::class, 30)->create();
       //factory(App\Staff::class, 30)->create();
-      //factory(App\Admin::class, 1)->create();
+      factory(App\Admin::class, 1)->create();
       //factory(App\Product::class, 10)->create();
       factory(App\Category::class, 8)->create();
       //factory(App\ProductCategories::class, 8)->create();
@@ -25,6 +25,6 @@ class SupermarketsTableSeeder extends Seeder
       //factory(App\Payment::class, 50)->create();
       //factory(App\OrderProducts::class, 100)->create();
       factory(App\Feedback::class, 10)->create();
-      //factory(App\UserSupermarkets::class, 10)->create();
+      factory(App\UserSupermarkets::class, 10)->create();
     }
 }

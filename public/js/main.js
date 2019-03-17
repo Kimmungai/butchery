@@ -100,7 +100,7 @@ function process_mpesa_payment( userId, orderId )
     _token: $('meta[name="csrf-token"]').attr('content')
   },
   function(data, status){
-    alert("Data: " + data + "\nStatus: " + status);
+    //alert("Data: " + data + "\nStatus: " + status);
   });
 }
 

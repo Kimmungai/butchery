@@ -77,16 +77,20 @@
           <!--cart start-->
           <table>
             <thead>
-              <th>Number</th><td>item</td><td>ID</td><td>Quantity</td><td>Price</td><td>Total</td><td>Image</td><td>Remove</td>
+              <tr><th>Number</th><td>item</td><td>ID</td><td>Quantity</td><td>Price</td><td>Total</td><td>Image</td><td>Remove</td></tr>
             </thead>
             <tbody id="cart-contents">
               <?php $count = 1; ?>
               @foreach ( session('shoppingCart') as $item )
-                <th>{{$count}}</th><td>{{$item['item']}}</td><td>{{$item['product_id']}}</td><td>{{$item['quantity']}}</td><td>{{$item['price']}}</td><td>{{$item['total']}}</td><td>{{$item['image']}}</td><td><td><span class="badge badge-sm badge-danger" onclick="remove_from_cart({{$item['product_id']}})">x</span></td></td>
+                <tr><th>{{$count}}</th><td>{{$item['item']}}</td><td>{{$item['product_id']}}</td><td>{{$item['quantity']}}</td><td>{{$item['price']}}</td><td>{{$item['total']}}</td><td>{{$item['image']}}</td><td><td><span class="badge badge-sm badge-danger" onclick="remove_from_cart({{$item['product_id']}})">x</span></td></td></tr>
+                <input type="hidden" name="product-{{$item['product_id']}}-id" value="{{$item['product_id']}}">
+                <input type="hidden" name="product-{{$item['product_id']}}-quantity" value="{{$item['quantity']}}">
               <?php $count++; ?>
               @endforeach
             </tbody>
           </table>
+
+
           <div class="text-danger" id="cart-total">
             {{ session('shoppingCartTotal') }}
           </div>

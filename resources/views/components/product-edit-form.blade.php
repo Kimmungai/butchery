@@ -118,6 +118,18 @@
     </tr>
 
     <tr>
+      <th scope="row">Sale Price</th>
+      <td> <input class="form-control" type="text" name="salePrice" value="@if (old('salePrice')) {{old('salePrice')}} @elseif (isset($product)) {{$product->salePrice}} @endif"></td>
+      <td>
+        @if ($errors->has('salePrice'))
+          <span  role="alert">
+              <strong>{{ $errors->first('salePrice') }}</strong>
+          </span>
+        @endif
+     </td>
+    </tr>
+
+    <tr>
       <th scope="row">Gallery</th>
       <td>
 
@@ -157,17 +169,7 @@
 
     </tr>
 
-    <tr>
-      <th scope="row">Sale Price</th>
-      <td> <input class="form-control" type="text" name="salePrice" value="@if (old('salePrice')) {{old('salePrice')}} @elseif (isset($product)) {{$product->salePrice}} @endif"></td>
-      <td>
-        @if ($errors->has('salePrice'))
-          <span  role="alert">
-              <strong>{{ $errors->first('salePrice') }}</strong>
-          </span>
-        @endif
-     </td>
-    </tr>
+
 
     <tr>
       <th scope="row">Height</th>

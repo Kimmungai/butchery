@@ -224,7 +224,7 @@ class RegisterUserController extends Controller
         $validatedstaff =[
           'type'  => 'required|numeric',
           'staffJobId' => 'required|max:255',
-          'staffDepartmentId' => 'required|numeric',
+          'staffDepartmentId' => 'nullable',
           'availability' => 'required|numeric'
         ];
 
@@ -243,7 +243,7 @@ class RegisterUserController extends Controller
 
         $validatedAdmin = [
           'adminJobId' => 'max:255',
-          'adminDepartmentId' => 'required|numeric',
+          'adminDepartment' => 'nullable',
         ];
 
         $this->validateUser($request,$validatedAdmin,$user_id);

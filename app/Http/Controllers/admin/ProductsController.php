@@ -21,7 +21,7 @@ class ProductsController extends Controller
   {
     $this->middleware('auth');
   }
-  
+
   /*
   *Function to get product
   */
@@ -223,7 +223,7 @@ class ProductsController extends Controller
         break;
 
       case 'create':
-      $productTableData['category_id'] = $validatedProduct->input('category_id')[0];
+      //$productTableData['category_id'] = $validatedProduct->input('category_id')[0];
 
       $product = ProductHandler::createProduct($productTableData,$inventoryTable,$variationTable);
       $product_id = $product->id;
