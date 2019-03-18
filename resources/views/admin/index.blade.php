@@ -46,7 +46,6 @@ Supermarkets:{{Auth::id()}}
 
 <section>
   <h2>Orders</h2>
-  <a href="{{url('/register-order')}}" class="btn btn-secondary btn-dark-outline mb-3">New Order</a>
 
   <table class="table table-dark">
   <thead>

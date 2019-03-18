@@ -94,6 +94,7 @@
                 <a href="{{url('/trashed-products')}}" class="btn btn-secondary btn-dark-outline mb-3">Trashed Products</a>
                 <a href="{{url('/trashed-departments')}}" class="btn btn-secondary btn-dark-outline mb-3">Trashed Departments</a>
                 <a href="{{url('/trashed-categories')}}" class="btn btn-secondary btn-dark-outline mb-3">Trashed Categories</a>
+                <a href="{{url('/trashed-orders')}}" class="btn btn-secondary btn-dark-outline mb-3">Trashed Orders</a>
 
 
               </div>

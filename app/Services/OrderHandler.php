@@ -2,6 +2,8 @@
 
 namespace App\Services;
 use App\Order;
+use App\OrderProducts;
+use App\Product;
 
 class OrderHandler
 {
@@ -29,4 +31,34 @@ class OrderHandler
     return $order;
 
   }
+
+  /*
+  *Function to get order products
+  */
+  public static function getOrderProducts( $id )
+  {
+    $orderProducts = OrderProducts::where('order_id', $id)->get();
+    $products = [];
+
+    foreach ($orderProducts as $orderProduct) {
+
+      $products [] = Product::where('id',$orderProduct->product_id)->first();
+
+    }
+
+    return $products;
+
+  }
+
+  /*
+  *Function to update order
+  */
+  public static function UpdateOrder( $order_id, $orderTableData, $paymentTableData )
+  {
+    $order = Order::find($order_id);
+    $order->update($orderTableData);
+    $order->payment->update($paymentTableData);
+    return $order;
+  }
+
 }

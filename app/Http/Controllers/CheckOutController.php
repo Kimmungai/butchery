@@ -136,7 +136,7 @@ class CheckOutController extends Controller
     {
       $amount_payable_percent = (100 - $discountPercent)/100;
       //for testing purposes pay ksh. 1
-      return 1.00;
+      //return 1.00;
       return $amount_payable_percent * $amountDue;
     }
 }

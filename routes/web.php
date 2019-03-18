@@ -33,6 +33,13 @@ Route::get('/thank-you','CheckOutController@thank_you')->name('Thank you');
 Route::post('mpesa-payment','MpesaPaymentsController@mpesa')->name('Mpesa Processor');
 Route::post('mpesa-callback','MpesaPaymentsController@mpesa_callback')->name('Mpesa Callback');
 
+
+
+
+
+
+
+
 /*Backend routes*/
 
 //user
@@ -82,3 +89,12 @@ Route::get('/trashed-categories','admin\CategoriesController@trashed_categories'
 Route::get('/trashed-category/{id}','admin\CategoriesController@trashed_category')->name('Get trashed Category');
 Route::get('/restore-category/{id}','admin\CategoriesController@restore_category')->name('Restore Category');
 Route::get('/remove-category/{id}','admin\CategoriesController@remove_category')->name('Remove Category');
+
+//orders
+Route::get('order/{id}','admin\OrdersController@get_order')->name('Get Order');
+Route::post('update-order','admin\OrdersController@update_order')->name('Update Order');
+Route::get('delete-order/{id}','admin\OrdersController@delete_order')->name('Delete Order');
+Route::get('trashed-orders','admin\OrdersController@get_trashed_orders')->name('Get trashed orders');
+Route::get('trashed-order/{id}','admin\OrdersController@get_trashed_order')->name('Get trashed order');
+Route::get('restore-order/{id}','admin\OrdersController@restore_order')->name('Restore trashed order');
+Route::get('remove-order/{id}','admin\OrdersController@remove_order')->name('Remove trashed order');
