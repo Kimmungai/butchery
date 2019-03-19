@@ -22,9 +22,10 @@ class HomeController extends Controller
      *
      * @return \Illuminate\Contracts\Support\Renderable
      */
-    public function index( $supermarketId=1, Request $request )
+    public function index( $supermarketId='', Request $request )
     {
         if( $request->input('supermarket') ){ $supermarketId=$request->input('supermarket'); }
+        if( $supermarketId == '' && session('selectedSupermarket') != null ){$supermarketId=session('selectedSupermarket'); }
         session(['selectedSupermarket' => $supermarketId]);
         $currentSupermarket = Supermarket::where('id',$supermarketId)->get();
         $allSupermarkets = Supermarket::get();

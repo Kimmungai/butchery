@@ -19,6 +19,7 @@ class CreateCategoriesTable extends Migration
             $table->string('img')->nullable();
             $table->text('description')->nullable();
             $table->integer('department_id')->unsigned();
+            $table->integer('featured')->default(0);
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
