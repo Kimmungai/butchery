@@ -54,7 +54,7 @@
 														@foreach( $department->category as $category )
 															@if( $x % 2 != 0 )
 																<li>
-																	<a href="product.html">{{$category->name}}</a>
+																	<a href="/product-category/{{$category->id}}">{{$category->name}}</a>
 																</li>
 																<?php $x++; ?>
 															@endif
@@ -67,7 +67,7 @@
 														@foreach( $department->category as $category )
 															@if( $i % 2 == 0 )
 																<li>
-																	<a href="product.html">{{$category->name}}</a>
+																	<a href="/product-category/{{$category->id}}">{{$category->name}}</a>
 																</li>
 																<?php $i++; ?>
 															@endif

@@ -44,7 +44,7 @@
               @foreach( $currentSupermarket as $supermarket )
                 @foreach( $supermarket->department as $department )
                   <?php $x = 1; $i = 1;?>
-                  <li class="dropdown">
+                  <li class="dropdown" >
                     <a href="#" class="dropdown-toggle nav-stylehead" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{$department->name}}
                       <span class="caret"></span>
                     </a>
@@ -55,7 +55,7 @@
                             @foreach( $department->category as $category )
                               @if( $x % 2 != 0 )
                                 <li>
-                                  <a href="product.html">{{$category->name}}</a>
+                                  <a href="/product-category/{{$category->id}}">{{$category->name}}</a>
                                 </li>
                                 <?php $x++; ?>
                               @endif
@@ -68,7 +68,7 @@
                             @foreach( $department->category as $category )
                               @if( $i % 2 == 0 )
                                 <li>
-                                  <a href="product.html">{{$category->name}}</a>
+                                  <a href="/product-category/{{$category->id}}">{{$category->name}}</a>
                                 </li>
                                 <?php $i++; ?>
                               @endif
@@ -115,7 +115,7 @@
 						<a href="index.html">Home</a>
 						<i>|</i>
 					</li>
-					<li>Shop</li>
+					<li>@if( isset($productCategory) ){{$productCategory->name}} @else Shop @endif</li>
 				</ul>
 			</div>
 		</div>
@@ -125,7 +125,7 @@
 	<div class="ads-grid">
 		<div class="container">
 			<!-- tittle heading -->
-			<h3 class="tittle-w3l">Shop
+			<h3 class="tittle-w3l">@if( isset($productCategory) ){{$productCategory->name}} @else Shop @endif
 				<span class="heading-style">
 					<i></i>
 					<i></i>

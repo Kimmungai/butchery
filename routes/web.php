@@ -35,6 +35,7 @@ Route::post('mpesa-callback','MpesaPaymentsController@mpesa_callback')->name('Mp
 
 Route::get('single-product/{id}','ProductController@get_product')->name('Product page');
 Route::get('shop','ProductController@get_products')->name('Products page');
+Route::get('product-category/{id}','ProductController@get_products_in_category')->name('Products in category');
 
 
 
