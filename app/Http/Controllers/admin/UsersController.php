@@ -122,6 +122,17 @@ class UsersController extends Controller
   }
 
   /*
+  *Function to return admin update profile form
+  */
+  public function admin_update_profile()
+  {
+    $userSupermarkets  = $this->get_user_supermarkets(Auth::id());
+
+    $user = User::find(Auth::id());
+    return view('admin.profile-form',compact('user','userSupermarkets'));
+  }
+
+  /*
   *Function to return a all staff
   */
   public function get_all_staff( )

@@ -18,7 +18,7 @@ Auth::routes();
 
 /* Front End Routes */
 Route::get('/home', 'HomeController@index')->name('Home');
-//Route::post('/set-supermarket','SupermarketController@set_supermarket')->name("Set Supermarket");
+Route::get('/set-supermarket/{id}','SupermarketsController@set_supermarket')->name("Set Supermarket");
 Route::post('/home', 'HomeController@index');
 
 Route::post('/add-to-cart','ShoppingCartController@add_to_cart')->name('Add product to cart');
@@ -62,6 +62,8 @@ Route::get('trashed-users','admin\UsersController@get_trashed_users')->name('Get
 Route::get('trashed-user/{id}','admin\UsersController@get_trashed_user')->name('Get trashed user');
 Route::get('restore-user/{id}','admin\UsersController@restore_user')->name('Restore user');
 Route::get('admin-profile','admin\UsersController@profile')->name('Admin profile');
+Route::get('update-admin-profile','admin\UsersController@admin_update_profile')->name('Admin profile update');
+
 
 
 //product

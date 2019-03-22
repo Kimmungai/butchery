@@ -63,7 +63,7 @@ class CategoriesController extends Controller
   {
     $userSupermarkets  = UserHandler::UserSupermarket(Auth::id());
 
-    $categories = Category::paginate(env('NUMBER_OF_ITEMS_IN_TABLE',1));
+    $categories = Category::orderBy('id','Desc')->paginate(env('NUMBER_OF_ITEMS_IN_TABLE',1));
     return view('admin.category.index',compact('categories','userSupermarkets'));
   }
 

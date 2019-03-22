@@ -60,3 +60,11 @@ function append_departments(departments,element)
     $("#"+element).append('<option value="'+response[i].id+'">'+response[i].name+'</option>');
   }
 }
+
+/*
+*Function to open url
+*/
+function open_url(url)
+{
+  window.open(url,'_self');
+}

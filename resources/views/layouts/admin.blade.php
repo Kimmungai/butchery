@@ -78,7 +78,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
   																			<ul class="dropdown">
 
                                             @foreach($userSupermarkets as $supermarket)
-                                              <li><a class="english">{{substr($supermarket->name,0,8)}}</a></li>
+                                              <li onclick="open_url('{{url('set-supermarket')}}/{{$supermarket->id}}')"><a href="#" class="english">{{substr($supermarket->name,0,8)}}</a></li>
                                             @endforeach
 
 
@@ -312,7 +312,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
           <p>{{Auth::user()->admin->designation}} in {{ config('app.name', 'Laravel') }}</p>
          <ul>
          <li><a class="tooltips" href="{{url('/admin-profile')}}"><span>Profile</span><i class="lnr lnr-user"></i></a></li>
-           <li><a class="tooltips" href="{{url('/admin-update-profile')}}"><span>Settings</span><i class="lnr lnr-cog"></i></a></li>
+           <li><a class="tooltips" href="{{url('update-admin-profile')}}"><span>Settings</span><i class="lnr lnr-cog"></i></a></li>
            <li><a class="tooltips" href="index.html"><span>Log out</span><i class="lnr lnr-power-switch"></i></a></li>
            </ul>
          </div>
@@ -427,5 +427,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 <!-- Bootstrap Core JavaScript -->
 <script src="{{url('back-end/js/bootstrap.min.js')}}"></script>
+<script src="{{url('/js/admin.js')}}"></script>
+
 </body>
 </html>

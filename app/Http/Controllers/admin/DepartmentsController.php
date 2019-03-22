@@ -43,7 +43,7 @@ class DepartmentsController extends Controller
     {
       $userSupermarkets  = UserHandler::UserSupermarket(Auth::id());
 
-      $departments = Department::paginate(env('NUMBER_OF_ITEMS_IN_TABLE',1));
+      $departments = Department::orderBy('id','Desc')->paginate(env('NUMBER_OF_ITEMS_IN_TABLE',1));
       return view('admin.department.index',compact('departments','userSupermarkets'));
     }
 

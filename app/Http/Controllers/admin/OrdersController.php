@@ -58,7 +58,7 @@ class OrdersController extends Controller
   {
     $userSupermarkets  = UserHandler::UserSupermarket(Auth::id());
 
-    $orders = Order::paginate(env('NUMBER_OF_ITEMS_IN_TABLE',1));
+    $orders = Order::orderBy('id','Desc')->paginate(env('NUMBER_OF_ITEMS_IN_TABLE',1));
     return view('admin.order.index',compact('orders','userSupermarkets'));
   }
 

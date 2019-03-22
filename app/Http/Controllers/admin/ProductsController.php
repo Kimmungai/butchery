@@ -41,7 +41,7 @@ class ProductsController extends Controller
   {
     $userSupermarkets  = UserHandler::UserSupermarket(Auth::id());
 
-    $products = Product::paginate(env('NUMBER_OF_ITEMS_IN_TABLE',1));
+    $products = Product::orderBy('id','Desc')->paginate(env('NUMBER_OF_ITEMS_IN_TABLE',1));
     return view('admin.products.index',compact('products','userSupermarkets'));
   }
 

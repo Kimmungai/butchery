@@ -7,7 +7,7 @@
           <div class="sub-heard-part">
            <ol class="breadcrumb m-b-0">
             <li><a href="{{url('/admin')}}">Home</a></li>
-            <li class="active">Categories</li>
+            <li class="active">All Categories</li>
           </ol>
            </div>
         <!--//sub-heard-part-->

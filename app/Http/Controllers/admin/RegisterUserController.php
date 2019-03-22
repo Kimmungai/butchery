@@ -22,7 +22,6 @@ class RegisterUserController extends Controller
     public function index()
     {
       $userSupermarkets  = $this->get_user_supermarkets(Auth::id());
-
       return view('admin.index',compact('userSupermarkets'));
     }
 

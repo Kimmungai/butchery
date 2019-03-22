@@ -1,9 +1,20 @@
 @extends('layouts.admin')
 
 @section('content')
+<!--outter-wp-->
+  <div class="outter-wp">
+    <!--sub-heard-part-->
+      <div class="sub-heard-part">
+       <ol class="breadcrumb m-b-0">
+        <li><a href="{{url('/admin')}}">Home</a></li>
+        <li class="active">Trashed users</li>
+      </ol>
+       </div>
+    <!--//sub-heard-part-->
 
-<h1>personal info</h1>
-<table class="table table-dark table-bordered table-hover">
+<h3>Trashed user</h3>
+
+<table class="table ">
   <tbody>
     <tr>
       <td>Avatar</td>
@@ -98,6 +109,6 @@
 </table>
 <a class="btn btn-success" href="/restore-user/{{$user->id}}" name="button">Restore User</a>
 <a class="btn btn-danger" href="/remove-user/{{$user->id}}" name="button">Delete permanently</a>
-
+</div>
 
 @endsection

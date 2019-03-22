@@ -5,7 +5,7 @@
         <!--sub-heard-part-->
           <div class="sub-heard-part">
            <ol class="breadcrumb m-b-0">
-            <li><a href="index.html">Home</a></li>
+            <li><a href="{{url('/admin')}}">Home</a></li>
             <li class="active">Profile</li>
           </ol>
            </div>
@@ -19,7 +19,7 @@
                     <p>{{$user->staff->designation}}</p>
                   @elseif( $user->admin )
                     <p>{{$user->admin->designation}}</p>
-                    <p><a class="tooltips " href="{{url('admin-update-profile')}}" title="Edit profile"><i class="fa fa-edit "></i></a></p>
+                    <p><a class="tooltips " href="{{url('update-admin-profile')}}" title="Edit profile"><i class="fa fa-edit "></i></a></p>
                   @endif
                 </div>
                   <!--/profile-inner-->
