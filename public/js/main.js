@@ -5,7 +5,6 @@ function add_to_cart(id)
 {
   var product_id = $("#"+id+"-id").val();
   var quantity = $("#"+id+"-quantity").val();
-
   if ( isNaN(parseInt(quantity)) || !isFinite(quantity) ){//data validation
     alert("Please enter a valid number for the quantity!");
     return;
@@ -23,7 +22,6 @@ function add_to_cart(id)
           //server response
           if ( data === '-1' ){ alert("Product out of stock"); return;}
           if ( data === '0' ){ alert("Please enter a valid number for the quantity!"); return;}
-
           refresh_cart(data);
       });
 
@@ -60,15 +58,21 @@ function refresh_cart(data)
   for ( var count=0; count<response.length; count++ ){
     $("#product-"+response[count].product_id+"-id").val(response[count].product_id);
     $("#product-"+response[count].product_id+"-quantity").val(response[count].quantity);
-    $("#cart-contents").append('<tr><th>'+(count + 1)+'</th><td>'+response[count].item+'</td><td>'+response[count].product_id+'</td><td>'+response[count].quantity+'</td><td>'+response[count].price.toLocaleString()+'</td><td>'+response[count].total.toLocaleString()+'</td><td>'+response[count].image+'</td><td><span class="badge badge-sm badge-danger" onclick="remove_from_cart('+response[count].product_id+')">x</span></td></tr>');
+    //$("#cart-contents").append('<tr><th>'+(count + 1)+'</th><td>'+response[count].item+'</td><td>'+response[count].product_id+'</td><td>'+response[count].quantity+'</td><td>'+response[count].price.toLocaleString()+'</td><td>'+response[count].total.toLocaleString()+'</td><td>'+response[count].image+'</td><td><span class="badge badge-sm badge-danger" onclick="remove_from_cart('+response[count].product_id+')">x</span></td></tr>');
+    $("#cart-contents").append(cart_html(response[count].item,response[count].price.toLocaleString(),response[count].quantity,response[count].product_id,response[count].image));
     cartTotal += parseFloat(response[count].total);
   }
-  $("#cart-total").text(cartTotal.toLocaleString());
+  $("#cart-total").text('Ksh. '+cartTotal.toLocaleString());
 }
 
 function refresh_cart_badge(data)
 {
   var numberOfItemsInCart = data.length;
+  if( numberOfItemsInCart < 1 )
+  {
+    $("#cart-badge").hide();
+    return;
+  }
   $("#cart-badge").text(numberOfItemsInCart);
 }
 
@@ -145,4 +149,30 @@ channel.bind('mpesa', function(data) {
      window.open(url, '_self');
    }
 
+ }
+
+ /*
+ *Function to return cart repeatable html
+ */
+ function cart_html(name,price,quantity,id,image)
+ {
+   var html ='<div class="row"><div class="col-xs-2"><img class="img-responsive" src="'+image+'" width="100" height="70"></div><div class="col-xs-4"><h4 class="product-name"><strong>'+name+'</strong></h4><h4><small></small></h4></div><div class="col-xs-6"><div class="col-xs-6 text-right"><h6><strong>Ksh. '+price+' <span class="text-muted">x</span></strong></h6></div><div class="col-xs-4"><input type="number" min="1" class="form-control input-sm" value="'+quantity+'"></div><div class="col-xs-2"><button type="button" class="btn btn-link btn-xs" onclick="remove_from_cart('+id+')"><span class="glyphicon glyphicon-trash"> </span></button></div></div></div><hr>';
+
+   return html;
+ }
+
+ /*
+ *Function to hide element
+ */
+ function hideElement(id)
+ {
+   $("#"+id).fadeOut('slow');
+ }
+
+ /*
+ *Function to show hidden element
+ */
+ function showElement(id)
+ {
+   $("#"+id).fadeIn('slow');
  }

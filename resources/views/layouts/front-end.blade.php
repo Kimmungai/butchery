@@ -3,6 +3,9 @@
 <head>
 	<title>{{ config('app.name', 'Laravel') }}</title>
 	<!--/tags -->
+	<!-- CSRF Token -->
+	<meta name="csrf-token" content="{{ csrf_token() }}">
+
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="keywords" content="Grocery Shoppy Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
@@ -42,7 +45,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<h1>
 					<a href="/home">
 						<span>{{ config('app.name', 'Laravel') }}</span> supermarket
-						<img src="images/logo2.png" alt=" ">
+						<img src="{{url('front-end/images/logo2.png')}}" alt=" ">
 					</a>
 				</h1>
 			</div>
@@ -87,13 +90,91 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<form action="#" method="post" class="last">
 							<input type="hidden" name="cmd" value="_cart">
 							<input type="hidden" name="display" value="1">
-							<button class="w3view-cart" type="submit" name="submit" value="">
-								<i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
+
+							<button class="btn bg-transparent" type="submit" name="submit" value="" onclick="showElement('cart-snippet')">
+								<i class="fa fa-cart-arrow-down" aria-hidden="true" style="font-size:21px;"></i>
+								<span id="cart-badge" class="badge badge-danger">@if(session('shoppingCart') != null ) {{count(session('shoppingCart'))}} @endif</span>
 							</button>
 						</form>
 					</div>
 				</div>
 				<!-- //cart details -->
+
+				<!--cart snippet-->
+				<div id="cart-snippet" class="container" style="position:fixed;z-index:100000000000000000;bottom: 20%;left:20%;display:none;">
+						<div class="row">
+							<div class="col-xs-8">
+								<div class="panel panel-info">
+									<div class="panel-heading">
+										<div class="panel-title">
+											<div class="row">
+												<div class="col-xs-6">
+													<h5><span class="glyphicon glyphicon-shopping-cart"></span></h5>
+												</div>
+												<div class="col-xs-6">
+													<button type="button" class="close" onclick="hideElement('cart-snippet')">
+														<span class="glyphicon glyphicon-remove-sign"></span> close
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="panel-body" id="cart-contents">
+										@foreach ( session('shoppingCart') as $item )
+											<div class="row">
+												<div class="col-xs-2"><img class="img-responsive" src="{{$item['image']}}" width="100" height="70">
+												</div>
+												<div class="col-xs-4">
+													<h4 class="product-name"><strong>{{$item['item']}}</strong></h4><h4><small></small></h4>
+												</div>
+												<div class="col-xs-6">
+													<div class="col-xs-4 text-right">
+														<h6><strong>{{$item['price']}} <span class="text-muted">x</span></strong></h6>
+													</div>
+													<div class="col-xs-4">
+														<input type="number" min="1" class="form-control input-sm" value="{{$item['quantity']}}">
+													</div>
+
+													<div class="col-xs-2">
+														<button type="button" class="btn btn-link btn-xs" onclick="remove_from_cart({{$item['product_id']}})">
+															<span class="glyphicon glyphicon-trash"> </span>
+														</button>
+													</div>
+												</div>
+											</div>
+											<hr>
+										@endforeach
+
+										<div class="row">
+											<div class="text-center">
+												<div class="col-xs-9">
+													<h6 class="text-right">Added items?</h6>
+												</div>
+												<div class="col-xs-3">
+													<button type="button" class="btn btn-default btn-sm btn-block">
+														Update cart
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="panel-footer">
+										<div class="row text-center">
+											<div class="col-xs-9">
+												<h4 class="text-right">Total <strong id="cart-total">@if(session('shoppingCartTotal')!=null) Ksh. {{ session('shoppingCartTotal') }} @endif</strong></h4>
+											</div>
+											<div class="col-xs-3">
+												<a  href="{{url('check-out')}}" class="btn btn-success btn-block">
+													Checkout
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				<!--end cart snippet-->
 				<div class="clearfix"></div>
 			</div>
 			<div class="clearfix"></div>
@@ -200,6 +281,31 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<!-- //signup Model -->
 	<!-- //header-bot -->
 
+	<!-- start add to cart modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{ config('app.name', 'Laravel') }}</h4>
+        </div>
+        <div class="modal-body">
+					<h1 class="text-success text-center"><i class="fa fa-check-circle"></i></h1>
+          <p class="text-success">
+						Added to cart successfully.
+					</p>
+        </div>
+        <div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal" onclick="showElement('cart-snippet')">View cart</button>
+
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end add to cart modal-->
+
 @yield('content')
 <!-- newsletter -->
 <div class="footer-top">
@@ -226,9 +332,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <footer>
 	<div class="container">
 		<!-- footer first section -->
-		@foreach( $currentSupermarket as $supermarket )
-		 <p class="footer-main">{{$supermarket->description}}</p>
-		@endforeach
+		@if( isset($currentSupermarket) )
+			@foreach( $currentSupermarket as $supermarket )
+			 <p class="footer-main">{{$supermarket->description}}</p>
+			@endforeach
+		@endif
 		<!-- //footer first section -->
 		<!-- footer second section -->
 		<div class="w3l-grids-footer">
@@ -271,38 +379,42 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 					<ul>
 
 						<?php $count=0; ?>
-						@foreach( $currentSupermarket as $supermarket )
-							@foreach( $supermarket->department as $department )
-								@foreach( $department->category as $category )
-									@if( $count % 2 == 0 && $count < 7)
-										<li>
-											<a href="product.html">{{$category->name}}</a>
-										</li>
+						@if(isset($currentSupermarket))
+							@foreach( $currentSupermarket as $supermarket )
+								@foreach( $supermarket->department as $department )
+									@foreach( $department->category as $category )
+										@if( $count % 2 == 0 && $count < 7)
+											<li>
+												<a href="product.html">{{$category->name}}</a>
+											</li>
 
-									@endif
-									<?php $count++; ?>
+										@endif
+										<?php $count++; ?>
+									@endforeach
 								@endforeach
 							@endforeach
-						@endforeach
+						@endif
 
 					</ul>
 				</div>
 				<div class="col-xs-6 footer-grids agile-secomk">
 					<ul>
 						<?php $count=0; ?>
-						@foreach( $currentSupermarket as $supermarket )
-							@foreach( $supermarket->department as $department )
-								@foreach( $department->category as $category )
-									@if( $count % 2 != 0 && $count < 7)
-										<li>
-											<a href="product.html">{{$category->name}}</a>
-										</li>
+						@if(isset($currentSupermarket))
+							@foreach( $currentSupermarket as $supermarket )
+								@foreach( $supermarket->department as $department )
+									@foreach( $department->category as $category )
+										@if( $count % 2 != 0 && $count < 7)
+											<li>
+												<a href="product.html">{{$category->name}}</a>
+											</li>
 
-									@endif
-									<?php $count++; ?>
+										@endif
+										<?php $count++; ?>
+									@endforeach
 								@endforeach
 							@endforeach
-						@endforeach
+						@endif
 					</ul>
 				</div>
 				<div class="clearfix"></div>

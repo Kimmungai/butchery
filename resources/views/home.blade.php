@@ -421,20 +421,25 @@
 						 										<del>Ksh. {{$product->regularPrice}}</del>
 						 									</div>
 						 									<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-						 										<form action="#" method="post">
+						 										<!--<form action="#" method="post">
 						 											<fieldset>
 						 												<input type="hidden" name="cmd" value="_cart" />
 						 												<input type="hidden" name="add" value="1" />
 						 												<input type="hidden" name="business" value=" " />
-						 												<input type="hidden" name="item_name" value="Almonds, 100g" />
-						 												<input type="hidden" name="amount" value="149.00" />
-						 												<input type="hidden" name="discount_amount" value="1.00" />
+						 												<input type="hidden" name="item_name" value="{{$product->name}}" />
+						 												<input type="hidden" name="amount" value="{{$product->salePrice}}" />
+						 												<input type="hidden" name="discount_amount" value="0.00" />
 						 												<input type="hidden" name="currency_code" value="USD" />
 						 												<input type="hidden" name="return" value=" " />
 						 												<input type="hidden" name="cancel_return" value=" " />
-						 												<input type="submit" name="submit" value="Add to cart" class="button" />
+																		<input id="product-{{$product->id}}-id" type="hidden" name="id" value="{{$product->id}}">
+							                      <input id="product-{{$product->id}}-quantity" type="hidden" name="quantity" min="1" value="1">
+						 												<input id="product-{{$product->id}}" type="submit" name="submit" value="Add to cart" class="button" onclick="add_to_cart(this.id)" />
 						 											</fieldset>
-						 										</form>
+						 										</form>-->
+																<input id="product-{{$product->id}}-id" type="hidden" name="id" value="{{$product->id}}">
+																<input id="product-{{$product->id}}-quantity" type="hidden" name="quantity" min="1" value="1">
+																<input id="product-{{$product->id}}" type="submit" name="submit" value="Add to cart" class="button" data-toggle="modal" data-target="#myModal" onclick="add_to_cart(this.id)" />
 						 									</div>
 
 						 								</div>
@@ -527,7 +532,7 @@
 						 												<input type="hidden" name="currency_code" value="USD" />
 						 												<input type="hidden" name="return" value=" " />
 						 												<input type="hidden" name="cancel_return" value=" " />
-						 												<input type="submit" name="submit" value="Add to cart" class="button" />
+						 												<input type="submit" name="submit" value="Add to cart" class="button" onclick="add_to_cart({{$product->id}})"  />
 						 											</fieldset>
 						 										</form>
 						 									</div>
@@ -602,7 +607,7 @@
 														<input type="hidden" name="currency_code" value="USD" />
 														<input type="hidden" name="return" value=" " />
 														<input type="hidden" name="cancel_return" value=" " />
-														<input type="submit" name="submit" value="Add to cart" class="button" />
+														<input type="submit" name="submit" value="Add to cart" class="button" onclick="add_to_cart({{$product->id}})"  />
 													</fieldset>
 												</form>
 											</div>
