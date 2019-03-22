@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Storage;
 use App\Category;
 use App\Services\UserHandler;
 use App\Services\CategoryHandler;
+use App\Supermarket;
 
 class CategoriesController extends Controller
 {
@@ -53,6 +54,17 @@ class CategoriesController extends Controller
     $category = Category::find($id);
     $allDepartments = UserHandler::userSupermarketDepartments( Auth::id() );
     return view('admin.category.category',compact('category','allDepartments'));
+  }
+
+  /*
+  *Function to get categories
+  */
+  public function get_categories( )
+  {
+    $userSupermarkets  = UserHandler::UserSupermarket(Auth::id());
+
+    $categories = Category::paginate(env('NUMBER_OF_ITEMS_IN_TABLE',1));
+    return view('admin.category.index',compact('categories','userSupermarkets'));
   }
 
   /*

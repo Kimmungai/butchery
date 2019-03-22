@@ -34,6 +34,16 @@ class ProductsController extends Controller
     //$productSupermarket = Supermarket::find($product->supermarket_id);
     return view('admin.products.product',compact('product','productCategory','allSupermarket','allCategories'));
   }
+  /*
+  *Function to return all products
+  */
+  public function get_products()
+  {
+    $userSupermarkets  = UserHandler::UserSupermarket(Auth::id());
+
+    $products = Product::paginate(env('NUMBER_OF_ITEMS_IN_TABLE',1));
+    return view('admin.products.index',compact('products','userSupermarkets'));
+  }
 
   /*
   *Function to display product registration form

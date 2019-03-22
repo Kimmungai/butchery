@@ -5,9 +5,13 @@ namespace App\Http\Controllers\admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
+
 use App\Order;
 use App\User;
 use App\Services\OrderHandler;
+use App\Supermarket;
+use App\Services\UserHandler;
 
 class OrdersController extends Controller
 {
@@ -45,6 +49,17 @@ class OrdersController extends Controller
     $products = OrderHandler::getOrderProducts( $id );
 
     return view('admin.order.order',compact('order','user','products','packagedBy','releasedBy'));
+  }
+
+  /*
+  *Function to get orders
+  */
+  public function get_orders()
+  {
+    $userSupermarkets  = UserHandler::UserSupermarket(Auth::id());
+
+    $orders = Order::paginate(env('NUMBER_OF_ITEMS_IN_TABLE',1));
+    return view('admin.order.index',compact('orders','userSupermarkets'));
   }
 
   /*

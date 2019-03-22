@@ -20,6 +20,7 @@ class CreateStaffTable extends Migration
             $table->string('departmentId')->nullable();
             $table->tinyInteger('type')->nullable();
             $table->tinyInteger('availability')->default(0);
+            $table->string('designation')->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });

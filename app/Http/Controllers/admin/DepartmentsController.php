@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 use App\Department;
 use App\Services\DepartmentHandler;
 use App\Services\UserHandler;
+use App\Supermarket;
 
 class DepartmentsController extends Controller
 {
@@ -16,7 +17,7 @@ class DepartmentsController extends Controller
     {
       $this->middleware('auth');
     }
-    
+
     /*
     *Function to return department registration form
     */
@@ -33,6 +34,17 @@ class DepartmentsController extends Controller
     {
       $department = Department::find( $id );
       return view('admin.department.department',compact('department'));
+    }
+
+    /*
+    *Function to all get departments
+    */
+    public function get_departments()
+    {
+      $userSupermarkets  = UserHandler::UserSupermarket(Auth::id());
+
+      $departments = Department::paginate(env('NUMBER_OF_ITEMS_IN_TABLE',1));
+      return view('admin.department.index',compact('departments','userSupermarkets'));
     }
 
     /*

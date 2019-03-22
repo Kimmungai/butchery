@@ -51,13 +51,18 @@ Route::post('register-user','admin\RegisterUserController@create_user')->name('C
 Route::post('update-user','admin\RegisterUserController@update_user')->name('Update user');
 Route::get('supermarket-departments/{id}','SupermarketsController@get_departments')->name('Get departments');
 Route::get('customer/{id}','admin\UsersController@get_customer')->name('Get customer');
+Route::get('customers','admin\UsersController@get_customers')->name('Get customers');
 Route::get('admin/{id}','admin\UsersController@get_admin')->name('Get admin');
+Route::get('admins','admin\UsersController@get_admins')->name('Get admins');
 Route::get('staff/{id}','admin\UsersController@get_staff')->name('Get staff');
+Route::get('staff','admin\UsersController@get_all_staff')->name('Get all staff');
 Route::get('delete-user/{id}','admin\UsersController@soft_delete_user')->name('Delete user');
 Route::get('remove-user/{id}','admin\UsersController@remove_user')->name('Remove user');
 Route::get('trashed-users','admin\UsersController@get_trashed_users')->name('Get trashed users');
 Route::get('trashed-user/{id}','admin\UsersController@get_trashed_user')->name('Get trashed user');
 Route::get('restore-user/{id}','admin\UsersController@restore_user')->name('Restore user');
+Route::get('admin-profile','admin\UsersController@profile')->name('Admin profile');
+
 
 //product
 Route::get('/register-product','admin\ProductsController@register_product')->name('Product register form');
@@ -69,11 +74,13 @@ Route::get('/trashed-products','admin\ProductsController@get_trashed_products')-
 Route::get('/trashed-product/{id}','admin\ProductsController@get_trashed_product')->name('Get trashed product');
 Route::get('/restore-product/{id}','admin\ProductsController@restore_product')->name('Restore product');
 Route::get('/remove-product/{id}','admin\ProductsController@remove_product')->name('Remove product');
+Route::get('/products','admin\ProductsController@get_products')->name('Get products');
 
 //department
 Route::get('/register-department','admin\DepartmentsController@register_department')->name('Department register form');
 Route::post('/create-department','admin\DepartmentsController@create_department')->name('Create department');
 Route::get('/department/{id}','admin\DepartmentsController@get_department')->name('Get Department');
+Route::get('/departments','admin\DepartmentsController@get_departments')->name('Get Departments');
 Route::post('/update-department','admin\DepartmentsController@update_department')->name('Update Department');
 Route::get('/delete-department/{id}','admin\DepartmentsController@delete_department')->name('Delete Department');
 Route::get('/trashed-departments','admin\DepartmentsController@get_trashed_departments')->name('Get trashed departments');
@@ -83,6 +90,7 @@ Route::get('/remove-department/{id}','admin\DepartmentsController@remove_departm
 
 //category
 Route::get('/category/{id}','admin\CategoriesController@get_category')->name('Get Category');
+Route::get('/categories','admin\CategoriesController@get_categories')->name('Get Categories');
 Route::get('/register-category','admin\CategoriesController@register_category')->name('Category register form');
 Route::post('/create-category','admin\CategoriesController@create_category')->name('Create Category');
 Route::post('/update-category','admin\CategoriesController@update_category')->name('Update Category');
@@ -94,6 +102,7 @@ Route::get('/remove-category/{id}','admin\CategoriesController@remove_category')
 
 //orders
 Route::get('order/{id}','admin\OrdersController@get_order')->name('Get Order');
+Route::get('orders','admin\OrdersController@get_orders')->name('Get Orders');
 Route::post('update-order','admin\OrdersController@update_order')->name('Update Order');
 Route::get('delete-order/{id}','admin\OrdersController@delete_order')->name('Delete Order');
 Route::get('trashed-orders','admin\OrdersController@get_trashed_orders')->name('Get trashed orders');

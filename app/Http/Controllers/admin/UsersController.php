@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\admin;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Auth;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -30,6 +31,17 @@ class UsersController extends Controller
   {
     $user = User::where('id',$id)->withTrashed()->first();
     return view('admin.trashed-users',compact('user'));
+  }
+
+  /*
+  *Function to return all customers
+  */
+  public function get_customers( )
+  {
+    $userSupermarkets  = $this->get_user_supermarkets(Auth::id());
+
+    $customers = Customer::paginate(env('NUMBER_OF_ITEMS_IN_TABLE',1));
+    return view('admin.customers.index',compact('customers','userSupermarkets'));
   }
 
   /*
@@ -69,6 +81,17 @@ class UsersController extends Controller
   }
 
   /*
+  *Function to return all admins
+  */
+  public function get_admins( )
+  {
+    $userSupermarkets  = $this->get_user_supermarkets(Auth::id());
+
+    $admins = Admin::paginate(env('NUMBER_OF_ITEMS_IN_TABLE',1));
+    return view('admin.admins.index',compact('admins','userSupermarkets'));
+  }
+
+  /*
   *Function to return a staff object
   */
   public function get_staff($id)
@@ -86,6 +109,28 @@ class UsersController extends Controller
     return view('admin.user',compact('user','userSupermarkets'));
   }
 
+  /*
+  *Function to return admin profile
+  */
+  public function profile()
+  {
+    $userSupermarkets  = $this->get_user_supermarkets(Auth::id());
+    $user = User::find(Auth::id());
+    $ordersPackaged = Order::where('packagedBy',Auth::id())->paginate(env('NUMBER_OF_ITEMS_IN_TABLE',1));
+    $ordersReleased = Order::where('releasedBy',Auth::id())->paginate(env('NUMBER_OF_ITEMS_IN_TABLE',1));
+    return view('admin.profile',compact('userSupermarkets','user','ordersPackaged','ordersReleased'));
+  }
+
+  /*
+  *Function to return a all staff
+  */
+  public function get_all_staff( )
+  {
+    $userSupermarkets  = $this->get_user_supermarkets(Auth::id());
+
+    $staff = Staff::paginate(env('NUMBER_OF_ITEMS_IN_TABLE',1));
+    return view('admin.staff.index',compact('staff','userSupermarkets'));
+  }
 
   /*
   *Function to return user supermarkets array

@@ -18,6 +18,7 @@ class CreateAdminsTable extends Migration
             $table->integer('user_id')->unsigned();
             $table->string('departmentId')->nullable();
             $table->string('jobId')->nullable();
+            $table->string('designation')->nullable();
             $table->timestamp('deleted_at')->nullable();
             $table->timestamps();
         });
