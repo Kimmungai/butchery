@@ -7,7 +7,7 @@
 			<div class="container">
 				<ul class="w3_short">
 					<li>
-						<a href="index.html">Home</a>
+						<a href="{{url('/home')}}">Home</a>
 						<i>|</i>
 					</li>
 					<li>{{$product->name}}</li>
@@ -91,8 +91,9 @@
 					<p>
             @if( $product->vegetarian == 1 )
   						<i class="fa fa-hand-o-right" aria-hidden="true"></i>This is a
-  						<label>Vegetarian</label> product.</p>
+  						<label>Vegetarian</label> product.
             @endif
+					</p>
 					<ul>
 						<li>
 							{{$product->description}}
@@ -114,20 +115,26 @@
 				</div>
 				<div class="occasion-cart">
 					<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-						<form action="#" method="post">
+						<!--<form action="#" method="post">
 							<fieldset>
 								<input type="hidden" name="cmd" value="_cart" />
 								<input type="hidden" name="add" value="1" />
 								<input type="hidden" name="business" value=" " />
-								<input type="hidden" name="item_name" value="Zeeba Premium Basmati Rice - 5 KG" />
-								<input type="hidden" name="amount" value="950.00" />
-								<input type="hidden" name="discount_amount" value="1.00" />
+								<input type="hidden" name="item_name" value="{{$product->name}}" />
+								<input type="hidden" name="amount" value="{{$product->salePrice}}" />
+								<input type="hidden" name="discount_amount" value="0.00" />
 								<input type="hidden" name="currency_code" value="USD" />
 								<input type="hidden" name="return" value=" " />
 								<input type="hidden" name="cancel_return" value=" " />
-								<input type="submit" name="submit" value="Add to cart" class="button" />
+								<input id="product-{{$product->id}}-id" type="hidden" name="id" value="{{$product->id}}">
+								<input id="product-{{$product->id}}-quantity" type="hidden" name="quantity" min="1" value="1">
+								<input id="product-{{$product->id}}" type="submit" name="submit" value="Add to cart" class="button" onclick="add_to_cart(this.id)" />
 							</fieldset>
-						</form>
+						</form>-->
+						<input id="product-{{$product->id}}-id" type="hidden" name="id" value="{{$product->id}}">
+						<input id="product-{{$product->id}}-quantity" type="hidden" name="quantity" min="1" value="1">
+						<input id="product-{{$product->id}}" type="submit" name="submit" value="Add to cart" class="button" data-toggle="modal" data-target="#myModal" onclick="add_to_cart(this.id)" />
+
 					</div>
 
 				</div>
@@ -171,20 +178,26 @@
     									<p>Save Ksh. {{ $supProduct->regularPrice - $supProduct->salePrice}}</p>
     								</div>
     								<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-    									<form action="#" method="post">
-    										<fieldset>
-    											<input type="hidden" name="cmd" value="_cart" />
-    											<input type="hidden" name="add" value="1" />
-    											<input type="hidden" name="business" value=" " />
-    											<input type="hidden" name="item_name" value="Aashirvaad, 5g" />
-    											<input type="hidden" name="amount" value="220.00" />
-    											<input type="hidden" name="discount_amount" value="1.00" />
-    											<input type="hidden" name="currency_code" value="USD" />
-    											<input type="hidden" name="return" value=" " />
-    											<input type="hidden" name="cancel_return" value=" " />
-    											<input type="submit" name="submit" value="Add to cart" class="button" />
-    										</fieldset>
-    									</form>
+											<!--<form action="#" method="post">
+												<fieldset>
+													<input type="hidden" name="cmd" value="_cart" />
+													<input type="hidden" name="add" value="1" />
+													<input type="hidden" name="business" value=" " />
+													<input type="hidden" name="item_name" value="{{$product->name}}" />
+													<input type="hidden" name="amount" value="{{$product->salePrice}}" />
+													<input type="hidden" name="discount_amount" value="0.00" />
+													<input type="hidden" name="currency_code" value="USD" />
+													<input type="hidden" name="return" value=" " />
+													<input type="hidden" name="cancel_return" value=" " />
+													<input id="product-{{$product->id}}-id" type="hidden" name="id" value="{{$product->id}}">
+													<input id="product-{{$product->id}}-quantity" type="hidden" name="quantity" min="1" value="1">
+													<input id="product-{{$product->id}}" type="submit" name="submit" value="Add to cart" class="button" onclick="add_to_cart(this.id)" />
+												</fieldset>
+											</form>-->
+											<input id="product-{{$product->id}}-id" type="hidden" name="id" value="{{$product->id}}">
+											<input id="product-{{$product->id}}-quantity" type="hidden" name="quantity" min="1" value="1">
+											<input id="product-{{$product->id}}" type="submit" name="submit" value="Add to cart" class="button" data-toggle="modal" data-target="#myModal" onclick="add_to_cart(this.id)" />
+
     								</div>
     							</div>
     						</div>

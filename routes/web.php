@@ -20,8 +20,13 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('Home');
 Route::get('/set-supermarket/{id}','SupermarketsController@set_supermarket')->name("Set Supermarket");
 Route::post('/home', 'HomeController@index');
+Route::get('/faq', 'HomeController@faq')->name('FAQ');
+Route::get('/contact-us', 'HomeController@contact_us')->name('Contact us');
+
+
 
 Route::post('/add-to-cart','ShoppingCartController@add_to_cart')->name('Add product to cart');
+Route::post('/update-cart','ShoppingCartController@update_cart')->name('Update cart');
 Route::post('/remove-from-cart','ShoppingCartController@remove_from_cart')->name('Remove product from cart');
 Route::post('/empty-cart','ShoppingCartController@empty_cart')->name('Empty cart');
 
@@ -36,8 +41,6 @@ Route::post('mpesa-callback','MpesaPaymentsController@mpesa_callback')->name('Mp
 Route::get('single-product/{id}','ProductController@get_product')->name('Product page');
 Route::get('shop','ProductController@get_products')->name('Products page');
 Route::get('product-category/{id}','ProductController@get_products_in_category')->name('Products in category');
-
-
 
 
 

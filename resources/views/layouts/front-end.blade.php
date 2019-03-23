@@ -55,7 +55,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<ul>
 					<li>
 						<a class="play-icon popup-with-zoom-anim" href="#small-dialog1">
-							<span class="fa fa-map-marker" aria-hidden="true"></span> Shop Locator</a>
+							<span class="fa fa-map-marker" aria-hidden="true"></span> Shop Selector</a>
 					</li>
 					<li>
 						<a href="#" data-toggle="modal" data-target="#myModal1">
@@ -75,14 +75,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				</ul>
 				<!-- //header lists -->
 				<!-- search -->
-				<div class="agileits_search">
+				<!--<div class="agileits_search">
 					<form action="#" method="post">
 						<input name="Search" type="search" placeholder="How can we help you today?" required="">
 						<button type="submit" class="btn btn-default" aria-label="Left Align">
 							<span class="fa fa-search" aria-hidden="true"> </span>
 						</button>
 					</form>
-				</div>
+				</div>-->
 				<!-- //search -->
 				<!-- cart details -->
 				<div class="top_nav_right">
@@ -91,7 +91,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<input type="hidden" name="cmd" value="_cart">
 							<input type="hidden" name="display" value="1">
 
-							<button class="btn bg-transparent" type="submit" name="submit" value="" onclick="showElement('cart-snippet')">
+							<button class="btn bg-transparent" type="button" name="submit" value="" onclick="showElement('cart-snippet')">
 								<i class="fa fa-cart-arrow-down" aria-hidden="true" style="font-size:21px;"></i>
 								<span id="cart-badge" class="badge badge-danger">@if(session('shoppingCart') != null ) {{count(session('shoppingCart'))}} @endif</span>
 							</button>
@@ -121,7 +121,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 									</div>
 									<div class="panel-body" id="cart-contents">
 										@foreach ( session('shoppingCart') as $item )
-											<div class="row">
+											<div  class="row">
 												<div class="col-xs-2"><img class="img-responsive" src="{{$item['image']}}" width="100" height="70">
 												</div>
 												<div class="col-xs-4">
@@ -132,7 +132,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 														<h6><strong>{{$item['price']}} <span class="text-muted">x</span></strong></h6>
 													</div>
 													<div class="col-xs-4">
-														<input type="number" min="1" class="form-control input-sm" value="{{$item['quantity']}}">
+														<input id="product-{{$item['product_id']}}-cart-quantity" type="number" min="1" class="form-control input-sm" value="{{$item['quantity']}}" onchange="update_cart(this.value,{{$item['product_id']}})">
 													</div>
 
 													<div class="col-xs-2">
@@ -145,18 +145,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 											<hr>
 										@endforeach
 
-										<div class="row">
-											<div class="text-center">
-												<div class="col-xs-9">
-													<h6 class="text-right">Added items?</h6>
-												</div>
-												<div class="col-xs-3">
-													<button type="button" class="btn btn-default btn-sm btn-block">
-														Update cart
-													</button>
-												</div>
-											</div>
-										</div>
 									</div>
 									<div class="panel-footer">
 										<div class="row text-center">
@@ -184,14 +172,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<!-- Button trigger modal(shop-locator) -->
 	<div id="small-dialog1" class="mfp-hide">
 		<div class="select-city">
-			<h3>Please Select Your Location</h3>
-			<select class="list_of_cities">
-				<optgroup label="Utawala">
-					<option selected style="display:none;color:#eee;">Select City</option>
-					<option>AP</option>
-				</optgroup>
-
-			</select>
+			<h3>Please Select A Shop</h3>
+			<form id="setSupermarketForm" action="{{url('/home')}}" method="POST">
+				{{csrf_field()}}
+				<select class="list_of_cities" name="supermarket" onchange="submitForm('setSupermarketForm')">
+					@foreach($allSupermarkets as $supermarket)
+						<option value="{{$supermarket->id}}" @if($supermarket->id == session('selectedSupermarket') ) selected @endif>{{$supermarket->name}}</option>
+					@endforeach
+				</select>
+			</form>
 			<div class="clearfix"></div>
 		</div>
 	</div>
@@ -305,14 +294,143 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
   </div>
 </div>
 <!--end add to cart modal-->
+@if (session('message'))
+		<div class="alert alert-success" role="alert">
+				{{ session('message') }}
+		</div>
+@endif
+@if (session('error'))
+		<div class="alert alert-danger" role="alert">
+				{{ session('error') }}
+		</div>
+@endif
 
+<!-- navigation -->
+<div class="ban-top">
+	<div class="container">
+		<!--<div class="agileits-navi_search">
+			<form id="setSupermarketForm" action="{{url('/home')}}" method="POST">
+				{{csrf_field()}}
+				<select name="supermarket" onchange="submitForm('setSupermarketForm')">
+					@foreach($allSupermarkets as $supermarket)
+						<option value="{{$supermarket->id}}" @if($supermarket->id == session('selectedSupermarket') ) selected @endif>{{$supermarket->name}}</option>
+					@endforeach
+				</select>
+			</form>
+		</div>-->
+
+		<div class="top_nav_left" style="float:left">
+			<nav class="navbar navbar-default">
+				<div class="container-fluid">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+								aria-expanded="false">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
+					</div>
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse menu--shylock" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav menu__list">
+							<li class="@if( Request::is('home') ) active @endif">
+								<a class="nav-stylehead" href="/home">Home
+									@if( Request::is('home') )
+									<span class="sr-only">(current)</span>
+									@endif
+								</a>
+							</li>
+							<li class="@if( Request::is('shop') || Request::is('check-out') || Request::is('order-payment') || Request::is('thank-you') || Request::is('single-product/*') ) active @endif">
+								<a class="nav-stylehead" href="/shop">Shop</a>
+								@if( Request::is('shop') || Request::is('check-out') || Request::is('order-payment') || Request::is('thank-you') || Request::is('single-product/*') || Request::is('product-category/*'))
+								<span class="sr-only">(current)</span>
+								@endif
+							</li>
+
+							@foreach( $currentSupermarket as $supermarket )
+								@foreach( $supermarket->department as $department )
+									<?php $x = 1; $i = 1;?>
+									<?php $catId = substr(Request::path(), strrpos(Request::path(), '/') + 1); ?>
+									<li id="department-{{$department->id}}" class="dropdown">
+										<a href="#" class="dropdown-toggle nav-stylehead" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{$department->name}}
+											<span class="caret"></span>
+										</a>
+										<ul class="dropdown-menu multi-column columns-3">
+											<div class="agile_inner_drop_nav_info">
+												<div class="col-sm-4 multi-gd-img">
+													<ul class="multi-column-dropdown">
+														@foreach( $department->category as $category )
+															@if( $x % 2 != 0 )
+																<li>
+																	<a href="/product-category/{{$category->id}}">{{$category->name}}</a>
+																</li>
+																<?php $x++; ?>
+															@endif
+
+														@endforeach
+														<?php $count=1; ?>
+													</ul>
+												</div>
+												<div class="col-sm-4 multi-gd-img">
+													<ul class="multi-column-dropdown">
+														@foreach( $department->category as $category )
+															@if( $i % 2 == 0 )
+																<li>
+																	<a href="/product-category/{{$category->id}}">{{$category->name}}</a>
+																</li>
+																<?php $i++; ?>
+															@endif
+
+															@if( $catId == $category->id )
+															<script type="text/javascript">
+																var deptId = {{$department->id}};
+															</script>
+															@endif
+
+														@endforeach
+													</ul>
+												</div>
+												<div class="col-sm-4 multi-gd-img">
+													<img src="images/nav.png" alt="">
+												</div>
+												<div class="clearfix"></div>
+											</div>
+										</ul>
+									</li>
+
+									@endforeach
+							@endforeach
+
+							<li class="@if( Request::is('faq') ) active @endif">
+								<a class="nav-stylehead" href="{{url('/faq')}}">Faqs</a>
+								@if( Request::is('faq') )
+								<span class="sr-only">(current)</span>
+								@endif
+							</li>
+
+							<li class="@if( Request::is('contact-us') ) active @endif">
+								<a class="nav-stylehead " href="{{url('/contact-us')}}">Contact</a>
+								@if( Request::is('contact-us') )
+								<span class="sr-only">(current)</span>
+								@endif
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
+		</div>
+	</div>
+</div>
+<!-- //navigation -->
 @yield('content')
 <!-- newsletter -->
 <div class="footer-top">
 	<div class="container-fluid">
 		<div class="col-xs-8 agile-leftmk">
-			<h2>Get your Groceries delivered from local stores</h2>
-			<p>Free Delivery on your first order!</p>
+			<h2>Avoid the hustle of queing in supermarkets</h2>
+			<p>Reserve your shopping here and find it ready!</p>
 			<form action="#" method="post">
 				<input type="email" placeholder="E-mail" name="email" required="">
 				<input type="submit" value="Subscribe">
@@ -667,7 +785,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <div class="copy-right">
 	<div class="container">
 		<p>
-			© 2017 Grocery Shoppy. All rights reserved | Design by
+			© {{date('Y')}} {{ config('app.name', 'Laravel') }}. All rights reserved.
 		</p>
 	</div>
 </div>
@@ -841,7 +959,58 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <script src="{{url('/js/main.js')}}"></script>
 <!-- //js-files -->
 
+<!-- easy-responsive-tabs -->
+<link rel="stylesheet" type="text/css" href="{{url('/front-end/css/easy-responsive-tabs.css')}} " />
+<script src="{{url('/front-end/js/easyResponsiveTabs.js')}}"></script>
 
+<script>
+	$(document).ready(function () {
+		//Horizontal Tab
+		$('#parentHorizontalTab').easyResponsiveTabs({
+			type: 'default', //Types: default, vertical, accordion
+			width: 'auto', //auto or any width like 600px
+			fit: true, // 100% fit in a container
+			tabidentify: 'hor_1', // The tab groups identifier
+			activate: function (event) { // Callback function if tab is switched
+				var $tab = $(this);
+				var $info = $('#nested-tabInfo');
+				var $name = $('span', $info);
+				$name.text($tab.text());
+				$info.show();
+			}
+		});
+	});
+</script>
+<!-- //easy-responsive-tabs -->
+
+<!-- credit-card -->
+<!--<script src="{{url('/front-end/js/creditly.js')}}"></script>
+<link rel="stylesheet" href="{{url('/front-end/css/creditly.css')}}" type="text/css" media="all" />-->
+
+<script>
+/*	$(function () {
+		var creditly = Creditly.initialize(
+			'.creditly-wrapper .expiration-month-and-year',
+			'.creditly-wrapper .credit-card-number',
+			'.creditly-wrapper .security-code',
+			'.creditly-wrapper .card-type');
+
+		$(".creditly-card-form .submit").click(function (e) {
+			e.preventDefault();
+			var output = creditly.validate();
+			if (output) {
+				// Your validated credit card output
+				console.log(output);
+			}
+		});
+	});*/
+</script>
+<!-- //credit-card -->
+<script type="text/javascript">
+$(document).ready(function(){
+	$('#department-'+deptId).addClass('active');
+});
+</script>
 </body>
 
 </html>

@@ -5,12 +5,7 @@ function add_to_cart(id)
 {
   var product_id = $("#"+id+"-id").val();
   var quantity = $("#"+id+"-quantity").val();
-  if ( isNaN(parseInt(quantity)) || !isFinite(quantity) ){//data validation
-    alert("Please enter a valid number for the quantity!");
-    return;
-  }
-
-  if( quantity < 1 ){alert("Quantity cannot be less than one");return;}
+  if(!cart_quantity_validation(quantity)){return;}
 
   $.post("/add-to-cart",
         {
@@ -26,6 +21,27 @@ function add_to_cart(id)
       });
 
 }
+
+/*
+*Function to update cart item quantity
+*/
+function update_cart(quantity,product_id)
+{
+  if(!cart_quantity_validation(quantity)){return;}
+  $.post("/update-cart",
+        {
+          id:product_id,
+          quantity:quantity,
+          "_token": $('meta[name="csrf-token"]').attr('content'),
+        },
+        function(data,status){
+          //server response
+          if ( data === '-1' ){ alert("Product out of stock"); $('#product-'+product_id+'-cart-quantity').val($('#product-'+product_id+'-cart-quantity').val()-1); return;}
+          if ( data === '0' ){ alert("Please enter a valid number for the quantity!"); return;}
+          refresh_cart_item_quantity(data);
+      });
+}
+
 /*
 *Function to send remove from cart request to server
 */
@@ -104,7 +120,7 @@ function process_mpesa_payment( userId, orderId )
     _token: $('meta[name="csrf-token"]').attr('content')
   },
   function(data, status){
-    //alert("Data: " + data + "\nStatus: " + status);
+    alert("Data: " + data + "\nStatus: " + status);
   });
 }
 
@@ -175,4 +191,34 @@ channel.bind('mpesa', function(data) {
  function showElement(id)
  {
    $("#"+id).fadeIn('slow');
+ }
+
+ /*
+ *Function to validate cart inputs
+ */
+ function cart_quantity_validation(quantity)
+ {
+   if ( isNaN(parseInt(quantity)) || !isFinite(quantity) ){//data validation
+     alert("Please enter a valid number for the quantity!");
+     return false;
+   }
+
+   if( quantity < 1 ){alert("Quantity cannot be less than one");return false;}
+
+   return true;
+ }
+
+ /*
+ *Function to refresh cart item quantity with new data from server
+ */
+ function refresh_cart_item_quantity(data)
+ {
+   var responseObj = JSON.stringify(data);
+   var response = JSON.parse(responseObj);
+   var cartTotal = 0;
+   for ( var count=0; count<response.length; count++ ){
+
+     cartTotal += parseFloat(response[count].total);
+   }
+   $("#cart-total").text('Ksh. '+cartTotal.toLocaleString());
  }

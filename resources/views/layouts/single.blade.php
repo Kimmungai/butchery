@@ -5,6 +5,9 @@
 	<title>{{ config('app.name', 'Laravel') }}</title>
 	<!--/tags -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<!-- CSRF Token -->
+	<meta name="csrf-token" content="{{ csrf_token() }}">
+
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<meta name="keywords" content="Grocery Shoppy Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template,
 Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
@@ -46,7 +49,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<h1>
 					<a href="/home">
 						<span>{{ config('app.name', 'Laravel') }}</span> supermarket
-						<img src="images/logo2.png" alt=" ">
+						<img src="{{url('front-end/images/logo2.png')}}" alt=" ">
 					</a>
 				</h1>
 			</div>
@@ -56,7 +59,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<ul>
 					<li>
 						<a class="play-icon popup-with-zoom-anim" href="#small-dialog1">
-							<span class="fa fa-map-marker" aria-hidden="true"></span> Shop Locator</a>
+							<span class="fa fa-map-marker" aria-hidden="true"></span> Shop Selector</a>
 					</li>
 					<li>
 						<a href="#" data-toggle="modal" data-target="#myModal1">
@@ -76,14 +79,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				</ul>
 				<!-- //header lists -->
 				<!-- search -->
-				<div class="agileits_search">
+				<!--<div class="agileits_search">
 					<form action="#" method="post">
 						<input name="Search" type="search" placeholder="How can we help you today?" required="">
 						<button type="submit" class="btn btn-default" aria-label="Left Align">
 							<span class="fa fa-search" aria-hidden="true"> </span>
 						</button>
 					</form>
-				</div>
+				</div>-->
 				<!-- //search -->
 				<!-- cart details -->
 				<div class="top_nav_right">
@@ -91,13 +94,79 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<form action="#" method="post" class="last">
 							<input type="hidden" name="cmd" value="_cart">
 							<input type="hidden" name="display" value="1">
-							<button class="w3view-cart" type="submit" name="submit" value="">
-								<i class="fa fa-cart-arrow-down" aria-hidden="true"></i>
+
+							<button class="btn bg-transparent" type="button" name="submit" value="" onclick="showElement('cart-snippet')">
+								<i class="fa fa-cart-arrow-down" aria-hidden="true" style="font-size:21px;"></i>
+								<span id="cart-badge" class="badge badge-danger">@if(session('shoppingCart') != null ) {{count(session('shoppingCart'))}} @endif</span>
 							</button>
 						</form>
 					</div>
 				</div>
 				<!-- //cart details -->
+
+				<!--cart snippet-->
+				<div id="cart-snippet" class="container" style="position:fixed;z-index:100000000000000000;bottom: 20%;left:20%;display:none;">
+						<div class="row">
+							<div class="col-xs-8">
+								<div class="panel panel-info">
+									<div class="panel-heading">
+										<div class="panel-title">
+											<div class="row">
+												<div class="col-xs-6">
+													<h5><span class="glyphicon glyphicon-shopping-cart"></span></h5>
+												</div>
+												<div class="col-xs-6">
+													<button type="button" class="close" onclick="hideElement('cart-snippet')">
+														<span class="glyphicon glyphicon-remove-sign"></span> close
+													</button>
+												</div>
+											</div>
+										</div>
+									</div>
+									<div class="panel-body" id="cart-contents">
+										@foreach ( session('shoppingCart') as $item )
+											<div  class="row">
+												<div class="col-xs-2"><img class="img-responsive" src="{{$item['image']}}" width="100" height="70">
+												</div>
+												<div class="col-xs-4">
+													<h4 class="product-name"><strong>{{$item['item']}}</strong></h4><h4><small></small></h4>
+												</div>
+												<div class="col-xs-6">
+													<div class="col-xs-4 text-right">
+														<h6><strong>{{$item['price']}} <span class="text-muted">x</span></strong></h6>
+													</div>
+													<div class="col-xs-4">
+														<input id="product-{{$item['product_id']}}-cart-quantity" type="number" min="1" class="form-control input-sm" value="{{$item['quantity']}}" onchange="update_cart(this.value,{{$item['product_id']}})">
+													</div>
+
+													<div class="col-xs-2">
+														<button type="button" class="btn btn-link btn-xs" onclick="remove_from_cart({{$item['product_id']}})">
+															<span class="glyphicon glyphicon-trash"> </span>
+														</button>
+													</div>
+												</div>
+											</div>
+											<hr>
+										@endforeach
+
+									</div>
+									<div class="panel-footer">
+										<div class="row text-center">
+											<div class="col-xs-9">
+												<h4 class="text-right">Total <strong id="cart-total">@if(session('shoppingCartTotal')!=null) Ksh. {{ session('shoppingCartTotal') }} @endif</strong></h4>
+											</div>
+											<div class="col-xs-3">
+												<a  href="{{url('check-out')}}" class="btn btn-success btn-block">
+													Checkout
+												</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				<!--end cart snippet-->
 				<div class="clearfix"></div>
 			</div>
 			<div class="clearfix"></div>
@@ -107,14 +176,15 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<!-- Button trigger modal(shop-locator) -->
 	<div id="small-dialog1" class="mfp-hide">
 		<div class="select-city">
-			<h3>Please Select Your Location</h3>
-			<select class="list_of_cities">
-				<optgroup label="Utawala">
-					<option selected style="display:none;color:#eee;">Select City</option>
-					<option>AP</option>
-				</optgroup>
-
-			</select>
+			<h3>Please Select A Shop</h3>
+			<form id="setSupermarketForm" action="{{url('/home')}}" method="POST">
+				{{csrf_field()}}
+				<select class="list_of_cities" name="supermarket" onchange="submitForm('setSupermarketForm')">
+					@foreach($allSupermarkets as $supermarket)
+						<option value="{{$supermarket->id}}" @if($supermarket->id == session('selectedSupermarket') ) selected @endif>{{$supermarket->name}}</option>
+					@endforeach
+				</select>
+			</form>
 			<div class="clearfix"></div>
 		</div>
 	</div>
@@ -203,105 +273,161 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	<!-- //Modal2 -->
 	<!-- //signup Model -->
 	<!-- //header-bot -->
-	<!-- navigation -->
-	<div class="ban-top">
-		<div class="container">
-			<div class="agileits-navi_search">
-				<form id="setSupermarketForm" action="{{url('/home')}}" method="POST">
-					{{csrf_field()}}
-					<select name="supermarket" onchange="submitForm('setSupermarketForm')">
-						@foreach($allSupermarkets as $supermarket)
-							<option value="{{$supermarket->id}}" @if($supermarket->id == session('selectedSupermarket') ) selected @endif>{{$supermarket->name}}</option>
-						@endforeach
-					</select>
-				</form>
-			</div>
 
-			<div class="top_nav_left">
-				<nav class="navbar navbar-default">
-					<div class="container-fluid">
-						<!-- Brand and toggle get grouped for better mobile display -->
-						<div class="navbar-header">
-							<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-									aria-expanded="false">
-								<span class="sr-only">Toggle navigation</span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-								<span class="icon-bar"></span>
-							</button>
-						</div>
-						<!-- Collect the nav links, forms, and other content for toggling -->
-						<div class="collapse navbar-collapse menu--shylock" id="bs-example-navbar-collapse-1">
-							<ul class="nav navbar-nav menu__list">
-								<li class="">
-									<a class="nav-stylehead" href="/home">Home
-									</a>
-								</li>
-								<li class="active">
-									<a class="nav-stylehead" href="/shop">Shop</a>
-									<span class="sr-only">(current)</span>
-								</li>
+	<!-- start add to cart modal -->
+  <div class="modal fade" id="myModal" role="dialog">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{ config('app.name', 'Laravel') }}</h4>
+        </div>
+        <div class="modal-body">
+					<h1 class="text-success text-center"><i class="fa fa-check-circle"></i></h1>
+          <p class="text-success">
+						Added to cart successfully.
+					</p>
+        </div>
+        <div class="modal-footer">
+					<button type="button" class="btn btn-default" data-dismiss="modal" onclick="showElement('cart-snippet')">View cart</button>
 
-								@foreach( $currentSupermarket as $supermarket )
-									@foreach( $supermarket->department as $department )
-										<?php $x = 1; $i = 1;?>
-										<li class="dropdown">
-											<a href="#" class="dropdown-toggle nav-stylehead" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{$department->name}}
-												<span class="caret"></span>
-											</a>
-											<ul class="dropdown-menu multi-column columns-3">
-												<div class="agile_inner_drop_nav_info">
-													<div class="col-sm-4 multi-gd-img">
-														<ul class="multi-column-dropdown">
-															@foreach( $department->category as $category )
-																@if( $x % 2 != 0 )
-																	<li>
-																		<a href="product.html">{{$category->name}}</a>
-																	</li>
-																	<?php $x++; ?>
-																@endif
-															@endforeach
-															<?php $count=1; ?>
-														</ul>
-													</div>
-													<div class="col-sm-4 multi-gd-img">
-														<ul class="multi-column-dropdown">
-															@foreach( $department->category as $category )
-																@if( $i % 2 == 0 )
-																	<li>
-																		<a href="product.html">{{$category->name}}</a>
-																	</li>
-																	<?php $i++; ?>
-																@endif
-															@endforeach
-														</ul>
-													</div>
-													<div class="col-sm-4 multi-gd-img">
-														<img src="images/nav.png" alt="">
-													</div>
-													<div class="clearfix"></div>
-												</div>
-											</ul>
-										</li>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!--end add to cart modal-->
+@if (session('message'))
+		<div class="alert alert-success" role="alert">
+				{{ session('message') }}
+		</div>
+@endif
+@if (session('error'))
+		<div class="alert alert-danger" role="alert">
+				{{ session('error') }}
+		</div>
+@endif
 
-										@endforeach
-								@endforeach
+<!-- navigation -->
+<div class="ban-top">
+	<div class="container">
+		<!--<div class="agileits-navi_search">
+			<form id="setSupermarketForm" action="{{url('/home')}}" method="POST">
+				{{csrf_field()}}
+				<select name="supermarket" onchange="submitForm('setSupermarketForm')">
+					@foreach($allSupermarkets as $supermarket)
+						<option value="{{$supermarket->id}}" @if($supermarket->id == session('selectedSupermarket') ) selected @endif>{{$supermarket->name}}</option>
+					@endforeach
+				</select>
+			</form>
+		</div>-->
 
-								<li class="">
-									<a class="nav-stylehead" href="faqs.html">Faqs</a>
-								</li>
-
-								<li class="">
-									<a class="nav-stylehead" href="contact.html">Contact</a>
-								</li>
-							</ul>
-						</div>
+		<div class="top_nav_left" style="float:left">
+			<nav class="navbar navbar-default">
+				<div class="container-fluid">
+					<!-- Brand and toggle get grouped for better mobile display -->
+					<div class="navbar-header">
+						<button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
+								aria-expanded="false">
+							<span class="sr-only">Toggle navigation</span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+							<span class="icon-bar"></span>
+						</button>
 					</div>
-				</nav>
-			</div>
+					<!-- Collect the nav links, forms, and other content for toggling -->
+					<div class="collapse navbar-collapse menu--shylock" id="bs-example-navbar-collapse-1">
+						<ul class="nav navbar-nav menu__list">
+							<li class="@if( Request::is('home') ) active @endif">
+								<a class="nav-stylehead" href="/home">Home
+									@if( Request::is('home') )
+									<span class="sr-only">(current)</span>
+									@endif
+								</a>
+							</li>
+							<li class="@if( Request::is('shop') || Request::is('check-out') || Request::is('order-payment') || Request::is('thank-you') || Request::is('single-product/*') ) active @endif">
+								<a class="nav-stylehead" href="/shop">Shop</a>
+								@if( Request::is('shop') || Request::is('check-out') || Request::is('order-payment') || Request::is('thank-you') || Request::is('single-product/*') || Request::is('product-category/*'))
+								<span class="sr-only">(current)</span>
+								@endif
+							</li>
+
+							@foreach( $currentSupermarket as $supermarket )
+								@foreach( $supermarket->department as $department )
+									<?php $x = 1; $i = 1;?>
+									<?php $catId = substr(Request::path(), strrpos(Request::path(), '/') + 1); ?>
+									<li id="department-{{$department->id}}" class="dropdown">
+										<a href="#" class="dropdown-toggle nav-stylehead" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{$department->name}}
+											<span class="caret"></span>
+										</a>
+										<ul class="dropdown-menu multi-column columns-3">
+											<div class="agile_inner_drop_nav_info">
+												<div class="col-sm-4 multi-gd-img">
+													<ul class="multi-column-dropdown">
+														@foreach( $department->category as $category )
+															@if( $x % 2 != 0 )
+																<li>
+																	<a href="/product-category/{{$category->id}}">{{$category->name}}</a>
+																</li>
+																<?php $x++; ?>
+															@endif
+
+														@endforeach
+														<?php $count=1; ?>
+													</ul>
+												</div>
+												<div class="col-sm-4 multi-gd-img">
+													<ul class="multi-column-dropdown">
+														@foreach( $department->category as $category )
+															@if( $i % 2 == 0 )
+																<li>
+																	<a href="/product-category/{{$category->id}}">{{$category->name}}</a>
+																</li>
+																<?php $i++; ?>
+															@endif
+
+															@if( $catId == $category->id )
+															<script type="text/javascript">
+																var deptId = {{$department->id}};
+															</script>
+															@endif
+
+														@endforeach
+													</ul>
+												</div>
+												<div class="col-sm-4 multi-gd-img">
+													<img src="images/nav.png" alt="">
+												</div>
+												<div class="clearfix"></div>
+											</div>
+										</ul>
+									</li>
+
+									@endforeach
+							@endforeach
+
+							<li class="@if( Request::is('faq') ) active @endif">
+								<a class="nav-stylehead" href="{{url('/faq')}}">Faqs</a>
+								@if( Request::is('faq') )
+								<span class="sr-only">(current)</span>
+								@endif
+							</li>
+
+							<li class="">
+								<a class="nav-stylehead @if( Request::is('contact-us') ) active @endif" href="{{url('/contact-us')}}">Contact</a>
+								@if( Request::is('contact-us') )
+								<span class="sr-only">(current)</span>
+								@endif
+							</li>
+						</ul>
+					</div>
+				</div>
+			</nav>
 		</div>
 	</div>
-	<!-- //navigation -->
+</div>
+<!-- //navigation -->
 	<!-- banner-2 -->
 	<div class="page-head_agile_info_w3l">
 
@@ -312,8 +438,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
   <div class="footer-top">
     <div class="container-fluid">
       <div class="col-xs-8 agile-leftmk">
-        <h2>Get your Groceries delivered from local stores</h2>
-        <p>Free Delivery on your first order!</p>
+        <h2>Avoid the hustle of queing in supermarkets</h2>
+        <p>Reserve your shopping here and find it ready!</p>
         <form action="#" method="post">
           <input type="email" placeholder="E-mail" name="email" required="">
           <input type="submit" value="Subscribe">
@@ -518,7 +644,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
   <div class="copy-right">
     <div class="container">
       <p>
-        © 2017 Grocery Shoppy. All rights reserved | Design by
+				© {{date('Y')}} {{ config('app.name', 'Laravel') }}. All rights reserved.
       </p>
     </div>
   </div>
@@ -686,6 +812,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
   <!-- for bootstrap working -->
   <script src="{{url('front-end/js/bootstrap.js')}}"></script>
   <!-- //for bootstrap working -->
+	<script src="{{url('/js/main.js')}}"></script>
   <!-- //js-files -->
 
   </body>

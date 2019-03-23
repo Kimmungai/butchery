@@ -1,106 +1,7 @@
 @extends('layouts.front-end')
 
 @section('content')
-<!-- navigation -->
-<div class="ban-top">
-  <div class="container">
-    <div class="agileits-navi_search">
-      <form id="setSupermarketForm" action="{{url('/home')}}" method="POST">
-        {{csrf_field()}}
-        <select name="supermarket" onchange="submitForm('setSupermarketForm')">
-          @foreach($allSupermarkets as $supermarket)
-            <option value="{{$supermarket->id}}" @if($supermarket->id == session('selectedSupermarket') ) selected @endif>{{$supermarket->name}}</option>
-          @endforeach
-        </select>
-      </form>
-    </div>
 
-    <div class="top_nav_left">
-      <nav class="navbar navbar-default">
-        <div class="container-fluid">
-          <!-- Brand and toggle get grouped for better mobile display -->
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
-                aria-expanded="false">
-              <span class="sr-only">Toggle navigation</span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-              <span class="icon-bar"></span>
-            </button>
-          </div>
-          <!-- Collect the nav links, forms, and other content for toggling -->
-          <div class="collapse navbar-collapse menu--shylock" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav menu__list">
-              <li >
-                <a class="nav-stylehead" href="/home">Home
-
-                </a>
-              </li>
-              <li class="active">
-                <a class="nav-stylehead" href="/shop">Shop</a>
-                <span class="sr-only">(current)</span>
-              </li>
-
-              @foreach( $currentSupermarket as $supermarket )
-                @foreach( $supermarket->department as $department )
-                  <?php $x = 1; $i = 1;?>
-                  <li class="dropdown" >
-                    <a href="#" class="dropdown-toggle nav-stylehead" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">{{$department->name}}
-                      <span class="caret"></span>
-                    </a>
-                    <ul class="dropdown-menu multi-column columns-3">
-                      <div class="agile_inner_drop_nav_info">
-                        <div class="col-sm-4 multi-gd-img">
-                          <ul class="multi-column-dropdown">
-                            @foreach( $department->category as $category )
-                              @if( $x % 2 != 0 )
-                                <li>
-                                  <a href="/product-category/{{$category->id}}">{{$category->name}}</a>
-                                </li>
-                                <?php $x++; ?>
-                              @endif
-                            @endforeach
-                            <?php $count=1; ?>
-                          </ul>
-                        </div>
-                        <div class="col-sm-4 multi-gd-img">
-                          <ul class="multi-column-dropdown">
-                            @foreach( $department->category as $category )
-                              @if( $i % 2 == 0 )
-                                <li>
-                                  <a href="/product-category/{{$category->id}}">{{$category->name}}</a>
-                                </li>
-                                <?php $i++; ?>
-                              @endif
-                            @endforeach
-                          </ul>
-                        </div>
-                        <div class="col-sm-4 multi-gd-img">
-                          <img src="images/nav.png" alt="">
-                        </div>
-                        <div class="clearfix"></div>
-                      </div>
-                    </ul>
-                  </li>
-
-                  @endforeach
-              @endforeach
-
-              <li class="">
-                <a class="nav-stylehead" href="faqs.html">Faqs</a>
-              </li>
-
-              <li class="">
-                <a class="nav-stylehead" href="contact.html">Contact</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </div>
-  </div>
-</div>
-<!-- //navigation -->
 	<!-- banner-2 -->
 	<div class="page-head_agile_info_w3l">
 
@@ -112,7 +13,7 @@
 			<div class="container">
 				<ul class="w3_short">
 					<li>
-						<a href="index.html">Home</a>
+						<a href="{{url('/home')}}">Home</a>
 						<i>|</i>
 					</li>
 					<li>@if( isset($productCategory) ){{$productCategory->name}} @else Shop @endif</li>
@@ -227,20 +128,26 @@
     										<del>Ksh. {{$product->regularPrice}}</del>
     									</div>
     									<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-    										<form action="#" method="post">
-    											<fieldset>
-    												<input type="hidden" name="cmd" value="_cart" />
-    												<input type="hidden" name="add" value="1" />
-    												<input type="hidden" name="business" value=" " />
-    												<input type="hidden" name="item_name" value="Zeeba Basmati Rice - 5 KG" />
-    												<input type="hidden" name="amount" value="950.00" />
-    												<input type="hidden" name="discount_amount" value="1.00" />
-    												<input type="hidden" name="currency_code" value="USD" />
-    												<input type="hidden" name="return" value=" " />
-    												<input type="hidden" name="cancel_return" value=" " />
-    												<input type="submit" name="submit" value="Add to cart" class="button" />
-    											</fieldset>
-    										</form>
+												<!--<form action="#" method="post">
+													<fieldset>
+														<input type="hidden" name="cmd" value="_cart" />
+														<input type="hidden" name="add" value="1" />
+														<input type="hidden" name="business" value=" " />
+														<input type="hidden" name="item_name" value="{{$product->name}}" />
+														<input type="hidden" name="amount" value="{{$product->salePrice}}" />
+														<input type="hidden" name="discount_amount" value="0.00" />
+														<input type="hidden" name="currency_code" value="USD" />
+														<input type="hidden" name="return" value=" " />
+														<input type="hidden" name="cancel_return" value=" " />
+														<input id="product-{{$product->id}}-id" type="hidden" name="id" value="{{$product->id}}">
+														<input id="product-{{$product->id}}-quantity" type="hidden" name="quantity" min="1" value="1">
+														<input id="product-{{$product->id}}" type="submit" name="submit" value="Add to cart" class="button" onclick="add_to_cart(this.id)" />
+													</fieldset>
+												</form>-->
+												<input id="product-{{$product->id}}-id" type="hidden" name="id" value="{{$product->id}}">
+												<input id="product-{{$product->id}}-quantity" type="hidden" name="quantity" min="1" value="1">
+												<input id="product-{{$product->id}}" type="submit" name="submit" value="Add to cart" class="button" data-toggle="modal" data-target="#myModal" onclick="add_to_cart(this.id)" />
+
     									</div>
 
     								</div>
@@ -292,20 +199,26 @@
 												<p>Save Ksh. {{$product->regularPrice - $product->salePrice}}</p>
 											</div>
 											<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-												<form action="#" method="post">
+												<!--<form action="#" method="post">
 													<fieldset>
 														<input type="hidden" name="cmd" value="_cart" />
 														<input type="hidden" name="add" value="1" />
 														<input type="hidden" name="business" value=" " />
-														<input type="hidden" name="item_name" value="Aashirvaad, 5g" />
-														<input type="hidden" name="amount" value="220.00" />
-														<input type="hidden" name="discount_amount" value="1.00" />
+														<input type="hidden" name="item_name" value="{{$product->name}}" />
+														<input type="hidden" name="amount" value="{{$product->salePrice}}" />
+														<input type="hidden" name="discount_amount" value="0.00" />
 														<input type="hidden" name="currency_code" value="USD" />
 														<input type="hidden" name="return" value=" " />
 														<input type="hidden" name="cancel_return" value=" " />
-														<input type="submit" name="submit" value="Add to cart" class="button" />
+														<input id="product-{{$product->id}}-id" type="hidden" name="id" value="{{$product->id}}">
+														<input id="product-{{$product->id}}-quantity" type="hidden" name="quantity" min="1" value="1">
+														<input id="product-{{$product->id}}" type="submit" name="submit" value="Add to cart" class="button" onclick="add_to_cart(this.id)" />
 													</fieldset>
-												</form>
+												</form>-->
+												<input id="product-{{$product->id}}-id" type="hidden" name="id" value="{{$product->id}}">
+												<input id="product-{{$product->id}}-quantity" type="hidden" name="quantity" min="1" value="1">
+												<input id="product-{{$product->id}}" type="submit" name="submit" value="Add to cart" class="button" data-toggle="modal" data-target="#myModal" onclick="add_to_cart(this.id)" />
+
 											</div>
 										</div>
 									</div>

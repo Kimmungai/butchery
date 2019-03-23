@@ -45,6 +45,24 @@ class ShoppingCartController extends Controller
   }
 
   /*
+  *Function to update cart item quantity
+  */
+  public function update_cart(Request $request)
+  {
+    $product_id = $request->input('id');
+    $quantity = $request->input('quantity');
+    if( !filter_var($quantity, FILTER_VALIDATE_INT) ){return 0;}//validate quantity
+    $product = Product::where('id',$product_id)->first();
+
+    if($this->available_quantity($product_id) < $quantity){
+
+      return -1; //out of stock
+
+    }
+    return $this->edit_cart($product_id,$quantity);
+  }
+
+  /*
   *Function to remove item from session array that holds cart items
   */
 

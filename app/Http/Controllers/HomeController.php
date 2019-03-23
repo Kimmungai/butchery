@@ -31,4 +31,24 @@ class HomeController extends Controller
         $allSupermarkets = Supermarket::get();
         return view('home',compact('currentSupermarket','allSupermarkets'));
     }
+
+    /*
+    *Function to return faq page
+    */
+    public function faq()
+    {
+      $currentSupermarket = Supermarket::where('id',session('selectedSupermarket'))->get();
+      $allSupermarkets = Supermarket::get();
+      return view('faq',compact('currentSupermarket','allSupermarkets'));
+    }
+
+    /*
+    *Function to return contact us page
+    */
+    public function contact_us()
+    {
+      $currentSupermarket = Supermarket::where('id',session('selectedSupermarket'))->get();
+      $allSupermarkets = Supermarket::get();
+      return view('contact-us',compact('currentSupermarket','allSupermarkets'));
+    }
 }

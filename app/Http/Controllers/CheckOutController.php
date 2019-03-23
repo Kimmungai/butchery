@@ -19,12 +19,14 @@ class CheckOutController extends Controller
     public function index()
     {
       if( session('shoppingCart') == [] ){
-        Session::flash('message', "Please Add products to Cart First!");
-        return back()->withInput();
+        Session::flash('error', "Please Add products to Cart First!");
+        return redirect('shop');
       }
 
-      $supermarkets = Supermarket::all();
-      return view('checkout.index',compact('supermarkets'));
+      //$supermarkets = Supermarket::all();
+      $currentSupermarket = Supermarket::where('id',session('selectedSupermarket'))->get();
+      $allSupermarkets = Supermarket::get();
+      return view('checkout.index',compact('allSupermarkets','currentSupermarket'));
     }
 
     /*
@@ -95,16 +97,20 @@ class CheckOutController extends Controller
     {
       //if the order has not been saved yet return
       if (session('savedUserData') == null || session('savedOrderData') == null ){
-        Session::flash('message', "Please Checkout Before you can pay!");
+        Session::flash('error', "Please Checkout Before you can pay!");
         return back();
 
       }else{
+
+        //$supermarkets = Supermarket::all();
+        $currentSupermarket = Supermarket::where('id',session('selectedSupermarket'))->get();
+        $allSupermarkets = Supermarket::get();
 
         $savedUserData = session('savedUserData');
         $savedOrderData = session('savedOrderData');
 
       }
-      return view('checkout.payment',compact('savedUserData','savedOrderData'));
+      return view('checkout.payment',compact('savedUserData','savedOrderData','currentSupermarket','allSupermarkets'));
     }
 
     /*
@@ -129,7 +135,11 @@ class CheckOutController extends Controller
       //send packaging order
       //send notification to user
 
-      return view('checkout.thankyou',compact('savedUserData','savedOrderData'));
+      //$supermarkets = Supermarket::all();
+      $currentSupermarket = Supermarket::where('id',session('selectedSupermarket'))->get();
+      $allSupermarkets = Supermarket::get();
+
+      return view('checkout.thankyou',compact('savedUserData','savedOrderData','currentSupermarket','allSupermarkets'));
     }
 
     private function amount_payable($amountDue,$discountPercent=0)
