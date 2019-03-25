@@ -29,7 +29,7 @@ class ShoppingCartController extends Controller
       $cart = count(session('shoppingCart')) ? session('shoppingCart') : [];
       if( $this->in_cart($product_id,$cart) ){//check if already in cart
 
-        return $this->edit_cart($product_id,$orderedQuantity);
+        return $this->edit_cart($product_id,1,'init');
 
       }else {
         $newItemPrice = $product->price * $orderedQuantity;
@@ -59,7 +59,7 @@ class ShoppingCartController extends Controller
       return -1; //out of stock
 
     }
-    return $this->edit_cart($product_id,$quantity);
+    return $this->edit_cart($product_id,$quantity,'update');
   }
 
   /*
@@ -100,16 +100,23 @@ class ShoppingCartController extends Controller
   *Function to edit item in cart
   */
 
-  protected function edit_cart($product_id,$newQuantity)
+  protected function edit_cart($product_id,$newQuantity,$type='update')
   {
     $cart =  count(session('shoppingCart')) ? session('shoppingCart') : [];
 
     $count = 0;
     foreach ($cart as $item) {
 
-      if($item['product_id'] == $product_id){
+      if( $item['product_id'] == $product_id && $type=='init' ){
+
+        $cart[$count]['quantity'] +=  $newQuantity;
+        $cart[$count]['total'] = $cart[$count]['price'] * $cart[$count]['quantity'];
+
+      }elseif ($item['product_id'] == $product_id && $type =='update' ) {
+
         $cart[$count]['quantity'] =  $newQuantity;
         $cart[$count]['total'] = $cart[$count]['price'] * $newQuantity;
+
       }
 
       $count++;

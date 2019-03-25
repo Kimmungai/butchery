@@ -44,7 +44,7 @@
 					</form>
 				</div>
 				<!-- price range -->
-				<div class="range">
+				<!--<div class="range">
 					<h3 class="agileits-sear-head">Price range</h3>
 					<ul class="dropdown-menu6">
 						<li>
@@ -53,10 +53,10 @@
 							<input type="text" id="amount" style="border: 0; color: #ffffff; font-weight: normal;" />
 						</li>
 					</ul>
-				</div>
+				</div>-->
 				<!-- //price range -->
 				<!-- food preference -->
-				<div class="left-side">
+				<!--<div class="left-side">
 					<h3 class="agileits-sear-head">Food Preference</h3>
 					<ul>
 						<li>
@@ -68,7 +68,7 @@
 							<span class="span">Non-Vegetarian</span>
 						</li>
 					</ul>
-				</div>
+				</div>-->
 				<!-- //food preference -->
 
         <!-- deals -->
