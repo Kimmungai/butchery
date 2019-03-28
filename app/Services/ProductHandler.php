@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Auth;
 use App\Product;
 use App\Category;
 use App\ProductCategories;
+use App\OrderProducts;
+use Carbon\Carbon;
 
 class ProductHandler
 {
@@ -93,4 +95,19 @@ class ProductHandler
     ProductCategories::where('product_id',$product_id)->forceDelete();
   }
 
+  /*
+  *Function to return all products that are not out of stock of a given supermarket
+  */
+  public static function allProducts( $supermarket_id )
+  {
+    $products = Product::where( 'supermarket_id', $supermarket_id )->get();
+    $count = 0;
+    foreach ( $products as $product ) {
+      if( $product->inventory->quantity > 0 )
+        $count++;
+    }
+    return $count;
+  }
+
+  
 }

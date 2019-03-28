@@ -8,7 +8,13 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Supermarket;
+use App\Customer;
+use App\Staff;
+use App\Order;
+use App\Product;
 use App\Services\UserHandler;
+use App\Services\ProductHandler;
+use App\Services\OrderHandler;
 
 class RegisterUserController extends Controller
 {
@@ -21,8 +27,14 @@ class RegisterUserController extends Controller
     */
     public function index()
     {
+      $statistics['todayOrders'] = OrderHandler::todayOrders( session('selectedSupermarket') );
+      $statistics['todayCustomers'] = UserHandler::todayCustomers( session('selectedSupermarket') );
+      $statistics['allProducts'] = ProductHandler::allProducts( session('selectedSupermarket') );
+      $statistics['allStaff'] = UserHandler::allStaff( session('selectedSupermarket') );
+      $statistics['monthCustomers'] = UserHandler::monthCustomers( session('selectedSupermarket') );
+      $statistics['monthOrders'] = OrderHandler::monthOrders( session('selectedSupermarket') );
       $userSupermarkets  = $this->get_user_supermarkets(Auth::id());
-      return view('admin.index',compact('userSupermarkets'));
+      return view('admin.index',compact('userSupermarkets','statistics'));
     }
 
 

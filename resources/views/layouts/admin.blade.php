@@ -74,7 +74,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 													   <div id="dd" class="wrapper-dropdown-3" tabindex="1">
 
                                       @if( isset($userSupermarkets) )
-  																			<span>{{substr($userSupermarkets[0]->name,0,8)}}</span>
+  																			<span>@if(count($userSupermarkets)) {{substr($userSupermarkets[0]->name,0,8)}} @endif</span>
   																			<ul class="dropdown">
 
                                             @foreach($userSupermarkets as $supermarket)
@@ -286,6 +286,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                   {{ session('error') }}
               </div>
           @endif
+          @if ( count($errors) )
+              <div class="alert alert-danger" role="alert">
+                  Please correct all highlighted errors in the form first
+              </div>
+          @endif
 
           @yield('content')
 
@@ -313,7 +318,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
          <ul>
          <li><a class="tooltips" href="{{url('/admin-profile')}}"><span>Profile</span><i class="lnr lnr-user"></i></a></li>
            <li><a class="tooltips" href="{{url('update-admin-profile')}}"><span>Settings</span><i class="lnr lnr-cog"></i></a></li>
-           <li><a class="tooltips" href="index.html"><span>Log out</span><i class="lnr lnr-power-switch"></i></a></li>
+           <li>
+             <a class="tooltips" href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"><span>Log out</span><i class="lnr lnr-power-switch"></i></a>
+             <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                 @csrf
+             </form>
+           </li>
            </ul>
          </div>
         <!--//down-->

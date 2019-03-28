@@ -22,6 +22,7 @@ Route::get('/set-supermarket/{id}','SupermarketsController@set_supermarket')->na
 Route::post('/home', 'HomeController@index');
 Route::get('/faq', 'HomeController@faq')->name('FAQ');
 Route::get('/contact-us', 'HomeController@contact_us')->name('Contact us');
+Route::get('user-profile', 'UserController@profile')->name('User profile');
 
 
 
@@ -51,7 +52,7 @@ Route::get('product-category/{id}','ProductController@get_products_in_category')
 Route::get('/admin','admin\RegisterUserController@index')->name('Admin');
 Route::get('/register-user','admin\RegisterUserController@register_user')->name('Register User');
 Route::post('register-user','admin\RegisterUserController@create_user')->name('Create user');
-Route::post('update-user','admin\RegisterUserController@update_user')->name('Update user');
+Route::post('update-user','admin\RegisterUserController@update_user')->name('Update user');//required by fron end also!!!!
 Route::get('supermarket-departments/{id}','SupermarketsController@get_departments')->name('Get departments');
 Route::get('customer/{id}','admin\UsersController@get_customer')->name('Get customer');
 Route::get('customers','admin\UsersController@get_customers')->name('Get customers');

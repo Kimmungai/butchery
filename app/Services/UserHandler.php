@@ -2,6 +2,7 @@
 
 namespace App\Services;
 use App\User;
+use Carbon\Carbon;
 use App\UserSupermarkets;
 use App\Supermarket;
 use Illuminate\Support\Facades\Auth;
@@ -207,6 +208,51 @@ class UserHandler
     $number = str_replace( array(' ', '<', '>', '&', '{', '}', '*', "+", '!', '@', '#', "$", '%', '^', '&'), "", $number );
 
     return "254".substr($number, -9);
+  }
+
+  /*
+  *Function to return new customers of a given supermarket in a given day
+  */
+  public static function todayCustomers( $supermarket_id )
+  {
+    $users = User::where( 'supermarket_id', $supermarket_id )->whereDate( 'created_at',Carbon::today() )->get();
+    $count = 0;
+    foreach ( $users as $user ) {
+      if( $user->customer )
+        $count++;
+    }
+    return $count;
+  }
+
+  /*
+  *Function to return new customers of a given supermarket in a given month
+  */
+  public static function monthCustomers( $supermarket_id )
+  {
+    $dt = Carbon::now();
+    $toDate = Carbon::now();
+    $fromDate = $dt->subDays(30);
+    $users = User::where( 'supermarket_id', $supermarket_id )->whereDate( 'created_at','>=',$fromDate)->whereDate( 'created_at','<=',$toDate)->get();
+    $count = 0;
+    foreach ( $users as $user ) {
+      if( $user->customer )
+        $count++;
+    }
+    return $count;
+  }
+
+  /*
+  *Function to return all staff of a given supermarket
+  */
+  public static function allStaff( $supermarket_id )
+  {
+    $users = User::where( 'supermarket_id', $supermarket_id )->get();
+    $count = 0;
+    foreach ( $users as $user ) {
+      if( $user->staff )
+        $count++;
+    }
+    return $count;
   }
 
 }

@@ -12,7 +12,7 @@
 																<h4> Customers</h4>
 															</div>
 															<div class="stats-right">
-																<label>8</label>
+																<label>{{$statistics['todayCustomers']}}</label>
 															</div>
 															<div class="clearfix"> </div>
 														</div></a>
@@ -23,18 +23,18 @@
 																<h4>Orders</h4>
 															</div>
 															<div class="stats-right">
-																<label> 85</label>
+																<label> {{$statistics['todayOrders']}}</label>
 															</div>
 															<div class="clearfix"> </div>
 														</div></a>
 
 														<a href="/products"><div class="col-md-3 widget states-thrd">
 															<div class="stats-left">
-																<h5>Today</h5>
+																<h5>All</h5>
 																<h4>Items</h4>
 															</div>
 															<div class="stats-right">
-																<label>51</label>
+																<label>{{$statistics['allProducts']}}</label>
 															</div>
 															<div class="clearfix"> </div>
 														</div></a>
@@ -42,11 +42,11 @@
 
 														<a href="/staff"><div class="col-md-3 widget states-last">
 															<div class="stats-left">
-																<h5>Today</h5>
+																<h5>All</h5>
 																<h4>Staff</h4>
 															</div>
 															<div class="stats-right">
-																<label>30</label>
+																<label>{{$statistics['allStaff']}}</label>
 															</div>
 															<div class="clearfix"> </div>
 														</div>  </a>
@@ -241,9 +241,8 @@
                                 <div class="stats-info graph">
                                   <div class="stats">
                                     <ul class="list-unstyled">
-                                      <li>Monthly New customers<div class="text-success pull-right">12%<i class="fas fa-level-up-alt text-success"></i></div></li>
-                                      <li>Monthly New orders<div class="text-success pull-right">15%<i class="fas fa-level-down-alt text-danger"></i></div></li>
-                                      <li>Monthly Repeat orders<div class="text-success pull-right">18%<i class="fas fa-level-up-alt text-success"></i></div></li>
+                                      <li>Monthly new customers<div class="text-success pull-right">{{$statistics['monthCustomers']}}<!--<i class="fas fa-level-up-alt text-success"></i>--></div></li>
+                                      <li>Monthly new orders<div class="text-success pull-right">{{$statistics['monthOrders']}}<!--<i class="fas fa-level-down-alt text-danger"></i>--></div></li>
                                     </ul>
                                   </div>
                                 </div>
@@ -964,21 +963,21 @@
 																	</div>
 															</div>-->
 														<div class="col-md-6 tini-time-line">
-														 <h3 class="sub-tittle">Time line </h3>
+														 <h3 class="sub-tittle">Pending </h3>
 															<ul class="timeline">
 																<li>
 																  <div class="timeline-badge info"><i class="fa fa-smile-o"></i></div>
 																  <div class="timeline-panel">
 																	<div class="timeline-heading">
-																	  <h4 class="timeline-title">Title</h4>
+																	  <h4 class="timeline-title">Approval</h4>
 																	</div>
 																	<div class="timeline-body">
-																	  <p>Description...</p>
+																	  <p>User id has not yet been approved. <a href="#">click here</a> to approve.</p>
 																	</div>
 																  </div>
 																</li>
 
-																<li>
+																<!--<li>
 																  <div class="timeline-badge primary"><i class="fa fa-star-o"></i></div>
 																  <div class="timeline-panel">
 																	<div class="timeline-heading">
@@ -1014,7 +1013,7 @@
 																	  <p>Description...</p>
 																	</div>
 																  </div>
-																</li>
+																</li>-->
 															</ul>
 														</div>
 															<div class="clearfix"></div>
@@ -1031,9 +1030,9 @@
                                                 <div class="progress progress-bar-xs">
                                                     <div class="progress-bar progress-bar-info" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width: 20%;"></div>
                                                 </div>
-                                                <p>We Todayly recommend you change your plan to <strong>Pro</strong>. Click here to get more details.</p>
+                                                <p></p>
 
-                                                <a href="#" class="dev-drop">Take a closer look <span class="fa fa-angle-right pull-right"></span></a>
+                                                <!--<a href="#" class="dev-drop">Take a closer look <span class="fa fa-angle-right pull-right"></span></a>-->
                                             </div>
 
                                         </div>
@@ -1046,9 +1045,9 @@
                                                 <div class="progress progress-bar-xs">
                                                     <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 79%;"></div>
                                                 </div>
-                                                <p>We happy to notice you that you become an Elite customer, and you can get some custom sugar.</p>
+                                                <!--<p>We happy to notice you that you become an Elite customer, and you can get some custom sugar.</p>
 
-                                                <a href="#" class="dev-drop">Take a closer look <span class="fa fa-angle-right pull-right"></span></a>
+                                                <a href="#" class="dev-drop">Take a closer look <span class="fa fa-angle-right pull-right"></span></a>-->
                                             </div>
 
                                         </div>
@@ -1062,7 +1061,7 @@
                                                 <div class="progress progress-bar-xs">
                                                     <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="5" aria-valuemin="0" aria-valuemax="100" style="width: 5%;"></div>
                                                 </div>
-                                                <p>The item is fast moving</p>
+                                                <!--<p>The item is fast moving</p>-->
 
                                                 <a href="product/" class="dev-drop">Take a closer look <span class="fa fa-angle-right pull-right"></span></a>
                                             </div>

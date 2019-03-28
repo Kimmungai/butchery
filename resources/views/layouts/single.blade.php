@@ -49,7 +49,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				<h1>
 					<a href="/home">
 						<span>{{ config('app.name', 'Laravel') }}</span> supermarket
-						<img src="{{url('front-end/images/logo2.png')}}" alt=" ">
+						<img src="{{url('front-end/images/logo2.png')}}" alt="{{ config('app.name', 'Laravel') }} " height="85" width="85">
 					</a>
 				</h1>
 			</div>
@@ -61,21 +61,38 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<a class="play-icon popup-with-zoom-anim" href="#small-dialog1">
 							<span class="fa fa-map-marker" aria-hidden="true"></span> Shop Selector</a>
 					</li>
-					<li>
+					<!--<li>
 						<a href="#" data-toggle="modal" data-target="#myModal1">
 							<span class="fa fa-truck" aria-hidden="true"></span>Track Order</a>
-					</li>
+					</li>-->
 					<li>
 						<span class="fa fa-phone" aria-hidden="true"></span> 001 234 5678
 					</li>
+					@if( Auth::check() )
 					<li>
-						<a href="#" data-toggle="modal" data-target="#myModal1">
+						<a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+							<span class="fa fa-lock" aria-hidden="true"></span> Sign out </a>
+							<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+									@csrf
+							</form>
+					</li>
+
+					<li>
+						<a href="{{url('user-profile')}}" >
+							<span class="fa fa-user" aria-hidden="true"></span> {{Auth::user()->lastName}} </a>
+					</li>
+					@else
+					<li>
+						<a id="signinForm" href="#" data-toggle="modal" data-target="#myModal1">
 							<span class="fa fa-unlock-alt" aria-hidden="true"></span> Sign In </a>
 					</li>
+
 					<li>
 						<a href="#" data-toggle="modal" data-target="#myModal2">
 							<span class="fa fa-pencil-square-o" aria-hidden="true"></span> Sign Up </a>
 					</li>
+					@endif
+
 				</ul>
 				<!-- //header lists -->
 				<!-- search -->
@@ -209,12 +226,31 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 							<a href="#" data-toggle="modal" data-target="#myModal2">
 								Sign Up Now</a>
 						</p>
-						<form action="#" method="post">
+						<form method="POST" action="{{ route('login') }}">
+							@csrf
 							<div class="styled-input agile-styled-input-top">
-								<input type="text" placeholder="User Name" name="Name" required="">
+								<input class="{{ $errors->has('email') ? ' is-invalid' : '' }}" id="email" type="email" placeholder="Your Email" name="email" value="{{ old('email') }}" required autofocus>
+								@if ($errors->has('email'))
+										<span class="invalid-feedback text-danger" role="alert">
+												<strong>{{ $errors->first('email') }}</strong>
+										</span>
+
+								@endif
 							</div>
 							<div class="styled-input">
-								<input type="password" placeholder="Password" name="password" required="">
+								<input class="{{ $errors->has('password') ? ' is-invalid' : '' }}" id="password" type="password" placeholder="Your Password" name="password" required>
+								@if ($errors->has('password'))
+										<span class="invalid-feedback text-danger" role="alert">
+												<strong>{{ $errors->first('password') }}</strong>
+										</span>
+
+								@endif
+							</div>
+							<div class="styled-input">
+								<input class="form-check-input" type="checkbox" name="remember" id="remember" {{ old('remember') ? 'checked' : '' }}>
+								<label class="form-check-label" for="remember">
+										{{ __('Remember Me') }}
+								</label>
 							</div>
 							<input type="submit" value="Sign In">
 						</form>
@@ -246,20 +282,96 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 						<p>
 							Come join the Grocery Shoppy! Let's set up your Account.
 						</p>
-						<form action="#" method="post">
-							<div class="styled-input agile-styled-input-top">
-								<input type="text" placeholder="Name" name="Name" required="">
-							</div>
-							<div class="styled-input">
-								<input type="email" placeholder="E-mail" name="Email" required="">
-							</div>
-							<div class="styled-input">
-								<input type="password" placeholder="Password" name="password" id="password1" required="">
-							</div>
-							<div class="styled-input">
-								<input type="password" placeholder="Confirm Password" name="Confirm Password" id="password2" required="">
-							</div>
-							<input type="submit" value="Sign Up">
+						<form method="POST" action="{{ route('register') }}">
+								@csrf
+
+								<div class="form-group row">
+										<label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Username') }}</label>
+
+										<div class="col-md-6">
+												<input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ old('name') }}" required autofocus>
+
+												@if ($errors->has('name'))
+														<span class="invalid-feedback" role="alert">
+																<strong>{{ $errors->first('name') }}</strong>
+														</span>
+												@endif
+										</div>
+								</div>
+
+								<div class="form-group row">
+										<label for="name" class="col-md-4 col-form-label text-md-right">{{ __('First Name') }}</label>
+
+										<div class="col-md-6">
+												<input id="name" type="text" class="form-control{{ $errors->has('firstName') ? ' is-invalid' : '' }}" name="firstName" value="{{ old('firstName') }}" required autofocus>
+
+												@if ($errors->has('firstName'))
+														<span class="invalid-feedback" role="alert">
+																<strong>{{ $errors->first('firstName') }}</strong>
+														</span>
+												@endif
+										</div>
+								</div>
+
+								<div class="form-group row">
+										<label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Last Name') }}</label>
+
+										<div class="col-md-6">
+												<input id="name" type="text" class="form-control{{ $errors->has('lastName') ? ' is-invalid' : '' }}" name="lastName" value="{{ old('lastName') }}" required autofocus>
+
+												@if ($errors->has('lastName'))
+														<span class="invalid-feedback" role="alert">
+																<strong>{{ $errors->first('lastName') }}</strong>
+														</span>
+												@endif
+										</div>
+								</div>
+
+								<div class="form-group row">
+										<label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+
+										<div class="col-md-6">
+												<input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ old('email') }}" required>
+
+												@if ($errors->has('email'))
+														<span class="invalid-feedback" role="alert">
+																<strong>{{ $errors->first('email') }}</strong>
+														</span>
+												@endif
+										</div>
+								</div>
+
+								<div class="form-group row">
+										<label for="password" class="col-md-4 col-form-label text-md-right">{{ __('Password') }}</label>
+
+										<div class="col-md-6">
+												<input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" required>
+
+												@if ($errors->has('password'))
+														<span class="invalid-feedback" role="alert">
+																<strong>{{ $errors->first('password') }}</strong>
+														</span>
+												@endif
+										</div>
+								</div>
+
+								<div class="form-group row">
+										<label for="password-confirm" class="col-md-4 col-form-label text-md-right">{{ __('Confirm Password') }}</label>
+
+										<div class="col-md-6">
+												<input id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+										</div>
+								</div>
+
+								<input type="hidden" name="supermarket_id" value="@if( session('selectedSupermarket') !=''  ) {{session('selectedSupermarket')}}@else 1 @endif">
+
+								<div class="form-group row mb-0">
+										<div class="col-md-6 offset-md-4">
+												<input type="submit" value="{{ __('Register') }}">
+
+
+										</div>
+								</div>
 						</form>
 						<p>
 							<a href="#">By clicking register, I agree to your terms</a>
@@ -298,6 +410,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
   </div>
 </div>
 <!--end add to cart modal-->
+
 @if (session('message'))
 		<div class="alert alert-success" role="alert">
 				{{ session('message') }}
@@ -428,11 +541,6 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	</div>
 </div>
 <!-- //navigation -->
-	<!-- banner-2 -->
-	<div class="page-head_agile_info_w3l">
-
-	</div>
-	<!-- //banner-2 -->
   @yield('content')
   <!-- newsletter -->
   <div class="footer-top">
@@ -814,7 +922,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
   <!-- //for bootstrap working -->
 	<script src="{{url('/js/main.js')}}"></script>
   <!-- //js-files -->
-
+	@if ($errors->has('password') || $errors->has('email'))
+		<script type="text/javascript">$("#myModal1").modal();</script>
+	@endif
+	@if ($errors->has('name') || $errors->has('firstName') || $errors->has('lastName') || $errors->has('email') || $errors->has('password') || $errors->has('password_confirmation'))
+		<script type="text/javascript">$("#myModal2").modal();</script>
+	@endif
   </body>
 
   </html>
