@@ -11,7 +11,7 @@ class Product extends Model
   use SoftDeletes;
 
   protected $fillable = [
-      'name','sku','img1','img2','img3', 'img4', 'img5','createdBy','type','virtualProduct','price','salePrice','regularPrice','description','purchaseNote','excerpt','supermarket_id','category_id','rating'
+      'name','sku','img1','img2','img3', 'img4', 'img5','createdBy','type','virtualProduct','price','salePrice','regularPrice','description','purchaseNote','excerpt','supermarket_id','category_id','rating','specialFeatured'
   ];
 
   public function supermarket()

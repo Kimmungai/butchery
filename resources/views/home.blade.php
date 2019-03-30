@@ -15,11 +15,11 @@
 			<div class="item active">
 				<div class="container">
 					<div class="carousel-caption">
-						<h3>Avoid
-							<span>Queues</span>
+						<h3>Poultry
+							<span>Products</span>
 						</h3>
-						<p>Get flat
-							<span>10%</span> Cashback</p>
+						<p>Get the
+							<span>best</span> kienyeji chicken</p>
 						<a class="button2" href="/shop">Shop Now </a>
 					</div>
 				</div>
@@ -39,17 +39,17 @@
 			<div class="item item3">
 				<div class="container">
 					<div class="carousel-caption">
-						<h3>Big
-							<span>Deal</span>
+						<h3>Free
+							<span>Delivery</span>
 						</h3>
-						<p>Get Best Offer Upto
-							<span>20%</span>
+						<p>Enjoy our
+							<span>superb</span> service
 						</p>
 						<a class="button2" href="/shop">Shop Now </a>
 					</div>
 				</div>
 			</div>
-			<div class="item item4">
+			<!--<div class="item item4">
 				<div class="container">
 					<div class="carousel-caption">
 						<h3>Today
@@ -60,7 +60,7 @@
 						<a class="button2" href="/shop">Shop Now </a>
 					</div>
 				</div>
-			</div>
+			</div>-->
 		</div>
 		<a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
 			<span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -298,9 +298,10 @@
 
 									 <div class="product-sec1">
 				 						<h3 class="heading-tittle text-capitalize">{{$category->name}}</h3>
+										<?php $i=0; ?>
 										@foreach ( $supermarket->product as $product )
-											@if( $product->category_id == $category->id )
-
+											@foreach( $product->ProductCategories as $product->ProductCategory )
+											<?php if($i > 2){continue;} ?>
 						 						<div class="col-md-4 product-men">
 						 							<div class="men-pro-item simpleCart_shelfItem">
 						 								<div class="men-thumb-item">
@@ -323,22 +324,7 @@
 						 										<del>Ksh. {{$product->regularPrice}}</del>
 						 									</div>
 						 									<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-						 										<!--<form action="#" method="post">
-						 											<fieldset>
-						 												<input type="hidden" name="cmd" value="_cart" />
-						 												<input type="hidden" name="add" value="1" />
-						 												<input type="hidden" name="business" value=" " />
-						 												<input type="hidden" name="item_name" value="{{$product->name}}" />
-						 												<input type="hidden" name="amount" value="{{$product->salePrice}}" />
-						 												<input type="hidden" name="discount_amount" value="0.00" />
-						 												<input type="hidden" name="currency_code" value="USD" />
-						 												<input type="hidden" name="return" value=" " />
-						 												<input type="hidden" name="cancel_return" value=" " />
-																		<input id="product-{{$product->id}}-id" type="hidden" name="id" value="{{$product->id}}">
-							                      <input id="product-{{$product->id}}-quantity" type="hidden" name="quantity" min="1" value="1">
-						 												<input id="product-{{$product->id}}" type="submit" name="submit" value="Add to cart" class="button" onclick="add_to_cart(this.id)" />
-						 											</fieldset>
-						 										</form>-->
+
 																<input id="product-{{$product->id}}-id" type="hidden" name="id" value="{{$product->id}}">
 																<input id="product-{{$product->id}}-quantity" type="hidden" name="quantity" min="1" value="1">
 																<input id="product-{{$product->id}}" type="submit" name="submit" value="Add to cart" class="button" data-toggle="modal" data-target="#myModal" onclick="add_to_cart(this.id)" />
@@ -347,7 +333,9 @@
 						 								</div>
 						 							</div>
 						 						</div>
-												@endif
+
+												<?php $i++ ?>
+												@endforeach
 										@endforeach
 
 				 						<div class="clearfix"></div>
@@ -364,7 +352,7 @@
 
 					<!-- //first section (nuts) -->
 					@foreach( $currentSupermarket as $supermarket )
-						@foreach( $supermarket->product as $product )
+						@foreach( $supermarket->product->reverse() as $product )
 							@if( $product->specialFeatured == 1 )
 								<!-- second section (nuts special) -->
 								<div class="product-sec1 product-sec2">
@@ -384,6 +372,7 @@
 									<div class="clearfix"></div>
 								</div>
 								<!-- //second section (nuts special) -->
+								<?php break; ?>
 							@endif
 						@endforeach
 					@endforeach
@@ -404,10 +393,11 @@
 
 									 <div class="product-sec1">
 				 						<h3 class="heading-tittle">{{$category->name}}</h3>
-
+										<?php $i=0; ?>
 										@foreach( $supermarket->product as $product )
 
-										 @if( $product->category_id == $category->id )
+										 @foreach( $product->ProductCategories as $product->ProductCategory )
+										 <?php if($i > 2){continue;} ?>
 						 						<div class="col-md-4 product-men">
 						 							<div class="men-pro-item simpleCart_shelfItem">
 						 								<div class="men-thumb-item">
@@ -427,22 +417,7 @@
 						 										<del>Ksh. {{$product->regularPrice}}</del>
 						 									</div>
 						 									<div class="snipcart-details top_brand_home_details item_add single-item hvr-outline-out">
-																<!--<form action="#" method="post">
-						 											<fieldset>
-						 												<input type="hidden" name="cmd" value="_cart" />
-						 												<input type="hidden" name="add" value="1" />
-						 												<input type="hidden" name="business" value=" " />
-						 												<input type="hidden" name="item_name" value="{{$product->name}}" />
-						 												<input type="hidden" name="amount" value="{{$product->salePrice}}" />
-						 												<input type="hidden" name="discount_amount" value="0.00" />
-						 												<input type="hidden" name="currency_code" value="USD" />
-						 												<input type="hidden" name="return" value=" " />
-						 												<input type="hidden" name="cancel_return" value=" " />
-																		<input id="product-{{$product->id}}-id" type="hidden" name="id" value="{{$product->id}}">
-							                      <input id="product-{{$product->id}}-quantity" type="hidden" name="quantity" min="1" value="1">
-						 												<input id="product-{{$product->id}}" type="submit" name="submit" value="Add to cart" class="button" onclick="add_to_cart(this.id)" />
-						 											</fieldset>
-						 										</form>-->
+
 																<input id="product-{{$product->id}}-id" type="hidden" name="id" value="{{$product->id}}">
 																<input id="product-{{$product->id}}-quantity" type="hidden" name="quantity" min="1" value="1">
 																<input id="product-{{$product->id}}" type="submit" name="submit" value="Add to cart" class="button" data-toggle="modal" data-target="#myModal" onclick="add_to_cart(this.id)" />
@@ -452,7 +427,8 @@
 						 								</div>
 						 							</div>
 						 						</div>
-											@endif
+												<?php $i++ ?>
+											@endforeach
 										@endforeach
 
 				 						<div class="clearfix"></div>

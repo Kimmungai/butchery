@@ -100,4 +100,21 @@ class OrderHandler
     return $count;
   }
 
+  /*
+  *Function to return daily earnings
+  */
+  public static function todayEarnings( $supermarket_id )
+  {
+    $orders = Order::where('state',5)->whereDate('created_at', Carbon::today())->get();
+    $totalAmount = 0;
+    foreach ($orders as $order) {
+      if( $order->payment )
+      {
+        $totalAmount += $order->payment->amountReceived;
+      }
+    }
+
+    return $totalAmount;
+  }
+
 }

@@ -24,8 +24,9 @@ class CategoriesController extends Controller
   */
   public function register_category(  )
   {
+    $userSupermarkets  = UserHandler::UserSupermarket(Auth::id());
     $allDepartments = UserHandler::userSupermarketDepartments( Auth::id() );
-    return view('admin.category.register',compact('allDepartments'));
+    return view('admin.category.register',compact('allDepartments','userSupermarkets'));
   }
 
   /*
@@ -52,8 +53,9 @@ class CategoriesController extends Controller
   public function get_category( $id )
   {
     $category = Category::find($id);
+    $userSupermarkets  = UserHandler::UserSupermarket(Auth::id());
     $allDepartments = UserHandler::userSupermarketDepartments( Auth::id() );
-    return view('admin.category.category',compact('category','allDepartments'));
+    return view('admin.category.category',compact('category','allDepartments','userSupermarkets'));
   }
 
   /*
@@ -162,7 +164,7 @@ class CategoriesController extends Controller
   {
     if( $request->hasFile('img') )
     {
-      $storageLoc = env('CATEGORY_IMAGES_STORAGE_LOC','/public/categories/'.$category_id.'');
+      $storageLoc = env('CATEGORY_IMAGES_STORAGE_LOC','public/categories/'.$category_id.'');
 
       $validatedCategory['img'] = $this->excuteFileUpload($storageLoc,$request,'img');
     }
@@ -174,14 +176,19 @@ class CategoriesController extends Controller
   */
   private function excuteFileUpload($storageLoc,$request,$value)
   {
-    if(!Storage::exists($storageLoc)) {
+    /*if(!file_exists($storageLoc)) {
 
-      Storage::makeDirectory($storageLoc, 0775, true); //creates directory
+      mkdir($storageLoc); //creates directory
 
-    }
-    $path = Storage::url($request->file($value)->store($storageLoc));
+    }*/
+    //$destination = 'images';
+    $image = $request->file($value);
+    $name = time().'.'.$image->getClientOriginalExtension();
+    $image->move($storageLoc, $name);
 
-    return asset($path);
+    //$path = Storage::url($request->file($value)->store($storageLoc));
+
+    return asset($storageLoc.'/'.$name);
   }
 
   /*
@@ -193,7 +200,8 @@ class CategoriesController extends Controller
       'name' => 'required|unique:categories,name,'.$category_id.'',
       'department_id' => 'required|numeric',
       'img' => 'nullable|max:10000|mimes:jpeg,bmp,png',
-      'description' => 'nullable'
+      'description' => 'nullable',
+      'featured' =>'nullable'
     ];
 
     $validatedCategory = $request->validate($data);

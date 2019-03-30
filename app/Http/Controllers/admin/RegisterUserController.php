@@ -33,6 +33,10 @@ class RegisterUserController extends Controller
       $statistics['allStaff'] = UserHandler::allStaff( session('selectedSupermarket') );
       $statistics['monthCustomers'] = UserHandler::monthCustomers( session('selectedSupermarket') );
       $statistics['monthOrders'] = OrderHandler::monthOrders( session('selectedSupermarket') );
+      $statistics['pendingOrders'] = Order::where('state',0)->get();
+      $statistics['todayStaffUsage'] = UserHandler::todayStaffUsage(session('selectedSupermarket'));
+      $statistics['todayEarnings'] = OrderHandler::todayEarnings(session('selectedSupermarket'));
+      $statistics['lowStock'] = ProductHandler::lowStock(session('selectedSupermarket'));
       $userSupermarkets  = $this->get_user_supermarkets(Auth::id());
       return view('admin.index',compact('userSupermarkets','statistics'));
     }
@@ -64,17 +68,17 @@ class RegisterUserController extends Controller
 
       if( $request->hasFile('avatar') )
       {
-        $storageLoc = env('AVATAR_STORAGE_LOC','/public/users/'.$userType.'/avatars');
+        $storageLoc = env('AVATAR_STORAGE_LOC','public/users/'.$userType.'/avatars');
         $userData['avatar'] = $this->handleFileUpload($storageLoc,$request);
       }
       if( $request->hasFile('idImage') )
       {
-        $storageLoc = env('ID_STORAGE_LOC','/public/users/'.$userType.'/avatars');
+        $storageLoc = env('ID_STORAGE_LOC','public/users/'.$userType.'/avatars');
         $userData['idImage'] = $this->handleFileUpload($storageLoc,$request,'idImage');
       }
       if( $request->hasFile('passportImage') )
       {
-        $storageLoc = env('PASSPORT_STORAGE_LOC','/public/users/'.$userType.'/avatars');
+        $storageLoc = env('PASSPORT_STORAGE_LOC','public/users/'.$userType.'/avatars');
         $userData['passportImage'] = $this->handleFileUpload($storageLoc,$request,'passportImage');
       }
 
@@ -106,17 +110,17 @@ class RegisterUserController extends Controller
 
       if( $request->hasFile('avatar') )
       {
-        $storageLoc = env('AVATAR_STORAGE_LOC','/public/users/'.$userType.'/avatars');
+        $storageLoc = env('AVATAR_STORAGE_LOC','public/users/'.$userType.'/avatars');
         $userData['avatar'] = $this->handleFileUpload($storageLoc,$request);
       }
       if( $request->hasFile('idImage') )
       {
-        $storageLoc = env('ID_STORAGE_LOC','/public/users/'.$userType.'/avatars');
+        $storageLoc = env('ID_STORAGE_LOC','public/users/'.$userType.'/avatars');
         $userData['idImage'] = $this->handleFileUpload($storageLoc,$request,'idImage');
       }
       if( $request->hasFile('passportImage') )
       {
-        $storageLoc = env('PASSPORT_STORAGE_LOC','/public/users/'.$userType.'/avatars');
+        $storageLoc = env('PASSPORT_STORAGE_LOC','public/users/'.$userType.'/avatars');
         $userData['passportImage'] = $this->handleFileUpload($storageLoc,$request,'passportImage');
       }
       //add otehr file uploads
@@ -274,13 +278,26 @@ class RegisterUserController extends Controller
     */
     private function handleFileUpload($storageLoc,$request,$value='avatar')
     {
-      if(!Storage::exists($storageLoc)) {
+      /*if(!Storage::exists($storageLoc)) {
 
         Storage::makeDirectory($storageLoc, 0775, true); //creates directory
 
       }
       $path = Storage::url($request->file($value)->store($storageLoc));
 
-      return asset($path);
+      return asset($path);*/
+      /*if(!file_exists($storageLoc)) {
+
+        mkdir($storageLoc); //creates directory
+
+      }*/
+      //$destination = 'images';
+      $image = $request->file($value);
+      $name = time().'.'.$image->getClientOriginalExtension();
+      $image->move($storageLoc, $name);
+
+      //$path = Storage::url($request->file($value)->store($storageLoc));
+
+      return asset($storageLoc.'/'.$name);
     }
 }

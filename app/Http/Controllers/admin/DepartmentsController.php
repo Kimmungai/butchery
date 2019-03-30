@@ -23,8 +23,8 @@ class DepartmentsController extends Controller
     */
     public function register_department(  )
     {
-      $allSupermarkets = UserHandler::UserSupermarket( Auth::id() );
-      return view('admin.department.register',compact('allSupermarkets'));
+      $userSupermarkets = UserHandler::UserSupermarket( Auth::id() );
+      return view('admin.department.register',compact('userSupermarkets'));
     }
 
     /*

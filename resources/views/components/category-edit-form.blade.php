@@ -53,6 +53,25 @@
 </div>
 
 <div class="form-group">
+  <label for="focusedinput" class="col-sm-2 control-label">Featured</label>
+  <div class="col-sm-8">
+      <select class="form-control1" name="featured">
+        <option value="0" @if (old('featured') == 0) selected @elseif( isset($category) && $category->featured== 0 && old('featured') == null ) selected @endif>No</option>
+        <option value="1" @if (old('featured') == 1) selected @elseif( isset($category) && $category->featured== 1 && old('featured') == null ) selected @endif>Yes</option>
+      <select>
+  </div>
+  <div class="col-sm-2">
+    <p class="help-block">
+      @if ($errors->has('featured'))
+        <span  role="alert">
+            <strong>{{ $errors->first('featured') }}</strong>
+        </span>
+      @endif
+  </p>
+  </div>
+</div>
+
+<div class="form-group">
   <label for="focusedinput" class="col-sm-2 control-label">Description</label>
   <div class="col-sm-8">
     <textarea class="form-control"  name="description" rows="5">@if(old('description')) {{old('description')}} @elseif( isset($category) ) {{$category->description}} @endif</textarea>

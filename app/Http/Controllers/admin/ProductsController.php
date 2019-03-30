@@ -12,6 +12,7 @@ use App\Inventory;
 use App\Variation;
 use App\Category;
 use App\Supermarket;
+use App\Formula;
 use App\Services\ProductHandler;
 use App\Services\UserHandler;
 
@@ -50,9 +51,11 @@ class ProductsController extends Controller
   */
   public function register_product( )
   {
+    $userSupermarkets  = UserHandler::UserSupermarket(Auth::id());
+
     $allCategories = UserHandler::UserSupermarketCategories( Auth::id() );
     $allSupermarket = UserHandler::UserSupermarket( Auth::id() );
-    return view('admin.products.register',compact('allCategories','allSupermarket'));
+    return view('admin.products.register',compact('allCategories','allSupermarket','userSupermarkets'));
   }
 
   /*
@@ -151,7 +154,36 @@ class ProductsController extends Controller
     return redirect('/trashed-products');
 
   }
+  /*
+  *Function to set daily formula
+  */
+  public function set_formula( Request $request )
+  {
+    $formula1 = Formula::firstOrNew(['type'=>1]);
+    $formula1->supermarket_id =session('selectedSupermarket');
+    $formula1->breast =$request->input('breast1');
+    $formula1->wings =$request->input('wings1');
+    $formula1->legs =$request->input('legs1');
+    $formula1->save();
 
+    $formula2 = Formula::firstOrNew(['type'=>2]);
+    $formula2->supermarket_id =session('selectedSupermarket');
+    $formula2->breast =$request->input('breast2');
+    $formula2->wings =$request->input('wings2');
+    $formula2->legs =$request->input('legs2');
+    $formula2->save();
+
+    $formula3 = Formula::firstOrNew(['type'=>3]);
+    $formula3->supermarket_id =session('selectedSupermarket');
+    $formula3->breast =$request->input('breast3');
+    $formula3->wings =$request->input('wings3');
+    $formula3->legs =$request->input('legs3');
+    $formula3->save();
+
+    Session::flash('message', "Formula recorded succesfully!");
+
+    return redirect('admin');
+  }
 
   /*
   *Function to validate product data
@@ -161,7 +193,7 @@ class ProductsController extends Controller
     $product=[
       'name' => 'required|nullable',
       'product_id' => 'required|numeric',
-      'category_id' => 'required',
+      //'category_id' => 'required',
       'new_category' => 'nullable|max:255',
       'img1' => 'nullable|max:10000|mimes:jpeg,bmp,png',
       'img2' => 'nullable|max:10000|mimes:jpeg,bmp,png',
@@ -212,9 +244,11 @@ class ProductsController extends Controller
           $productTableData = $this->handleProductImageUploads($validatedProduct,$productTableData,$product_id);
           //assign chosen categories to product
           ProductHandler::removeProductCategories($product_id);//first remove all categories
-          foreach ($validatedProduct->input('category_id') as $category_id)
-          {
-            $new_category = ProductHandler::createProductCategory($product_id,$category_id);
+          if( $validatedProduct->input('category_id') != '' ){
+            foreach ($validatedProduct->input('category_id') as $category_id)
+            {
+              $new_category = ProductHandler::createProductCategory($product_id,$category_id);
+            }
           }
             $updatedProduct = ProductHandler::updateProduct($product_id,$productTableData,$inventoryTable,$variationTable);
 
@@ -240,9 +274,11 @@ class ProductsController extends Controller
 
       //assign chosen categories to product
       ProductHandler::removeProductCategories($product_id);//first remove all categories
-      foreach ($validatedProduct->input('category_id') as $category_id)
-      {
-        $new_category = ProductHandler::createProductCategory($product_id,$category_id);
+      if( $validatedProduct->input('category_id') != '' ){
+        foreach ($validatedProduct->input('category_id') as $category_id)
+        {
+          $new_category = ProductHandler::createProductCategory($product_id,$category_id);
+        }
       }
 
       //create new category if new category field is non null
@@ -284,14 +320,19 @@ class ProductsController extends Controller
   */
   private function handleFileUpload($storageLoc,$request,$value)
   {
-    if(!Storage::exists($storageLoc)) {
+    /*if(!file_exists($storageLoc)) {
 
-      Storage::makeDirectory($storageLoc, 0775, true); //creates directory
+      mkdir($storageLoc); //creates directory
 
-    }
-    $path = Storage::url($request->file($value)->store($storageLoc));
+    }*/
+    //$destination = 'images';
+    $image = $request->file($value);
+    $name = time().'.'.$image->getClientOriginalExtension();
+    $image->move($storageLoc, $name);
 
-    return asset($path);
+    //$path = Storage::url($request->file($value)->store($storageLoc));
+
+    return asset($storageLoc.'/'.$name);
   }
 
   /*
@@ -301,27 +342,27 @@ class ProductsController extends Controller
   {
     if( $validatedProduct->hasFile('img1') )
     {
-      $storageLoc = '/public/products/'.$product_id.'//featured/';
+      $storageLoc = 'public/products/'.$product_id.'//featured/';
       $productTableData['img1'] = $this->handleFileUpload($storageLoc,$validatedProduct,'img1');
     }
     if( $validatedProduct->hasFile('img2') )
     {
-      $storageLoc = '/public/products/'.$product_id.'//gallery/';
+      $storageLoc = 'public/products/'.$product_id.'//gallery/';
       $productTableData['img2'] = $this->handleFileUpload($storageLoc,$validatedProduct,'img2');
     }
     if( $validatedProduct->hasFile('img3') )
     {
-      $storageLoc = '/public/products/'.$product_id.'//gallery/';
+      $storageLoc = 'public/products/'.$product_id.'//gallery/';
       $productTableData['img3'] = $this->handleFileUpload($storageLoc,$validatedProduct,'img3');
     }
     if( $validatedProduct->hasFile('img4') )
     {
-      $storageLoc = '/public/products/'.$product_id.'//gallery/';
+      $storageLoc = 'public/products/'.$product_id.'//gallery/';
       $productTableData['img4'] = $this->handleFileUpload($storageLoc,$validatedProduct,'img4');
     }
     if( $validatedProduct->hasFile('img5') )
     {
-      $storageLoc = '/public/products/'.$product_id.'//gallery/';
+      $storageLoc = 'public/products/'.$product_id.'//gallery/';
       $productTableData['img5'] = $this->handleFileUpload($storageLoc,$validatedProduct,'img5');
     }
     return $productTableData;
@@ -350,7 +391,10 @@ class ProductsController extends Controller
         $product->forceDelete();
         $productInventory->forceDelete();
         $productVariation->forceDelete();
-        Storage::deleteDirectory('/public/products/'.$product->id.'');
+        $this->removeDirectory('public/products/'.$product->id.'');
+
+        //rmdir('public/products/'.$product->id.'');
+        //Storage::deleteDirectory('/public/products/'.$product->id.'');
         break;
 
       case 'restore':
@@ -365,5 +409,14 @@ class ProductsController extends Controller
     }
     return true;
   }
+
+  private function removeDirectory($path) {
+ 	$files = glob($path . '/*');
+	foreach ($files as $file) {
+		is_dir($file) ? $this->removeDirectory($file) : unlink($file);
+	}
+	rmdir($path);
+ 	return;
+}
 
 }

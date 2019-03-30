@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Supermarket extends Model
 {
   use SoftDeletes;
-  
+
   public function user()
   {
     return $this->hasMany('App\User');
@@ -21,5 +21,9 @@ class Supermarket extends Model
   public function department()
   {
     return $this->hasMany('App\Department');
+  }
+  public function formula()
+  {
+    return $this->hasOne('App\Formula');
   }
 }

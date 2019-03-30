@@ -1,7 +1,21 @@
 @extends('layouts.admin')
 
 @section('content')
-<h2>trashed products</h2>
+<!--outter-wp-->
+  <div class="outter-wp">
+      <!--sub-heard-part-->
+        <div class="sub-heard-part">
+         <ol class="breadcrumb m-b-0">
+          <li><a href="{{url('/admin')}}">Home</a></li>
+          <li class="active">trashed products</li>
+        </ol>
+         </div>
+      <!--//sub-heard-part-->
+      <div class="graph-visual tables-main">
+
+          <h3 class="inner-tittle two">trashed products </h3>
+              <div class="graph">
+              <div class="tables">
 <table class="table table-dark">
 <thead>
   <tr>
@@ -29,6 +43,12 @@
 
 </tbody>
 </table>
+</div>
+</div>
 
+</div>
+<!--//graph-visual-->
+</div>
+<!--//outer-wp-->
 
 @endsection

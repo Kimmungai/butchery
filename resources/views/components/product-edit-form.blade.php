@@ -33,7 +33,7 @@
 
 
 <div class="form-group">
-  <label for="focusedinput" class="col-sm-2 control-label">Supermarket</label>
+  <label for="focusedinput" class="col-sm-2 control-label">Organisation</label>
   <div class="col-sm-8">
     <select class="form-control1" name="supermarket_id" id="supermarket_id">
       @if( isset($allSupermarket) )
@@ -54,6 +54,24 @@
   </div>
 </div>
 
+<div class="form-group">
+  <label for="focusedinput" class="col-sm-2 control-label">Featured</label>
+  <div class="col-sm-8">
+      <select class="form-control1" name="specialFeatured">
+        <option value="0" @if (old('specialFeatured') == 0) selected @elseif( isset($product) && $product->specialFeatured== 0 && old('specialFeatured') == null ) selected @endif>No</option>
+        <option value="1" @if (old('specialFeatured') == 1) selected @elseif( isset($product) && $product->specialFeatured== 1 && old('specialFeatured') == null ) selected @endif>Yes</option>
+      <select>
+  </div>
+  <div class="col-sm-2">
+    <p class="help-block">
+      @if ($errors->has('specialFeatured'))
+        <span  role="alert">
+            <strong>{{ $errors->first('specialFeatured') }}</strong>
+        </span>
+      @endif
+  </p>
+  </div>
+</div>
 
 <div class="form-group">
   <label for="focusedinput" class="col-sm-2 control-label">Inventory</label>

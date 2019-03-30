@@ -11,7 +11,7 @@
 |
 */
 Route::get('/', function () {
-    return view('welcome');
+    return redirect('home');
 });
 
 Auth::routes();
@@ -115,3 +115,6 @@ Route::get('trashed-orders','admin\OrdersController@get_trashed_orders')->name('
 Route::get('trashed-order/{id}','admin\OrdersController@get_trashed_order')->name('Get trashed order');
 Route::get('restore-order/{id}','admin\OrdersController@restore_order')->name('Restore trashed order');
 Route::get('remove-order/{id}','admin\OrdersController@remove_order')->name('Remove trashed order');
+
+//Daily formula
+Route::post('daily-formula','admin\ProductsController@set_formula')->name('formula');

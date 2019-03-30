@@ -24,7 +24,7 @@
     @endcomponent
 
     <button class="btn btn-success" type="submit" name="submit">Update</button>
-    <a class="btn btn-danger" href="/delete-category/{{$category->id}}" name="button">Soft delete</a>
+    <a class="btn btn-danger" href="/delete-category/{{$category->id}}" name="button">Delete</a>
     </form>
 
  </div>

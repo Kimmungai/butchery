@@ -5,14 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Category extends Model
+class Formula extends Model
 {
   use SoftDeletes;
-
-  protected $fillable = ['name','img','description','department_id','featured'];
-
+  protected $fillable = ['supermarket_id','type','breast','wings','legs'];
   public function supermarket()
   {
-    return $this->belongsTo('App\Department');
+    return $this->belongsTo('App\Supermarket');
   }
 }

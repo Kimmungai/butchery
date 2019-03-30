@@ -103,11 +103,25 @@ class ProductHandler
     $products = Product::where( 'supermarket_id', $supermarket_id )->get();
     $count = 0;
     foreach ( $products as $product ) {
-      if( $product->inventory->quantity > 0 )
+      if( $product->inventory->quantity > $product->inventory->lowStockAlert )
         $count++;
     }
     return $count;
   }
 
-  
+  /*
+  *Function to return all products that are  out of stock of a given supermarket
+  */
+
+  public static function lowStock( $supermarket_id )
+  {
+    $products = Product::where( 'supermarket_id', $supermarket_id )->get();
+    $lowStock = [];
+    foreach ( $products as $product ) {
+      if( $product->inventory->quantity <= $product->inventory->lowStockAlert )
+        $lowStock[]=$product;
+    }
+    return $lowStock;
+  }
+
 }

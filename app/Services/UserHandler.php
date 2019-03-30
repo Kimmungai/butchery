@@ -5,6 +5,7 @@ use App\User;
 use Carbon\Carbon;
 use App\UserSupermarkets;
 use App\Supermarket;
+use App\Order;
 use Illuminate\Support\Facades\Auth;
 
 class UserHandler
@@ -251,6 +252,32 @@ class UserHandler
     foreach ( $users as $user ) {
       if( $user->staff )
         $count++;
+    }
+    return $count;
+  }
+
+  /*
+  *Function to return staff used in a given day
+  */
+  public static function todayStaffUsage( $supermarket_id )
+  {
+    $count = 0;
+    $users = User::where( 'supermarket_id', $supermarket_id )->get();
+
+    foreach ($users as $user) {
+      if( $user->staff )
+      {
+        $packers = Order::where('packagedBy',$user->staff->id)->whereDate( 'created_at',Carbon::today() )->pluck('packagedBy')->toArray();
+        $releasers = Order::where('releasedBy',$user->staff->id)->whereDate( 'created_at',Carbon::today() )->pluck('releasedBy')->toArray();
+        if(count($packers))
+        {
+          $count += count(array_unique($packers));
+        }
+        elseif (count($releasers)) {
+          $count += count(array_unique($releasers));
+        }
+
+      }
     }
     return $count;
   }

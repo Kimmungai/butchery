@@ -38,7 +38,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <body>
 	<!-- top-header -->
 	<div class="header-most-top">
-		<p>Grocery Offer Zone Top Deals & Discounts</p>
+		@foreach( $currentSupermarket as $supermarket )
+			@if( $supermarket->id == session('selectedSupermarket') )
+				<p>{{$supermarket->tagline}}</p>
+				<?php break; ?>
+			@endif
+		@endforeach
 	</div>
 	<!-- //top-header -->
 	<!-- header-bot-->
@@ -48,7 +53,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="col-md-4 logo_agile">
 				<h1>
 					<a href="/home">
-						<span>{{ config('app.name', 'Laravel') }}</span> supermarket
+						<span>{{ config('app.name', 'Laravel') }}</span>
 						<img src="{{url('front-end/images/logo2.png')}}" alt="{{ config('app.name', 'Laravel') }} " height="85" width="85">
 					</a>
 				</h1>
@@ -557,7 +562,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         </div>
       </div>
       <div class="col-xs-4 w3l-rightmk">
-        <img src="images/tab3.png" alt=" ">
+        <img src="{{url('/front-end/images/tab3.png')}}" alt=" ">
       </div>
       <div class="clearfix"></div>
     </div>
@@ -655,12 +660,12 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
             <h3>Quick Links</h3>
             <ul>
               <li>
-                <a href="about.html">About Us</a>
+                <a href="/faqs">Faqs</a>
               </li>
               <li>
-                <a href="contact.html">Contact Us</a>
+                <a href="/contact-us">Contact Us</a>
               </li>
-              <li>
+              <!--<li>
                 <a href="help.html">Help</a>
               </li>
               <li>
@@ -671,18 +676,18 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
               </li>
               <li>
                 <a href="privacy.html">Privacy Policy</a>
-              </li>
+              </li>-->
             </ul>
           </div>
           <div class="col-xs-6 footer-grids">
             <h3>Get in Touch</h3>
             <ul>
               <li>
-                <i class="fa fa-map-marker"></i> 123 Sebastian, USA.</li>
+                <i class="fa fa-map-marker"></i> Ngara, Nairobi</li>
               <li>
-                <i class="fa fa-mobile"></i> 333 222 3333 </li>
+                <i class="fa fa-mobile"></i> 000 000 000 </li>
               <li>
-                <i class="fa fa-phone"></i> +222 11 4444 </li>
+                <i class="fa fa-phone"></i> +254 11 2331 </li>
               <li>
                 <i class="fa fa-envelope-o"></i>
                 <a href="mailto:example@mail.com"> mail@example.com</a>

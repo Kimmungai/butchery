@@ -1,7 +1,22 @@
 @extends('layouts.admin')
 
 @section('content')
+<!--outter-wp-->
+  <div class="outter-wp">
+      <!--sub-heard-part-->
+        <div class="sub-heard-part">
+         <ol class="breadcrumb m-b-0">
+          <li><a href="{{url('/admin')}}">Home</a></li>
+          <li><a href="{{url('/trashed-products')}}">trashed products</a></li>
+          <li class="active">trashed product</li>
+        </ol>
+         </div>
+      <!--//sub-heard-part-->
+      <div class="graph-visual tables-main">
 
+          <h3 class="inner-tittle two">trashed product </h3>
+              <div class="graph">
+              <div class="tables">
 <table class="table table-dark">
   <tbody>
 
@@ -159,5 +174,12 @@
 
 <a class="btn btn-success" href="/restore-product/{{$product->id}}" name="button">Restore Product</a>
 <a class="btn btn-danger" href="/remove-product/{{$product->id}}" name="button">Delete permanently</a>
+</div>
+</div>
+
+</div>
+<!--//graph-visual-->
+</div>
+<!--//outer-wp-->
 
 @endsection

@@ -48,14 +48,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			<div class="header-section">
 						<!--menu-right-->
 						<div class="top_menu">
-						        <div class="main-search">
+						        <!--<div class="main-search">
 											<form>
 											   <input type="text" value="Search" onFocus="this.value = '';" onBlur="if (this.value == '') {this.value = 'Search';}" class="text"/>
 												<input type="submit" value="">
 											</form>
 									<div class="close"><img src="{{url('back-end/images/cross.png')}}" /></div>
 								</div>
-									<div class="srch"><button></button></div>
+									<div class="srch"><button></button></div>-->
 									<script type="text/javascript">
 										 $('.main-search').hide();
 										$('button').click(function (){
@@ -132,7 +132,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 																</script>
 										    </li>
-									       <li class="dropdown note">
+									       <!--<li class="dropdown note">
 											<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-envelope"></i> <span class="badge">3</span></a>
 
 
@@ -172,7 +172,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 															</div>
 														</li>
 													</ul>
-										</li>
+										</li>-->
 
 							<!--<li class="dropdown note">
 								<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-bell"></i> <span class="badge">5</span></a>
@@ -214,9 +214,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 										</li>
 									</ul>
 							</li>-->
-						<!--<li class="dropdown note">
-								<a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-expanded="false"><i class="fa fa-tasks"></i> <span class="badge blue1">9</span></a>
-										<ul class="dropdown-menu two">
+						<li class="dropdown note">
+								<a href="#" class="dropdown-toggle"  aria-expanded="false" data-toggle="modal" data-target="#myModal" style="color:#fff;">Formula <i class="fa fa-cogs"></i> <!--<span class="badge blue1">9</span>--></a>
+										<!--<ul class="dropdown-menu two">
 										<li>
 											<div class="notification_header">
 												<h3>You have 9 pending task</h3>
@@ -264,8 +264,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 												<a href="#">See all pending task</a>
 											</div>
 										</li>
-									</ul>
-							</li>-->
+									</ul>-->
+							</li>
 							<div class="clearfix"></div>
 								</ul>
 							</div>
@@ -291,6 +291,91 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                   Please correct all highlighted errors in the form first
               </div>
           @endif
+
+          <!-- start Formula Modal -->
+          <form  action="{{url('/daily-formula')}}" method="post">
+            @csrf
+            <div class="modal fade" id="myModal" role="dialog">
+              <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Todays Formula</h4>
+                  </div>
+                  <div class="modal-body">
+                    <div class="table-responsive">
+                    <table class="table">
+                      <thead>
+                        <tr>
+                          <th>#</th>
+                          <th>Chicken (1)</th>
+                          <th>Weight (kg)</th>
+                          <th>Parts (produces)</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td>1</td>
+                          <td><img src="{{url('front-end/images/banner2.jpg')}}" alt="" height="100" width="100"> </td>
+                          <td>
+                            <select class="form-control1" name="weight1">
+                              <option value="1">0kg ~ 0.8kg</option>
+                              <option value="2">0.9kg ~ 2.1kg</option>
+                              <option value="3">over 2.1kg</option>
+                            </select>
+                          </td>
+                          <td>
+                            breast <input class="form-control1" type="number" name="breast1" value="0">
+                            wings <input class="form-control1" type="number" name="wings1" value="0">
+                            legs <input class="form-control1" type="number" name="legs1" value="0">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>2</td>
+                          <td><img src="{{url('front-end/images/banner2.jpg')}}" alt="" height="100" width="100"> </td>
+                          <td>
+                            <select class="form-control1" name="weight2">
+                              <option value="1">0kg ~ 0.8kg</option>
+                              <option value="2" selected>0.9kg ~ 2.1kg</option>
+                              <option value="3">over 2.1kg</option>
+                            </select>
+                          </td>
+                          <td>
+                            breast <input class="form-control1" type="number" name="breast2" value="1">
+                            wings <input class="form-control1" type="number" name="wings2" value="1">
+                            legs <input class="form-control1" type="number" name="legs2" value="1">
+                          </td>
+                        </tr>
+                        <tr>
+                          <td>3</td>
+                          <td><img src="{{url('front-end/images/banner2.jpg')}}" alt="" height="100" width="100"> </td>
+                          <td>
+                            <select class="form-control1" name="weight3">
+                              <option value="1">0kg ~ 0.8kg</option>
+                              <option value="2">0.9kg ~ 2.1kg</option>
+                              <option value="3" selected>over 2.1kg</option>
+                            </select>
+                          </td>
+                          <td>
+                            breast <input class="form-control1" type="number" name="breast3" value="1">
+                            wings <input class="form-control1" type="number" name="wings3" value="1">
+                            legs <input class="form-control1" type="number" name="legs3" value="1">
+                          </td>
+                        </tr>
+                      </tbody>
+                    </table>
+                    </div>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="submit" class="btn btn-success">Submit</button>
+
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            </form>
+            <!-- End Formula Modal -->
 
           @yield('content')
 
@@ -330,9 +415,21 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                   <div class="menu">
          <ul id="menu" >
            <li><a href="/admin"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></a></li>
-           <li><a href="/products"><i class="fas fa-warehouse"></i> <span>Items</span></a></li>
-           <li><a href="/departments"><i class="fas fa-building"></i> <span>Departments</span></a></li>
-           <li><a href="/categories"><i class="fas fa-tags"></i> <span>Categories</span></a></li>
+           <li><a href="/products"><i class="fas fa-warehouse"></i> <span>Items</span> <span class="fa fa-angle-right" style="float: right"></span></a>
+            <ul id="menu-academico-sub" >
+              <li id="menu-academico-avaliacoes" ><a href="{{url('/register-product')}}"> New</a></li>
+            </ul>
+           </li>
+           <li><a href="/departments"><i class="fas fa-building"></i> <span>Departments</span> <span class="fa fa-angle-right" style="float: right"></span></a>
+             <ul id="menu-academico-sub" >
+            <li id="menu-academico-avaliacoes" ><a href="{{url('/register-department')}}"> New</a></li>
+            </ul>
+           </li>
+           <li><a href="/categories"><i class="fas fa-tags"></i> <span>Categories</span> <span class="fa fa-angle-right" style="float: right"></span></a>
+             <ul id="menu-academico-sub" >
+            <li id="menu-academico-avaliacoes" ><a href="{{url('/register-category')}}"> New</a></li>
+            </ul>
+           </li>
            <li><a href="/orders"><i class="fas fa-wallet"></i> <span>Orders</span></a></li>
 
             <li id="menu-academico" ><a href="#"><i class="fa fa-users"></i> <span> Users <span class="fa fa-angle-right" style="float: right"></span></a>
